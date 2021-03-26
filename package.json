@@ -1,0 +1,35 @@
+{
+  "name": "cy2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Andrew Goldis",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sorry-cypress/cy2.git"
+  },
+  "dependencies": {
+    "js-yaml": "^4.0.0",
+    "npm-which": "^3.0.1"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "index.js"
+  ],
+  "bin": {
+    "cy2": "bin/cy2"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "peerDependencies": {
+    "cypress": "*"
+  },
+  "keywords": [
+    "cypress",
+    "wrapper",
+    "sorry-cypress",
+    "currents"
+  ]
+}
