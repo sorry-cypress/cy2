@@ -1,7 +1,6 @@
 # cy2
 
-The package changes cypress API server configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-si, so you can just use it instead of cypress.
-
+Change cypress API server configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
 
 ## Install
 
