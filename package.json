@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "author": "Andrew Goldis",
   "license": "MIT",
@@ -17,7 +17,9 @@
     "lib/*",
     "index.js"
   ],
-  "bin": "./bin/cy2",
+  "bin": {
+    "cy2": "bin/cy2"
+  },
   "engines": {
     "node": ">=10.0.0"
   },
