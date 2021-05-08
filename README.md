@@ -31,7 +31,7 @@ Patch `cypress` package
 patch(apiURL: string) => Promise<void>
 ```
 
-Path and run `cypress`
+Patch and run `cypress`
 
 ```ts
 run(apiURL?: string = 'https://yourserver.io/'), label?: string = 'cy2')=> Promise<void>
@@ -71,4 +71,6 @@ Usage: cypress <command> [options]
 Options:
   -v, --version      prints Cypress version
   -h, --help         display help for command
+
+*/
 ```
