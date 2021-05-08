@@ -23,9 +23,6 @@
   "engines": {
     "node": ">=10.0.0"
   },
-  "peerDependencies": {
-    "cypress": "*"
-  },
   "keywords": [
     "cypress",
     "wrapper",
