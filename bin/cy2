@@ -1,13 +1,7 @@
 #!/usr/bin/env node
-const patch = require('../lib/patch');
+const lib = require('../');
 
-async function main() {
-  const cliBinPath = await patch.getCypressCLIBinPath();
-  patch.patch(process.env.CYPRESS_API_URL, cliBinPath);
-  patch.run(cliBinPath);
-}
-
-main().catch((error) => {
-  console.error('cy2:', error);
+lib.run(process.env.CYPRESS_API_URL).catch((error) => {
+  console.error(error);
   process.exit(1);
 });
