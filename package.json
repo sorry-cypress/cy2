@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "main": "index.js",
   "author": "Andrew Goldis",
   "license": "MIT",
@@ -31,5 +31,8 @@
     "wrapper",
     "sorry-cypress",
     "currents"
-  ]
+  ],
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
 }
