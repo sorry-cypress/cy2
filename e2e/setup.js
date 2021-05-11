@@ -3,7 +3,7 @@ const shell = require('shelljs');
 
 exports.installCmd = {
   local: 'npm install --save-dev cypress',
-  global: 'npm install -g --force cypress',
+  global: 'npm install -g --force --prefix=$HOME/.local cypress',
 };
 exports.runE2E = (dirname, installCmd) => {
   shell.rm('-rf', dirname);
