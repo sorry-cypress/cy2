@@ -24,7 +24,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Local instal e2e
+          name: Local install e2e
           command: cd e2e && node ./testLocal.js
       - run:
           name: Global install e2e
