@@ -69,3 +69,6 @@ credentials
 # Minio
 /data
 example/data
+
+_local
+_global

@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "main": "index.js",
   "author": "Andrew Goldis",
   "license": "MIT",
@@ -9,7 +9,8 @@
     "url": "https://github.com/sorry-cypress/cy2.git"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "release": "release-it"
   },
   "dependencies": {
     "js-yaml": "^4.0.0",
@@ -33,6 +34,23 @@
     "currents"
   ],
   "devDependencies": {
-    "jest": "^26.6.3"
+    "@release-it/conventional-changelog": "^2.0.1",
+    "jest": "^26.6.3",
+    "release-it": "^14.6.2",
+    "shelljs": "^0.8.4"
+  },
+  "release-it": {
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      }
+    }
   }
 }

@@ -14,8 +14,10 @@ test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
+  - cd e2e
   # run tests
-  - npm run test
+  - node ./testGlobal.js
+  - node ./testLocal.js
 
 # Don't actually build.
 build: off
