@@ -16,8 +16,8 @@ test_script:
   - npm --version
   - cd e2e
   # run tests
-  - node ./testGlobal.js
   - node ./testLocal.js
+  - node ./testGlobal.js
 
 # Don't actually build.
 build: off
