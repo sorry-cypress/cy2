@@ -9,7 +9,7 @@
     "url": "https://github.com/sorry-cypress/cy2.git"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest ./__tests__/*.test.js",
     "release": "release-it"
   },
   "dependencies": {
