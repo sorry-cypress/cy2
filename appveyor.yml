@@ -2,6 +2,8 @@
 environment:
   nodejs_version: '14'
 
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node.js or io.js
@@ -18,6 +20,9 @@ test_script:
   # run tests
   - node ./testLocal.js
   - node ./testGlobal.js
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 # Don't actually build.
 build: off
