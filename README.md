@@ -1,5 +1,8 @@
 # cy2
 
+![npm downloads](https://img.shields.io/npm/dw/cy2?style=flat)
+[![AppVeyour](https://ci.appveyor.com/api/projects/status/8i4xhejvla6rhc3m/branch/master?svg=true)](https://ci.appveyor.com/project/agoldis/cy2/branch/master) [![CircleCI](https://circleci.com/gh/sorry-cypress/cy2/tree/master.svg?style=shield)](https://circleci.com/gh/sorry-cypress/cy2/tree/master)
+
 Change cypress API URL configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
 
 ## Install
@@ -53,7 +56,6 @@ main().catch(console.error);
 #!/usr/bin/env node
 
 /* cmd.js */
-
 
 const { run } = require('cy2');
 
