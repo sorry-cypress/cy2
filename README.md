@@ -11,36 +11,46 @@ Change cypress API URL configuration on-the-fly using environment variable `CYPR
 npm install cy2
 ```
 
+---
+
 ## Usage
 
-```sh
+Use `http://localhost:1234` as Cypress API URL:
 
-CYPRESS_API_URL="http://localhost:1234/" cy2 open
+```sh
+CYPRESS_API_URL="http://localhost:1234/" cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
 Example usage with [sorry-cypress](https://sorry-cypress.dev)
 
 ```sh
-CYPRESS_API_URL="https://sorry-cypress.domain.com" cy2 run  --parallel --record --key somekey --ci-build-id hello-cypress
+CYPRESS_API_URL="https://sorry-cypress-demo-director.herokuapp.com" cy2 run  --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
-When `CYPRESS_API_URL` is not available, it just uses the default API server.
+When `CYPRESS_API_URL` is not set, it just uses the default API server `https://api.cypress.io`
+
+---
 
 ## API
 
-Patch `cypress` package
+### Patch Cypress
 
 ```ts
-patch(apiURL: string) => Promise<void>
+/**
+ * Patch Cypress with a custom API URL.
+ *
+ * Tries to discover the location of `app.yml`
+ * and patch it with a custom URL.
+ *
+ * https://github.com/cypress-io/cypress/blob/develop/packages/server/config/app.yml
+ *
+ * @param {string} apiURL - new API URL to use
+ * @param {string} [cypressConfigFilePath] - explicitly provide the path to Cypress app.yml and disable auto-discovery
+ */
+patch(apiURL: string, cypressConfigPath?: string) => Promise<void>
 ```
 
-Patch and run `cypress`
-
-```ts
-run(apiURL?: string = 'https://yourserver.io/'), label?: string = 'cy2')=> Promise<void>
-```
-
-### Examples
+Example
 
 ```js
 const { patch } = require('cy2');
@@ -51,6 +61,17 @@ async function main() {
 
 main().catch(console.error);
 ```
+
+### Patch and run cypress
+
+```ts
+/**
+ * Run Cypress programmatically as a child process
+ */
+run(apiURL?: string = 'https://api.cypress.io/'), label?: string = 'cy2')=> Promise<void>
+```
+
+Example
 
 ```js
 #!/usr/bin/env node
@@ -76,3 +97,19 @@ Options:
 
 */
 ```
+
+---
+
+## Explicit config file location (since 1.4.0)
+
+Sometimes `cy2` is not able to automatically detect the location of cypress package on your system. In that case you should explicitly provide environment variable `CYPRESS_PACKAGE_CONFIG_PATH` with the location of cypress's `app.yml` configuration file.
+
+Example:
+
+```sh
+CYPRESS_API_URL="http://localhost:1234/" \
+CYPRESS_PACKAGE_CONFIG_PATH="/Users/John/Cypress/8.3.0/Cypress.app/Contents/Resources/app/packages/server/config/app.yml" \
+DEBUG=cy2* yarn cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
+```
+
+See [cypress agent configuration](https://docs.sorry-cypress.dev/cypress-agent/configuring-cypress-agent) for locating `app.yml` file on your system.

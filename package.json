@@ -9,7 +9,7 @@
     "url": "https://github.com/sorry-cypress/cy2.git"
   },
   "scripts": {
-    "test": "jest ./__tests__/*.test.js",
+    "test": "jest",
     "release": "release-it"
   },
   "dependencies": {
@@ -35,9 +35,10 @@
     "currents"
   ],
   "devDependencies": {
-    "@release-it/conventional-changelog": "^2.0.1",
+    "@release-it/conventional-changelog": "^3.3.0",
     "jest": "^26.6.3",
-    "release-it": "^14.6.2",
+    "nanoid": "^3.1.25",
+    "release-it": "^14.11.5",
     "shelljs": "^0.8.4"
   },
   "release-it": {
@@ -53,5 +54,11 @@
         "infile": "CHANGELOG.md"
       }
     }
+  },
+  "jest": {
+    "testMatch": [
+      "./__tests__/*.spec.js",
+      "./**/__tests__/*.spec.js"
+    ]
   }
 }
