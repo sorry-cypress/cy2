@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/sorry-cypress/cy2/compare/v1.2.1...v1.3.0) (2021-09-08)
+
+
+### Features
+
+* add debug ([#15](https://github.com/sorry-cypress/cy2/issues/15)) ([c455cd5](https://github.com/sorry-cypress/cy2/commit/c455cd531f8ee3c255e81efae9de91a4065a6d40))
+* use __dirname instead of cwd ([#14](https://github.com/sorry-cypress/cy2/issues/14)) ([95561ea](https://github.com/sorry-cypress/cy2/commit/95561ea14362260be0dd6627f1697c3d86007d4d))
+
 ## [1.2.1](https://github.com/sorry-cypress/cy2/compare/v1.2.0...v1.2.1) (2021-05-11)
 
 # [1.2.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-05-11)
