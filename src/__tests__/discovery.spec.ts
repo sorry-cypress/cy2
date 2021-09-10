@@ -1,6 +1,6 @@
-const fs = require('fs');
-const { getConfigFilesPaths } = require('../discovery');
-const { getAutoDiscoveredConfigFilesPaths } = require('../auto-discovery');
+import fs from 'fs';
+import { getConfigFilesPaths } from '../discovery';
+import { getAutoDiscoveredConfigFilesPaths } from '../auto-discovery';
 
 jest.mock('../auto-discovery');
 
@@ -17,7 +17,7 @@ test('should use explicit path', async () => {
 });
 
 test('should use auto-discovery', async () => {
-  getAutoDiscoveredConfigFilesPaths.mockReturnValue({});
+  (getAutoDiscoveredConfigFilesPaths as jest.Mock).mockReturnValue({});
 
   await getConfigFilesPaths();
 

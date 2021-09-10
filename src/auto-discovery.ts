@@ -1,13 +1,10 @@
-const path = require('path');
-const { getCypressCLIBinPath } = require('./bin-path');
-const { lookupPaths } = require('./fs');
-const debug = require('debug')('cy2');
+import path from 'path';
 
-module.exports = {
-  getAutoDiscoveredConfigFilesPaths,
-};
+import { debug } from './debug';
+import { getCypressCLIBinPath } from './bin-path';
+import { lookupPaths } from './fs';
 
-async function getAutoDiscoveredConfigFilesPaths() {
+export async function getAutoDiscoveredConfigFilesPaths() {
   const stateModulePath = await getStateModulePath();
   const state = require(stateModulePath);
 

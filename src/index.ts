@@ -1,10 +1,10 @@
-const lib = require('./lib/patch');
+import * as lib from './patch';
 
 const DEFAULT_OVERRIDE_URL = 'https://api.cypress.io/';
 
-exports.patch = lib.patch;
+export const patch = lib.patch;
 
-exports.run = async (
+export const run = async (
   cypressAPIUrl = DEFAULT_OVERRIDE_URL,
   label = 'cy2',
   cypressConfigFilePath = process.env.CYPRESS_PACKAGE_CONFIG_PATH

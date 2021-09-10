@@ -1,14 +1,17 @@
-const path = require('path');
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
 
 const { getAutoDiscoveredConfigFilesPaths } = require('./auto-discovery');
 const debug = require('debug')('cy2');
 
-module.exports = {
-  getConfigFilesPaths,
-};
+interface ConfigFilePaths {
+  configFilePath: string;
+  backupConfigFilePath: string;
+}
 
-async function getConfigFilesPaths(cypressConfigFilePath = null) {
+export async function getConfigFilesPaths(
+  cypressConfigFilePath: string | null = null
+): Promise<ConfigFilePaths> {
   if (typeof cypressConfigFilePath === 'string') {
     const explicitPath = path.resolve(
       path.normalize(cypressConfigFilePath.trim())

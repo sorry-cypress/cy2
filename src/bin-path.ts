@@ -1,20 +1,17 @@
-const path = require('path');
-const fs = require('fs');
-const debug = require('debug')('cy2');
-const which = require('npm-which');
-const { platform } = require('os');
+import fs from 'fs';
+import path from 'path';
+import which from 'npm-which';
+import { platform } from 'os';
 
-module.exports = {
-  getCypressCLIBinPath,
-};
+import { debug } from './debug';
 
-function getCypressCLIBinPath() {
+export function getCypressCLIBinPath(): Promise<string> {
   return new Promise((resolve, reject) => {
     const location = platform() === 'win32' ? process.cwd() : __dirname;
 
     which(location)('cypress', function (err, binaryCypress) {
       if (err) {
-        return reject(err.message);
+        return reject(err);
       }
       debug('Cypress binary: %s', binaryCypress);
 

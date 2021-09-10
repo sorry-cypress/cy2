@@ -1,9 +1,11 @@
-const fs = require('fs');
-const cp = require('child_process');
-const yaml = require('js-yaml');
-const debug = require('debug')('cy2');
-const { getConfigFilesPaths } = require('./discovery');
-const { getCypressCLIBinPath } = require('./bin-path');
+import fs from 'fs';
+import cp from 'child_process';
+
+import yaml from 'js-yaml';
+import { debug } from './debug';
+import { getConfigFilesPaths } from './discovery';
+import { getCypressCLIBinPath } from './bin-path';
+
 /**
  * Patch Cypress with a custom API URL.
  *
@@ -13,10 +15,11 @@ const { getCypressCLIBinPath } = require('./bin-path');
  * @param {string} apiURL - new API URL to use
  * @param {string} [cypressConfigFilePath] - explicitly provide the path to Cypress app.yml and disable auto-discovery
  */
-exports.patch = async function (apiURL, cypressConfigFilePath) {
+export async function patch(apiURL: string, cypressConfigFilePath?: string) {
   if (!apiURL) {
     throw new Error('Missing apiURL');
   }
+
   const { configFilePath, backupConfigFilePath } = await getConfigFilesPaths(
     cypressConfigFilePath
   );
@@ -28,18 +31,27 @@ exports.patch = async function (apiURL, cypressConfigFilePath) {
     fs.copyFileSync(configFilePath, backupConfigFilePath);
   }
 
-  const doc = yaml.load(fs.readFileSync(configFilePath, 'utf8'));
+  const doc = yaml.load(
+    fs.readFileSync(configFilePath, 'utf8')
+  ) as CypressConfigDoc;
   doc.production.api_url = apiURL;
   fs.writeFileSync(configFilePath, yaml.dump(doc));
-};
+}
+
+interface CypressConfigDoc {
+  production: {
+    api_url: string;
+  };
+}
 
 /**
  * Run Cypress programmatically as a child process
  */
-exports.run = async function () {
+export async function run() {
   const [node, script, ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
-  debug('Running cypress from %s', cliBinPath);
+  debug('Running cypress from %s', cliBinPath, ...rest);
+
   const child = cp.spawn(cliBinPath, [...rest], { stdio: 'inherit' });
-  child.on('exit', (code) => process.exit(code));
-};
+  child.on('exit', (code) => process.exit(code ?? 1));
+}
