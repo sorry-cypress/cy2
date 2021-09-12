@@ -1,3 +1,16 @@
+# [2.0.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.0-beta.0) (2021-09-12)
+
+
+### Features
+
+* add more discovery strategies ([f3d3b09](https://github.com/sorry-cypress/cy2/commit/f3d3b09e001578e768f7f1aac8932d57427e05c8))
+* use CYPRESS_PACKAGE_CONFIG_PATH ([743a892](https://github.com/sorry-cypress/cy2/commit/743a892662aa9586ee52df2cdb6eee6479abdd7e))
+
+
+### BREAKING CHANGES
+
+* bumping major for safe release, no API changes
+
 # [1.3.0](https://github.com/sorry-cypress/cy2/compare/v1.2.1...v1.3.0) (2021-09-08)
 
 
