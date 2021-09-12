@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import { debug } from './debug';
 
-const { getAutoDiscoveredConfigFilesPaths } = require('./auto-discovery');
-const debug = require('debug')('cy2');
+import { getConfigFilesPaths_cli } from './discovery-cli';
+import { getConfigFilesPaths_stateModule } from './discovery-state-module';
 
 interface ConfigFilePaths {
   configFilePath: string;
@@ -28,5 +29,20 @@ export async function getConfigFilesPaths(
       backupConfigFilePath: explicitPath.replace('app.yml', '_app.yml'),
     };
   }
-  return getAutoDiscoveredConfigFilesPaths();
+  return tryAll(getConfigFilesPaths_stateModule, getConfigFilesPaths_cli);
+}
+
+async function tryAll(...fns) {
+  const errors: Error[] = [];
+  for (const fn of fns) {
+    try {
+      // @ts-ignore
+      return await fn();
+    } catch (e) {
+      debug('Discovery error received: %s', e);
+      errors.push(e);
+    }
+  }
+  console.error(errors);
+  throw new Error('Cannot detect cypress location');
 }

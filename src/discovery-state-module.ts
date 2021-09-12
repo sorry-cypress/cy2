@@ -4,7 +4,9 @@ import { debug } from './debug';
 import { getCypressCLIBinPath } from './bin-path';
 import { lookupPaths } from './fs';
 
-export async function getAutoDiscoveredConfigFilesPaths() {
+export async function getConfigFilesPaths_stateModule() {
+  debug('Trying discovery via state module');
+
   const stateModulePath = await getStateModulePath();
   const state = require(stateModulePath);
 

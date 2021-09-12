@@ -15,8 +15,8 @@
     "test": "jest",
     "tsc": "tsc",
     "swc": "swc src -d dist",
-    "watch:tsc": "run-s tsc --watch --preserveWatchOutput",
-    "watch:swc": "run-s swc --watch",
+    "watch:tsc": "run-s \"tsc --watch --preserveWatchOutput\"",
+    "watch:swc": "run-s \"swc --watch\"",
     "release": "release-it",
     "clean": "rimraf dist"
   },
@@ -75,7 +75,7 @@
       }
     },
     "hooks": {
-      "before:init": "yarn clean && yarn build"
+      "before:init": "run-s clean build"
     }
   },
   "jest": {

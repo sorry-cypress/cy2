@@ -1,8 +1,10 @@
 import fs from 'fs';
 import { getConfigFilesPaths } from '../discovery';
-import { getAutoDiscoveredConfigFilesPaths } from '../auto-discovery';
+import { getConfigFilesPaths_stateModule } from '../discovery-state-module';
+import { getConfigFilesPaths_cli } from '../discovery-cli';
 
-jest.mock('../auto-discovery');
+jest.mock('../discovery-state-module');
+jest.mock('../discovery-cli');
 
 test('should use explicit path', async () => {
   fs.statSync = jest.fn().mockReturnValue(true);
@@ -16,10 +18,21 @@ test('should use explicit path', async () => {
   );
 });
 
-test('should use auto-discovery', async () => {
-  (getAutoDiscoveredConfigFilesPaths as jest.Mock).mockReturnValue({});
+test('should use state-module', async () => {
+  (getConfigFilesPaths_stateModule as jest.Mock).mockReturnValue({});
 
   await getConfigFilesPaths();
 
-  expect(getAutoDiscoveredConfigFilesPaths).toHaveBeenCalled();
+  expect(getConfigFilesPaths_stateModule).toHaveBeenCalled();
+});
+
+test('should use getConfigFilesPaths_cli', async () => {
+  (getConfigFilesPaths_stateModule as jest.Mock).mockRejectedValueOnce(
+    new Error('oh!')
+  );
+
+  await getConfigFilesPaths();
+
+  expect(getConfigFilesPaths_stateModule).toHaveBeenCalled();
+  expect(getConfigFilesPaths_cli).toHaveBeenCalled();
 });
