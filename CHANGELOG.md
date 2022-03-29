@@ -1,3 +1,5 @@
+# [2.0.0](https://github.com/sorry-cypress/cy2/compare/v2.0.0-beta.0...v2.0.0) (2022-03-29)
+
 # [2.0.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.0-beta.0) (2021-09-12)
 
 
