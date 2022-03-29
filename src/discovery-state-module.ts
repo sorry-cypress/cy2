@@ -3,6 +3,7 @@ import path from 'path';
 import { debug } from './debug';
 import { getCypressCLIBinPath } from './bin-path';
 import { lookupPaths } from './fs';
+import { getConfigFiles } from './files';
 
 export async function getConfigFilesPaths_stateModule() {
   debug('Trying discovery via state module');
@@ -16,20 +17,7 @@ export async function getConfigFilesPaths_stateModule() {
   const pkgRoot = path.dirname(pkgPath);
   debug('Cypress pkgRoot: %s', pkgRoot);
 
-  const configFilePath = path.resolve(
-    pkgRoot,
-    'packages/server/config/app.yml'
-  );
-  const backupConfigFilePath = path.resolve(
-    pkgRoot,
-    'packages/server/config/_app.yml'
-  );
-
-  debug('Cypress configFilePath: %s', configFilePath);
-  return {
-    configFilePath,
-    backupConfigFilePath,
-  };
+  return getConfigFiles(pkgRoot);
 }
 
 async function getStateModulePath() {

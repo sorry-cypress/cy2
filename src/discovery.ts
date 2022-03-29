@@ -1,18 +1,15 @@
+import { ConfigFiles } from 'files';
 import fs from 'fs';
 import path from 'path';
 import { debug } from './debug';
 
 import { getConfigFilesPaths_cli } from './discovery-cli';
+import { getConfigFromElectronBinary } from './discovery-run-binary';
 import { getConfigFilesPaths_stateModule } from './discovery-state-module';
-
-interface ConfigFilePaths {
-  configFilePath: string;
-  backupConfigFilePath: string;
-}
 
 export async function getConfigFilesPaths(
   cypressConfigFilePath: string | null = null
-): Promise<ConfigFilePaths> {
+): Promise<ConfigFiles> {
   if (typeof cypressConfigFilePath === 'string') {
     const explicitPath = path.resolve(
       path.normalize(cypressConfigFilePath.trim())
@@ -29,6 +26,14 @@ export async function getConfigFilesPaths(
       backupConfigFilePath: explicitPath.replace('app.yml', '_app.yml'),
     };
   }
+
+  if (typeof process.env.CYPRESS_RUN_BINARY === 'string') {
+    debug('CYPRESS_RUN_BINARY: %s', process.env.CYPRESS_RUN_BINARY);
+    return tryAll(() =>
+      getConfigFromElectronBinary(process.env.CYPRESS_RUN_BINARY as string)
+    );
+  }
+
   return tryAll(getConfigFilesPaths_stateModule, getConfigFilesPaths_cli);
 }
 
@@ -39,7 +44,7 @@ async function tryAll(...fns) {
       // @ts-ignore
       return await fn();
     } catch (e) {
-      debug('Discovery error received: %s', e);
+      debug('Discovery error: %s', e);
       errors.push(e);
     }
   }
