@@ -27,6 +27,9 @@ jobs:
           name: Unit tests
           command: yarn add cypress && yarn test
       - run:
+          name: Build
+          command: yarn build
+      - run:
           name: Local install e2e
           command: cd e2e && node ./testLocal.js
       - run:

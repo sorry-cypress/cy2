@@ -1,6 +1,6 @@
-const fs = require('fs');
+import fs from 'fs';
 
-function pathExists(path) {
+function pathExists(path: string) {
   try {
     fs.statSync(path);
     return true;
@@ -9,5 +9,5 @@ function pathExists(path) {
   }
 }
 
-exports.lookupPaths = (candidates = []) =>
+export const lookupPaths = (candidates: string[] = []) =>
   candidates.find((p) => pathExists(p));
