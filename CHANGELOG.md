@@ -1,3 +1,19 @@
+## [2.0.1](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.1) (2022-08-28)
+
+
+* 2.0.0 (#20) ([7846d42](https://github.com/sorry-cypress/cy2/commit/7846d42a2010398f41861fb0f6bf3f92be2b6999)), closes [#20](https://github.com/sorry-cypress/cy2/issues/20)
+
+
+### BREAKING CHANGES
+
+* bumping major for safe release, no API changes
+
+* Release 2.0.0-beta.0
+
+* Support CYPRESS_RUN_BINARY
+
+* Release 2.0.0
+
 # [2.0.0](https://github.com/sorry-cypress/cy2/compare/v2.0.0-beta.0...v2.0.0) (2022-03-29)
 
 # [2.0.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.0-beta.0) (2021-09-12)
