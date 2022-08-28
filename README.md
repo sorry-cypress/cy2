@@ -3,6 +3,18 @@
 ![npm downloads](https://img.shields.io/npm/dw/cy2?style=flat)
 [![AppVeyour](https://ci.appveyor.com/api/projects/status/8i4xhejvla6rhc3m/branch/master?svg=true)](https://ci.appveyor.com/project/agoldis/cy2/branch/master) [![CircleCI](https://circleci.com/gh/sorry-cypress/cy2/tree/master.svg?style=shield)](https://circleci.com/gh/sorry-cypress/cy2/tree/master)
 
+---
+
+<p align="center">
+Run millions of cypress tests in parallel without breaking the bank
+</p>
+
+**[Currents.dev](https://currents.dev/?utm_source=cy2)** - is a hosted cloud service that hundreds of companies around the globe use to run **millions** of Cypress tests without breaking the bank. This is an enhanced version of Sorry Cypress with a better security, performance, analytics, integrations and support.
+
+**[Sorry Cypress](https://sorry-cypress.dev/?utm_source=cy2)** is an open-source, free alternative to Cypress Dashboard that unlocks unlimited parallelization, test recordings, integration with GitHub, Slack and more.
+
+---
+
 Change cypress API URL configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
 
 ## Install
@@ -47,10 +59,10 @@ patch(apiURL: string, cypressConfigPath?: string) => Promise<void>
 Example
 
 ```js
-const { patch } = require('cy2');
+const { patch } = require("cy2");
 
 async function main() {
-  await patch('https://sorry-cypress-demo-director.herokuapp.com');
+  await patch("https://sorry-cypress-demo-director.herokuapp.com");
 }
 
 main().catch(console.error);
@@ -72,10 +84,10 @@ Example
 
 /* cmd.js */
 
-const { run } = require('cy2');
+const { run } = require("cy2");
 
 async function main() {
-  await run('https://sorry-cypress-demo-director.herokuapp.com/', 'myCMD');
+  await run("https://sorry-cypress-demo-director.herokuapp.com/", "myCMD");
 }
 
 main().catch(console.error);
