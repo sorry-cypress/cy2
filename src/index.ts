@@ -10,6 +10,18 @@ export const run = async (
   cypressConfigFilePath = process.env.CYPRESS_PACKAGE_CONFIG_PATH
 ) => {
   await lib.patch(cypressAPIUrl, cypressConfigFilePath);
+
   console.log(`[${label}] Running cypress with API URL: ${cypressAPIUrl}`);
-  await lib.run();
+
+  const child = await lib.run();
+
+  child.on('close', async (code) => {
+    await patch(DEFAULT_OVERRIDE_URL);
+    process.exit(code ?? 1);
+  });
+  process.on('SIGINT', async () => {
+    await patch(DEFAULT_OVERRIDE_URL);
+    child.kill('SIGINT');
+    process.exit(1);
+  });
 };

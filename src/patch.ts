@@ -1,10 +1,10 @@
-import fs from 'fs';
 import cp from 'child_process';
+import fs from 'fs';
 
 import yaml from 'js-yaml';
+import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { getConfigFilesPaths } from './discovery';
-import { getCypressCLIBinPath } from './bin-path';
 
 /**
  * Patch Cypress with a custom API URL.
@@ -51,7 +51,5 @@ export async function run() {
   const [node, script, ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
   debug('Running cypress from %s', cliBinPath, ...rest);
-
-  const child = cp.spawn(cliBinPath, [...rest], { stdio: 'inherit' });
-  child.on('exit', (code) => process.exit(code ?? 1));
+  return cp.spawn(cliBinPath, [...rest], { stdio: 'inherit' });
 }

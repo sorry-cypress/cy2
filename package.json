@@ -87,5 +87,8 @@
     "testMatch": [
       "**/*.spec.ts"
     ]
+  },
+  "prettier": {
+    "singleQuote": true
   }
 }
