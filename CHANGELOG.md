@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/sorry-cypress/cy2/compare/v2.0.1...v2.1.0) (2022-10-19)
+
+
+### Features
+
+* restore original cypress config on exit ([64086da](https://github.com/sorry-cypress/cy2/commit/64086da4347ebdf28a87a281d8187e17bb927b65))
+
 ## [2.0.1](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.1) (2022-08-28)
 
 
