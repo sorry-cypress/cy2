@@ -1,3 +1,16 @@
+# [3.0.0-alpha.0](https://github.com/sorry-cypress/cy2/compare/v2.1.0...v3.0.0-alpha.0) (2022-10-20)
+
+
+### Features
+
+* allow init script injection ([113a58b](https://github.com/sorry-cypress/cy2/commit/113a58b8ec7dbf0c9d4f0e3d32d1f8140d634261))
+
+
+### BREAKING CHANGES
+
+* - Module API has changed - the absolute location of an injected module is expected instead of CYPRESS_API_URL
+- `bin/cy2` requires CYPRESS_API_URL environment variable, otherwise throws
+
 # [2.1.0](https://github.com/sorry-cypress/cy2/compare/v2.0.1...v2.1.0) (2022-10-19)
 
 
