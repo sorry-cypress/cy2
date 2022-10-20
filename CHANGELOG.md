@@ -1,3 +1,5 @@
+# [3.0.0-alpha.1](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2022-10-20)
+
 # [3.0.0-alpha.0](https://github.com/sorry-cypress/cy2/compare/v2.1.0...v3.0.0-alpha.0) (2022-10-20)
 
 
