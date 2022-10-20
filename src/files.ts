@@ -22,3 +22,9 @@ export const getConfigFiles = (pkgRoot: string): ConfigFiles => {
     backupConfigFilePath,
   };
 };
+
+export const getServerInit = (pkgRoot: string): string => {
+  const result = path.resolve(pkgRoot, 'index.js');
+  debug('Cypress installation server init: %s', result);
+  return result;
+};

@@ -4,7 +4,37 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
-import { getConfigFilesPaths } from './discovery';
+import { getConfigFilesPaths, getServerInitPath } from './discovery';
+
+/**
+ * Patch Cypress init script
+ *
+ * @param {string} injectedAbsolutePath - JS module to be injected into Cypress
+ */
+export async function patchServerInit(injectedAbsolutePath: string) {
+  const serverInitPath = await getServerInitPath();
+
+  debug('Patching cypress entry point file: %s', serverInitPath);
+
+  const doc = fs.readFileSync(serverInitPath, 'utf8');
+
+  if (doc.includes(injectedAbsolutePath)) {
+    return;
+  }
+
+  fs.writeFileSync(
+    serverInitPath,
+    `
+try {
+  require('${injectedAbsolutePath}');
+} catch (e) {
+  // noop
+}
+
+${doc}
+    `
+  );
+}
 
 /**
  * Patch Cypress with a custom API URL.

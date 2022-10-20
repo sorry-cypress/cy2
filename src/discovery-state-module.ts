@@ -1,9 +1,24 @@
 import path from 'path';
 
-import { debug } from './debug';
 import { getCypressCLIBinPath } from './bin-path';
+import { debug } from './debug';
+import { getConfigFiles, getServerInit } from './files';
 import { lookupPaths } from './fs';
-import { getConfigFiles } from './files';
+
+export async function getServerInitPaths_stateModule() {
+  debug('Trying discovery via state module');
+
+  const stateModulePath = await getStateModulePath();
+  const state = require(stateModulePath);
+
+  const pkgPath = state.getBinaryPkgPath(state.getBinaryDir());
+  debug('Cypress pkgPath: %s', pkgPath);
+
+  const pkgRoot = path.dirname(pkgPath);
+  debug('Cypress pkgRoot: %s', pkgRoot);
+
+  return getServerInit(pkgRoot);
+}
 
 export async function getConfigFilesPaths_stateModule() {
   debug('Trying discovery via state module');

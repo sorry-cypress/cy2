@@ -1,8 +1,7 @@
-import { platform } from 'os';
 import fs from 'fs';
+import { platform } from 'os';
 import path from 'path';
-import { debug } from './debug';
-import { getConfigFiles } from './files';
+import { getConfigFiles, getServerInit } from './files';
 
 export function getPkgRootFromElectronBinary(binaryPath: string): string {
   fs.statSync(binaryPath);
@@ -34,4 +33,9 @@ export function getPkgRootFromElectronBinary(binaryPath: string): string {
 export function getConfigFromElectronBinary(binaryPath: string) {
   fs.statSync(binaryPath);
   return getConfigFiles(getPkgRootFromElectronBinary(binaryPath));
+}
+
+export function getServerInitFromElectronBinary(binaryPath: string) {
+  fs.statSync(binaryPath);
+  return getServerInit(getPkgRootFromElectronBinary(binaryPath));
 }
