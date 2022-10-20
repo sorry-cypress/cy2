@@ -37,83 +37,19 @@ Example usage with [sorry-cypress](https://sorry-cypress.dev)
 CYPRESS_API_URL="https://sorry-cypress-demo-director.herokuapp.com" cy2 run  --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
-When `CYPRESS_API_URL` is not set, it just uses the default API server `https://api.cypress.io`
+⚠️ `CYPRESS_API_URL` is required
 
 ## API
 
-### Patch Cypress
+### Run Cypress with an injected module
 
 ```ts
-/**
- * Patch Cypress with a custom API URL.
- *
- * Tries to discover the location of `app.yml`
- * and patch it with a custom URL.
- *
- * @param {string} apiURL - new API URL to use
- * @param {string} [cypressConfigFilePath] - explicitly provide the path to Cypress app.yml and disable auto-discovery
- */
-patch(apiURL: string, cypressConfigPath?: string) => Promise<void>
+import { run } from 'cy2';
+
+run(`${__dirname}/injected.js`).catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
 ```
 
-Example
-
-```js
-const { patch } = require("cy2");
-
-async function main() {
-  await patch("https://sorry-cypress-demo-director.herokuapp.com");
-}
-
-main().catch(console.error);
-```
-
-### Patch and run cypress
-
-```ts
-/**
- * Run Cypress programmatically as a child process
- */
-run(apiURL?: string = 'https://api.cypress.io/'), label?: string = 'cy2')=> Promise<void>
-```
-
-Example
-
-```js
-#!/usr/bin/env node
-
-/* cmd.js */
-
-const { run } = require("cy2");
-
-async function main() {
-  await run("https://sorry-cypress-demo-director.herokuapp.com/", "myCMD");
-}
-
-main().catch(console.error);
-/*
-
-$ ./cmd.js --help
-[myCMD] Running cypress with API URL: https://sorry-cypress-demo-director.herokuapp.com/
-Usage: cypress <command> [options]
-
-Options:
-  -v, --version      prints Cypress version
-  -h, --help         display help for command
-
-*/
-```
-
-## Explicit config file location (since 1.4.0)
-
-Sometimes `cy2` is not able to automatically detect the location of cypress package on your system. In that case you should explicitly provide environment variable `CYPRESS_PACKAGE_CONFIG_PATH` with the location of cypress's `app.yml` configuration file.
-
-Example:
-
-```sh
-CYPRESS_API_URL="http://localhost:1234/" \
-CYPRESS_PACKAGE_CONFIG_PATH="/Users/John/Cypress/8.3.0/Cypress.app/Contents/Resources/app/packages/server/config/app.yml" \
-npx cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
-```
-
-See [cypress agent configuration](https://docs.sorry-cypress.dev/cypress-agent/configuring-cypress-agent) for locating `app.yml` file on your system.
+The injected module will be `require`d by cypress' NodeJS process before everything else. The value should be an absolute path to a compiled CommonJS module. Suitable for monkey-patching and overriding the default Cypress functionality.
