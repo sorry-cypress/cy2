@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0...v3.1.0) (2022-10-21)
+
+
+### Features
+
+* expose API  "inject" ([e8b9456](https://github.com/sorry-cypress/cy2/commit/e8b9456623229b72d0cdfed44ae682861cca2219))
+
 # [3.0.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.2...v3.0.0) (2022-10-21)
 
 Implement a new patching method that prevent permanent "patching" of cypress installation and causes confusion (and sometimes frustration)
