@@ -1,3 +1,10 @@
+## [3.1.1](https://github.com/sorry-cypress/cy2/compare/v3.1.0...v3.1.1) (2022-10-21)
+
+
+### Bug Fixes
+
+* add label message ([d04d394](https://github.com/sorry-cypress/cy2/commit/d04d394d2f1b35d089a0e204b5e5261c9a00f5a7))
+
 # [3.1.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0...v3.1.0) (2022-10-21)
 
 
