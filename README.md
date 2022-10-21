@@ -5,6 +5,10 @@
 
 ---
 
+Change cypress configuration to use an alternative dashboard service (Sorry Cypress or Currents).
+
+---
+
 <p align="center">
 Run millions of cypress tests in parallel without breaking the bank
 </p>
@@ -15,7 +19,7 @@ Run millions of cypress tests in parallel without breaking the bank
 
 ---
 
-Change cypress API URL configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
+`cy2` wil read the environment variable `CYPRESS_API_URL` and change cypress configuration accordingly. It passes down all the CLI flags **as-is** and runs cypress with all the flags.
 
 `CYPRESS_API_URL` should point to Sorry Cypress director service, Currents dashboard or other compatible service.
 
@@ -62,13 +66,13 @@ run().catch((error) => {
 
 ### Patch Cypress without running
 
-⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking
+⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `patch`
 
 ```ts
 import { patch } from 'cy2';
 import cypress from 'cypress';
 
-process.env.CYPRESS_API_URL = 'https://dashboard.servuce.url';
+process.env.CYPRESS_API_URL = 'https://dashboard.service.url';
 
 async function main() {
   await patch();
