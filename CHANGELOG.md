@@ -1,3 +1,10 @@
+# [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
+
+
+### Features
+
+* implement patch and update README ([ad95e9d](https://github.com/sorry-cypress/cy2/commit/ad95e9d379138c77abaa8596452c14d90be73f51))
+
 # [3.0.0-alpha.1](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2022-10-20)
 
 # [3.0.0-alpha.0](https://github.com/sorry-cypress/cy2/compare/v2.1.0...v3.0.0-alpha.0) (2022-10-20)
