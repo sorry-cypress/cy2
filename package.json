@@ -21,8 +21,10 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "acorn": "^8.8.0",
     "debug": "^4.3.2",
-    "js-yaml": "^4.0.0",
+    "escodegen": "^2.0.0",
+    "estraverse": "^5.3.0",
     "npm-which": "^3.0.1"
   },
   "files": [
@@ -47,6 +49,7 @@
     "@swc/core": "^1.2.85",
     "@swc/jest": "^0.2.3",
     "@types/debug": "^4.1.7",
+    "@types/estree": "^1.0.0",
     "@types/jest": "^27.0.1",
     "@types/js-yaml": "^4.0.3",
     "@types/node": "^16.9.1",

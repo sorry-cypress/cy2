@@ -6,5 +6,5 @@ export const runCY2 = async () => {
       'Missing CYPRESS_API_URL environment variable pointing to sorry-cypress director serice'
     );
   }
-  await run(`${__dirname}/injected.js`);
+  await run();
 };

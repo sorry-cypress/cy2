@@ -17,6 +17,8 @@ Run millions of cypress tests in parallel without breaking the bank
 
 Change cypress API URL configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
 
+`CYPRESS_API_URL` should point to Sorry Cypress director service, Currents dashboard or other compatible service.
+
 ## Install
 
 ```sh
@@ -25,7 +27,7 @@ npm install cy2
 
 ## Usage
 
-Use `http://localhost:1234` as Cypress API URL:
+CLI usage - use `http://localhost:1234` as Cypress:
 
 ```sh
 CYPRESS_API_URL="http://localhost:1234/" cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
@@ -37,19 +39,54 @@ Example usage with [sorry-cypress](https://sorry-cypress.dev)
 CYPRESS_API_URL="https://sorry-cypress-demo-director.herokuapp.com" cy2 run  --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
-⚠️ `CYPRESS_API_URL` is required
-
 ## API
 
-### Run Cypress with an injected module
+### Breaking change in version 3+
+
+Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+
+### Run Cypress programmatically
+
+⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `run`
 
 ```ts
 import { run } from 'cy2';
 
-run(`${__dirname}/injected.js`).catch((error) => {
+process.env.CYPRESS_API_URL = 'https://dashboard.servuce.url';
+
+run().catch((error) => {
   console.error(error);
   process.exit(1);
 });
 ```
 
-The injected module will be `require`d by cypress' NodeJS process before everything else. The value should be an absolute path to a compiled CommonJS module. Suitable for monkey-patching and overriding the default Cypress functionality.
+### Patch Cypress without running
+
+⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking
+
+```ts
+import { patch } from 'cy2';
+import cypress from 'cypress';
+
+process.env.CYPRESS_API_URL = 'https://dashboard.servuce.url';
+
+async function main() {
+  await patch();
+
+  cypress
+    .run({
+      // the path is relative to the current working directory
+      spec: './cypress/e2e/examples/actions.cy.js',
+    })
+    .then((results) => {
+      console.log(results);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
+```

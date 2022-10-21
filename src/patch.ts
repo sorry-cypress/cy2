@@ -1,5 +1,6 @@
 import cp from 'child_process';
 import fs from 'fs';
+import { instrumentCypressInit } from './js';
 
 import yaml from 'js-yaml';
 import { getCypressCLIBinPath } from './bin-path';
@@ -18,22 +19,8 @@ export async function patchServerInit(injectedAbsolutePath: string) {
 
   const doc = fs.readFileSync(serverInitPath, 'utf8');
 
-  if (doc.includes(injectedAbsolutePath)) {
-    return;
-  }
-
-  fs.writeFileSync(
-    serverInitPath,
-    `
-try {
-  require('${injectedAbsolutePath}');
-} catch (e) {
-  // noop
-}
-
-${doc}
-    `
-  );
+  const result = instrumentCypressInit(doc, injectedAbsolutePath);
+  fs.writeFileSync(serverInitPath, result);
 }
 
 /**
