@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/sorry-cypress/cy2/compare/v3.1.1...v3.1.2) (2022-10-21)
+
+
+### Bug Fixes
+
+* restore js-yaml dependency ([cc90c79](https://github.com/sorry-cypress/cy2/commit/cc90c7929e4e1ccc275a5b301ec60dbbde48fc37))
+
 ## [3.1.1](https://github.com/sorry-cypress/cy2/compare/v3.1.0...v3.1.1) (2022-10-21)
 
 
