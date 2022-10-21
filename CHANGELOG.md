@@ -1,3 +1,12 @@
+# [3.0.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.2...v3.0.0) (2022-10-21)
+
+Implement a new patching method that prevent permanent "patching" of cypress installation and causes confusion (and sometimes frustration)
+
+### BREAKING CHANGES
+
+- Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+- CLI executable script `cy2` requires CYPRESS_API_URL environment variable, otherwise throws
+
 # [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
 
 ### Features
