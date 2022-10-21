@@ -5,6 +5,10 @@
 
 ---
 
+Change cypress configuration to use an alternative dashboard service (Sorry Cypress or Currents).
+
+---
+
 <p align="center">
 Run millions of cypress tests in parallel without breaking the bank
 </p>
@@ -15,7 +19,9 @@ Run millions of cypress tests in parallel without breaking the bank
 
 ---
 
-Change cypress API URL configuration on-the-fly using environment variable `CYPRESS_API_URL`. It passes down all the CLI flags as-is, so you can just use it instead of cypress.
+`cy2` wil read the environment variable `CYPRESS_API_URL` and change cypress configuration accordingly. It passes down all the CLI flags **as-is** and runs cypress with all the flags.
+
+`CYPRESS_API_URL` should point to Sorry Cypress director service, Currents dashboard or other compatible service.
 
 ## Install
 
@@ -25,7 +31,7 @@ npm install cy2
 
 ## Usage
 
-Use `http://localhost:1234` as Cypress API URL:
+CLI usage - use `http://localhost:1234` as Cypress:
 
 ```sh
 CYPRESS_API_URL="http://localhost:1234/" cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
@@ -37,83 +43,54 @@ Example usage with [sorry-cypress](https://sorry-cypress.dev)
 CYPRESS_API_URL="https://sorry-cypress-demo-director.herokuapp.com" cy2 run  --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
-When `CYPRESS_API_URL` is not set, it just uses the default API server `https://api.cypress.io`
-
 ## API
 
-### Patch Cypress
+### Breaking change in version 3+
+
+Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+
+### Run Cypress programmatically
+
+⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `run`
 
 ```ts
-/**
- * Patch Cypress with a custom API URL.
- *
- * Tries to discover the location of `app.yml`
- * and patch it with a custom URL.
- *
- * @param {string} apiURL - new API URL to use
- * @param {string} [cypressConfigFilePath] - explicitly provide the path to Cypress app.yml and disable auto-discovery
- */
-patch(apiURL: string, cypressConfigPath?: string) => Promise<void>
+import { run } from 'cy2';
+
+process.env.CYPRESS_API_URL = 'https://dashboard.servuce.url';
+
+run().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
 ```
 
-Example
+### Patch Cypress without running
 
-```js
-const { patch } = require("cy2");
-
-async function main() {
-  await patch("https://sorry-cypress-demo-director.herokuapp.com");
-}
-
-main().catch(console.error);
-```
-
-### Patch and run cypress
+⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `patch`
 
 ```ts
-/**
- * Run Cypress programmatically as a child process
- */
-run(apiURL?: string = 'https://api.cypress.io/'), label?: string = 'cy2')=> Promise<void>
-```
+import { patch } from 'cy2';
+import cypress from 'cypress';
 
-Example
-
-```js
-#!/usr/bin/env node
-
-/* cmd.js */
-
-const { run } = require("cy2");
+process.env.CYPRESS_API_URL = 'https://dashboard.service.url';
 
 async function main() {
-  await run("https://sorry-cypress-demo-director.herokuapp.com/", "myCMD");
+  await patch();
+
+  cypress
+    .run({
+      // the path is relative to the current working directory
+      spec: './cypress/e2e/examples/actions.cy.js',
+    })
+    .then((results) => {
+      console.log(results);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
-
-main().catch(console.error);
-/*
-
-$ ./cmd.js --help
-[myCMD] Running cypress with API URL: https://sorry-cypress-demo-director.herokuapp.com/
-Usage: cypress <command> [options]
-
-Options:
-  -v, --version      prints Cypress version
-  -h, --help         display help for command
-
-*/
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
 ```
-
-## Explicit config file location (since 1.4.0)
-
-Sometimes `cy2` is not able to automatically detect the location of cypress package on your system. In that case you should explicitly provide environment variable `CYPRESS_PACKAGE_CONFIG_PATH` with the location of cypress's `app.yml` configuration file.
-
-Example:
-
-```sh
-CYPRESS_API_URL="http://localhost:1234/" \
-CYPRESS_PACKAGE_CONFIG_PATH="/Users/John/Cypress/8.3.0/Cypress.app/Contents/Resources/app/packages/server/config/app.yml" \
-npx cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
-```
-
-See [cypress agent configuration](https://docs.sorry-cypress.dev/cypress-agent/configuring-cypress-agent) for locating `app.yml` file on your system.

@@ -3,9 +3,18 @@ import fs from 'fs';
 import path from 'path';
 import { debug } from './debug';
 
-import { getConfigFilesPaths_cli } from './discovery-cli';
-import { getConfigFromElectronBinary } from './discovery-run-binary';
-import { getConfigFilesPaths_stateModule } from './discovery-state-module';
+import {
+  getConfigFilesPaths_cli,
+  getServerInitPath_cli,
+} from './discovery-cli';
+import {
+  getConfigFromElectronBinary,
+  getServerInitFromElectronBinary,
+} from './discovery-run-binary';
+import {
+  getConfigFilesPaths_stateModule,
+  getServerInitPaths_stateModule,
+} from './discovery-state-module';
 
 export async function getConfigFilesPaths(
   cypressConfigFilePath: string | null = null
@@ -35,6 +44,17 @@ export async function getConfigFilesPaths(
   }
 
   return tryAll(getConfigFilesPaths_stateModule, getConfigFilesPaths_cli);
+}
+
+export async function getServerInitPath(): Promise<string> {
+  if (typeof process.env.CYPRESS_RUN_BINARY === 'string') {
+    debug('CYPRESS_RUN_BINARY: %s', process.env.CYPRESS_RUN_BINARY);
+    return tryAll(() =>
+      getServerInitFromElectronBinary(process.env.CYPRESS_RUN_BINARY as string)
+    );
+  }
+
+  return tryAll(getServerInitPaths_stateModule, getServerInitPath_cli);
 }
 
 async function tryAll(...fns) {

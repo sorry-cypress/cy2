@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const lib = require('../dist');
+const lib = require('../dist/cli');
 
-lib.run(process.env.CYPRESS_API_URL).catch((error) => {
+lib.runCY2().catch((error) => {
   console.error(error);
   process.exit(1);
 });

@@ -1,10 +1,27 @@
 import cp from 'child_process';
 import fs from 'fs';
+import { instrumentCypressInit } from './js';
 
 import yaml from 'js-yaml';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
-import { getConfigFilesPaths } from './discovery';
+import { getConfigFilesPaths, getServerInitPath } from './discovery';
+
+/**
+ * Patch Cypress init script
+ *
+ * @param {string} injectedAbsolutePath - JS module to be injected into Cypress
+ */
+export async function patchServerInit(injectedAbsolutePath: string) {
+  const serverInitPath = await getServerInitPath();
+
+  debug('Patching cypress entry point file: %s', serverInitPath);
+
+  const doc = fs.readFileSync(serverInitPath, 'utf8');
+
+  const result = instrumentCypressInit(doc, injectedAbsolutePath);
+  fs.writeFileSync(serverInitPath, result);
+}
 
 /**
  * Patch Cypress with a custom API URL.
