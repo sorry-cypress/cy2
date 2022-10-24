@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/sorry-cypress/cy2/compare/v3.1.2...v3.1.3) (2022-10-24)
+
+
+### Bug Fixes
+
+* add cypress location arg for patch fn ([163c5c4](https://github.com/sorry-cypress/cy2/commit/163c5c449072254fde3979f4733ff2db9dafebc6))
+
 ## [3.1.2](https://github.com/sorry-cypress/cy2/compare/v3.1.1...v3.1.2) (2022-10-21)
 
 ### Bug Fixes
