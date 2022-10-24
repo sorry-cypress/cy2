@@ -1,9 +1,9 @@
 const { patch } = require('../../');
 
-const CYPRESS_API_URL = 'https://myURIhere.com';
+process.env.CYPRESS_API_URL = 'https://myURIhere.com';
 
 async function main() {
-  await patch(CYPRESS_API_URL);
+  await patch();
 }
 
 main().catch((error) => {
