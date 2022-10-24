@@ -1,23 +1,20 @@
 ## [3.1.2](https://github.com/sorry-cypress/cy2/compare/v3.1.1...v3.1.2) (2022-10-21)
 
-
 ### Bug Fixes
 
-* restore js-yaml dependency ([cc90c79](https://github.com/sorry-cypress/cy2/commit/cc90c7929e4e1ccc275a5b301ec60dbbde48fc37))
+- restore js-yaml dependency ([cc90c79](https://github.com/sorry-cypress/cy2/commit/cc90c7929e4e1ccc275a5b301ec60dbbde48fc37))
 
 ## [3.1.1](https://github.com/sorry-cypress/cy2/compare/v3.1.0...v3.1.1) (2022-10-21)
 
-
 ### Bug Fixes
 
-* add label message ([d04d394](https://github.com/sorry-cypress/cy2/commit/d04d394d2f1b35d089a0e204b5e5261c9a00f5a7))
+- add label message ([d04d394](https://github.com/sorry-cypress/cy2/commit/d04d394d2f1b35d089a0e204b5e5261c9a00f5a7))
 
 # [3.1.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0...v3.1.0) (2022-10-21)
 
-
 ### Features
 
-* expose API  "inject" ([e8b9456](https://github.com/sorry-cypress/cy2/commit/e8b9456623229b72d0cdfed44ae682861cca2219))
+- expose API "inject" ([e8b9456](https://github.com/sorry-cypress/cy2/commit/e8b9456623229b72d0cdfed44ae682861cca2219))
 
 # [3.0.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.2...v3.0.0) (2022-10-21)
 
@@ -27,6 +24,8 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 - Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
 - CLI executable script `cy2` requires CYPRESS_API_URL environment variable, otherwise throws
+- Deprecated `run` API
+- Deprecated CYPRESS_PACKAGE_CONFIG_PATH - see API `patch` call
 
 # [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
 

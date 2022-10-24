@@ -13,7 +13,7 @@ import {
 } from './discovery-run-binary';
 import {
   getConfigFilesPaths_stateModule,
-  getServerInitPaths_stateModule,
+  getServerInitPath_stateModule,
 } from './discovery-state-module';
 
 export async function getConfigFilesPaths(
@@ -54,7 +54,7 @@ export async function getServerInitPath(): Promise<string> {
     );
   }
 
-  return tryAll(getServerInitPaths_stateModule, getServerInitPath_cli);
+  return tryAll(getServerInitPath_stateModule, getServerInitPath_cli);
 }
 
 async function tryAll(...fns) {

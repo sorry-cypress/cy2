@@ -1,7 +1,20 @@
+import { runInContext } from './context';
 import * as lib from './patch';
 
-export const patch = async () => {
-  await lib.patchServerInit(`${__dirname}/injected.js`);
+/**
+ * Patch cypress for subsequent programmatic invocation.
+ * The actual dashboard url is set via process.env.CYPRESS_API_URL.
+ * For SorryCypress it should point to the director service.
+ *
+ * @param cypressPackagePath - path to cypress npm package enyty point
+ */
+export const patch = async (
+  cypressPackagePath: string = require.resolve('cypress')
+) => {
+  await runInContext(
+    () => lib.patchServerInit(`${__dirname}/injected.js`),
+    new Map().set('cypressPackagePath', cypressPackagePath)
+  );
 };
 
 export const run = async (label: string = 'cy2') => {
@@ -12,4 +25,12 @@ export const run = async (label: string = 'cy2') => {
   await lib.run();
 };
 
-export const inject = lib.patchServerInit;
+export const inject = async (
+  injectedAbsolutePath: string,
+  cypressPackagePath: string = require.resolve('cypress')
+) => {
+  await runInContext(
+    () => lib.patchServerInit(injectedAbsolutePath),
+    new Map().set('cypressPackagePath', cypressPackagePath)
+  );
+};

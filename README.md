@@ -31,9 +31,10 @@ npm install cy2
 
 ## Usage
 
-CLI usage - use `http://localhost:1234` as Cypress:
+CLI usage
 
 ```sh
+# use `http://localhost:1234` as Cypress Dashboard
 CYPRESS_API_URL="http://localhost:1234/" cy2 run --parallel --record --key somekey --ci-build-id hello-cypress
 ```
 
@@ -47,24 +48,11 @@ CYPRESS_API_URL="https://sorry-cypress-demo-director.herokuapp.com" cy2 run  --p
 
 ### Breaking change in version 3+
 
-Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` instead of accepting an argument. That's because of a new patching method that doesn't permanently change cypress configuration after invoking `cy2`.
 
-### Run Cypress programmatically
+### Patch Cypress programmatically without running
 
-⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `run`
-
-```ts
-import { run } from 'cy2';
-
-process.env.CYPRESS_API_URL = 'https://dashboard.servuce.url';
-
-run().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
-```
-
-### Patch Cypress without running
+`patch(cypressPackageEntryPath: string) => Promise<void>`
 
 ⚠️ Make sure to set `process.env.CYPRESS_API_URL` before invoking `patch`
 
@@ -75,7 +63,8 @@ import cypress from 'cypress';
 process.env.CYPRESS_API_URL = 'https://dashboard.service.url';
 
 async function main() {
-  await patch();
+  // optional - provide cypress package main entry point location
+  await patch(require.resolve('cypress'));
 
   cypress
     .run({

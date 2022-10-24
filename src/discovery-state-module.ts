@@ -5,7 +5,7 @@ import { debug } from './debug';
 import { getConfigFiles, getServerInit } from './files';
 import { lookupPaths } from './fs';
 
-export async function getServerInitPaths_stateModule() {
+export async function getServerInitPath_stateModule() {
   debug('Trying discovery via state module');
 
   const stateModulePath = await getStateModulePath();
