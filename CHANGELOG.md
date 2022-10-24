@@ -1,3 +1,10 @@
+## [3.1.4](https://github.com/sorry-cypress/cy2/compare/v3.1.3...v3.1.4) (2022-10-24)
+
+
+### Bug Fixes
+
+* pass down exit status from cypress ([a6b1462](https://github.com/sorry-cypress/cy2/commit/a6b14623d11eaa4e445849a889ddbd66e190fc92)), closes [#27](https://github.com/sorry-cypress/cy2/issues/27)
+
 ## [3.1.3](https://github.com/sorry-cypress/cy2/compare/v3.1.2...v3.1.3) (2022-10-24)
 
 
