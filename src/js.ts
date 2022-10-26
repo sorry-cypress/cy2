@@ -2,6 +2,7 @@ import { parse } from 'acorn';
 import escodegen from 'escodegen';
 import estraverse from 'estraverse';
 import { Program } from 'estree';
+import { normalize, resolve } from 'path';
 
 export const parseJS = (code: string) =>
   parse(code, { ecmaVersion: 2020 }) as unknown as Program;
@@ -17,9 +18,10 @@ export const instrumentCypressInit = (
   code: string,
   injectedModulePath: string
 ) => {
+  const normalizedPath = normalize(resolve(injectedModulePath));
   const injectedFn = `
 function ${FN_ID}() {
-    try { require('${injectedModulePath}'); }
+    try { require('${normalizedPath}'); }
     catch (e) {}
 }`;
 
