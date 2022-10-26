@@ -3,7 +3,7 @@ const { patch } = require('../../');
 process.env.CYPRESS_API_URL = 'https://myURIhere.com';
 
 async function main() {
-  await patch();
+  await patch(require.resolve('cypress'));
 }
 
 main().catch((error) => {
