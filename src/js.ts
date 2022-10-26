@@ -5,6 +5,12 @@ import { Program } from 'estree';
 
 export const parseJS = (code: string) =>
   parse(code, { ecmaVersion: 2020 }) as unknown as Program;
+
+export const generateJS = (ast: Program) =>
+  escodegen.generate(ast, {
+    verbatim: 'raw',
+  });
+
 export const FN_ID = 'cy2_injected';
 
 export const instrumentCypressInit = (
@@ -22,10 +28,10 @@ function ${FN_ID}() {
   const ast = parseJS(code);
 
   if (!hasInjected(ast)) {
-    return escodegen.generate(injectAST(ast, parseJS(injectedCode)));
+    return generateJS(injectAST(ast, parseJS(injectedCode)));
   }
 
-  return escodegen.generate(replaceAST(ast, parseJS(injectedFn)));
+  return generateJS(replaceAST(ast, parseJS(injectedFn)));
 };
 
 export function hasInjected(ast: Program) {
