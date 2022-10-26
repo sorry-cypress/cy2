@@ -1,4 +1,8 @@
 import { FN_ID, hasInjected, instrumentCypressInit, parseJS } from '../js';
+import { normalizePath } from '../path';
+
+// jest.mock('../path');
+
 const nonPatchedFile = `
 process.env.CYPRESS_INTERNAL_ENV =
   process.env.CYPRESS_INTERNAL_ENV || "production";
@@ -18,12 +22,12 @@ const patchedFile = `
 
 process.env.CYPRESS_INTERNAL_ENV =
   process.env.CYPRESS_INTERNAL_ENV || "production";
-require("./packages/server");
+require('./packages/server');
 `;
 
-const result = `(function ${FN_ID}() {
+const result = (path = 'foo') => `(function ${FN_ID}() {
     try {
-        require('foo');
+        require('${path}');
     } catch (e) {
     }
 }());
@@ -39,9 +43,24 @@ test('should return true for injected code', () => {
 });
 
 test('should inject new code', async () => {
-  expect(instrumentCypressInit(nonPatchedFile, 'foo')).toEqual(result);
+  expect(instrumentCypressInit(nonPatchedFile, 'foo')).toEqual(result());
 });
 
 test('should replace existing code', async () => {
-  expect(instrumentCypressInit(patchedFile, 'foo')).toEqual(result);
+  expect(instrumentCypressInit(patchedFile, 'foo')).toEqual(result());
+});
+
+test('should inject new code for windows path', async () => {
+  expect(
+    instrumentCypressInit(
+      nonPatchedFile,
+      'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js'
+    )
+  ).toEqual(
+    result(
+      normalizePath(
+        'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js'
+      )
+    )
+  );
 });
