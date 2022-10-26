@@ -1,3 +1,10 @@
+## [3.1.6](https://github.com/sorry-cypress/cy2/compare/v3.1.5...v3.1.6) (2022-10-26)
+
+
+### Bug Fixes
+
+* normalize and resolve injected path ([da94405](https://github.com/sorry-cypress/cy2/commit/da94405b3953a9a2d065c3376b5fb5f999bdf04a))
+
 ## [3.1.5](https://github.com/sorry-cypress/cy2/compare/v3.1.4...v3.1.5) (2022-10-26)
 
 
