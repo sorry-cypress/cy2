@@ -1,3 +1,10 @@
+## [3.1.5](https://github.com/sorry-cypress/cy2/compare/v3.1.4...v3.1.5) (2022-10-26)
+
+
+### Bug Fixes
+
+* use verbatim: 'raw' for escodegen ([78d9f2c](https://github.com/sorry-cypress/cy2/commit/78d9f2cd78cb0d491b6eb483898237dc639aeed1))
+
 ## [3.1.4](https://github.com/sorry-cypress/cy2/compare/v3.1.3...v3.1.4) (2022-10-24)
 
 
