@@ -1,3 +1,10 @@
+## [3.1.7](https://github.com/sorry-cypress/cy2/compare/v3.1.6...v3.1.7) (2022-10-27)
+
+
+### Bug Fixes
+
+* handle windows paths ([add7e2f](https://github.com/sorry-cypress/cy2/commit/add7e2f41f078e68817560627e0ef3ffd9f64bdf))
+
 ## [3.1.6](https://github.com/sorry-cypress/cy2/compare/v3.1.5...v3.1.6) (2022-10-26)
 
 
