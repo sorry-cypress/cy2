@@ -41,8 +41,10 @@
   },
   "keywords": [
     "cypress",
-    "wrapper",
     "sorry-cypress",
+    "cypress dashboard",
+    "cypress ci",
+    "cypress parallel",
     "currents"
   ],
   "devDependencies": {
