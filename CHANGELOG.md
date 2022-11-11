@@ -1,3 +1,10 @@
+## [3.1.8-beta.0](https://github.com/sorry-cypress/cy2/compare/v3.1.7...v3.1.8-beta.0) (2022-11-11)
+
+
+### Features
+
+* monkey patch snapshot config ([d5a3fb9](https://github.com/sorry-cypress/cy2/commit/d5a3fb904dd95ea7f03e124cdbed713be0ac75b1))
+
 ## [3.1.7](https://github.com/sorry-cypress/cy2/compare/v3.1.6...v3.1.7) (2022-10-27)
 
 
