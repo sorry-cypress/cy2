@@ -1,3 +1,10 @@
+# [3.3.0](https://github.com/sorry-cypress/cy2/compare/v3.2.0...v3.3.0) (2022-12-07)
+
+
+### Features
+
+* cypress 12+ ([a33868d](https://github.com/sorry-cypress/cy2/commit/a33868dfd2b811bdcd34f0194d42e2cadf6d3a31))
+
 # [3.2.0](https://github.com/sorry-cypress/cy2/compare/v3.1.7...v3.2.0) (2022-11-11)
 
 
