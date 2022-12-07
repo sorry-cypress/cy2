@@ -2,6 +2,9 @@ const Mod = require('module');
 const req = Mod.prototype.require;
 
 // @ts-ignore
+global.integrityCheck = function () {};
+
+// @ts-ignore
 if (global.snapshotResult?.customRequire?.exports) {
   // @ts-ignore
   global.snapshotResult.customRequire.exports[
@@ -17,6 +20,16 @@ if (global.snapshotResult?.customRequire?.exports) {
 }
 
 Mod.prototype.require = function (...args) {
+  if (args[0].match(/app\.json/)) {
+    return {
+      development: { api_url: 'http://localhost:1234/' },
+      test: { api_url: 'http://localhost:1234/' },
+      staging: { api_url: 'https://api-staging.cypress.io/' },
+      production: {
+        api_url: process.env.CYPRESS_API_URL || 'https://api.cypress.io',
+      },
+    };
+  }
   if (args[0] === 'konfig') {
     return () => ({
       app: {
