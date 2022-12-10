@@ -1,3 +1,5 @@
+## [3.4.1-beta.1](https://github.com/sorry-cypress/cy2/compare/v3.4.1-beta.0...v3.4.1-beta.1) (2022-12-10)
+
 ## [3.4.1-beta.0](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v3.4.1-beta.0) (2022-12-10)
 
 # [3.4.0](https://github.com/sorry-cypress/cy2/compare/v3.3.0...v3.4.0) (2022-12-10)
