@@ -27,7 +27,7 @@ require('./packages/server');
 
 const result = (path = 'foo') => `(function ${FN_ID}() {
     try {
-        require('${path}');
+        require('${path}')('source', 'backup');
     } catch (e) {
     }
 }());
@@ -43,23 +43,31 @@ test('should return true for injected code', () => {
 });
 
 test('should inject new code', async () => {
-  expect(instrumentCypressInit(nonPatchedFile, 'foo')).toEqual(result());
+  expect(
+    instrumentCypressInit(nonPatchedFile, 'foo', 'source', 'backup')
+  ).toEqual(result());
 });
 
 test('should replace existing code', async () => {
-  expect(instrumentCypressInit(patchedFile, 'foo')).toEqual(result());
+  expect(instrumentCypressInit(patchedFile, 'foo', 'source', 'backup')).toEqual(
+    result()
+  );
 });
 
 test('should inject new code for windows path', async () => {
   expect(
     instrumentCypressInit(
       nonPatchedFile,
-      'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js'
+      'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js',
+      'source',
+      'backup'
     )
   ).toEqual(
     result(
       normalizePath(
-        'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js'
+        'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js',
+        'source',
+        'backup'
       )
     )
   );
