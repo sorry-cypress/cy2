@@ -23,7 +23,9 @@ export const instrumentCypressInit = (
   const injectedFn = `
 function ${FN_ID}() {
     try { require('${normalizedPath}')("${entryPointPath}", "${backupPath}"); }
-    catch (e) {}
+    catch (e) {
+      console.error(e);
+    }
 }`;
 
   const injectedCode = `(${injectedFn})();`;

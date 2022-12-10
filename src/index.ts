@@ -21,6 +21,7 @@ export const run = async (label: string = 'cy2') => {
   console.log(
     `[${label}] Running cypress with API URL: ${process.env.CYPRESS_API_URL}`
   );
+  await lib.verify();
   await lib.patchServerInit(`${__dirname}/injected.js`);
   const childProcess = await lib.run();
   childProcess.on('exit', (code) => process.exit(code ?? 1));
