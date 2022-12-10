@@ -15,12 +15,14 @@ export const FN_ID = 'cy2_injected';
 
 export const instrumentCypressInit = (
   code: string,
-  injectedModulePath: string
+  injectedModulePath: string,
+  entryPointPath: string,
+  backupPath: string
 ) => {
   const normalizedPath = normalizePath(injectedModulePath);
   const injectedFn = `
 function ${FN_ID}() {
-    try { require('${normalizedPath}'); }
+    try { require('${normalizedPath}')("${entryPointPath}", "${backupPath}"); }
     catch (e) {}
 }`;
 
@@ -65,7 +67,7 @@ function replaceAST(ast: Program, injectedFnAst: Program) {
     enter: function (node) {
       if (
         node.type == estraverse.Syntax.FunctionExpression &&
-        node.id.name === FN_ID
+        node.id?.name === FN_ID
       ) {
         return injectedFnAst.body[0];
       }

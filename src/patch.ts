@@ -1,11 +1,11 @@
 import cp from 'child_process';
 import fs from 'fs';
-import { instrumentCypressInit } from './js';
-
 import yaml from 'js-yaml';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { getConfigFilesPaths, getServerInitPath } from './discovery';
+import { pathExists } from './fs';
+import { instrumentCypressInit } from './js';
 
 /**
  * Patch Cypress init script
@@ -14,12 +14,19 @@ import { getConfigFilesPaths, getServerInitPath } from './discovery';
  */
 export async function patchServerInit(injectedAbsolutePath: string) {
   const serverInitPath = await getServerInitPath();
-
   debug('Patching cypress entry point file: %s', serverInitPath);
 
+  const serverInitBackup = serverInitPath + '.bak';
+  if (!pathExists(serverInitBackup)) {
+    fs.copyFileSync(serverInitPath, serverInitBackup);
+  }
   const doc = fs.readFileSync(serverInitPath, 'utf8');
-
-  const result = instrumentCypressInit(doc, injectedAbsolutePath);
+  const result = instrumentCypressInit(
+    doc,
+    injectedAbsolutePath,
+    serverInitPath,
+    serverInitBackup
+  );
   fs.writeFileSync(serverInitPath, result);
 }
 

@@ -1,8 +1,7 @@
+import { copyFileSync } from 'fs';
+
 const Mod = require('module');
 const req = Mod.prototype.require;
-
-// @ts-ignore
-global.integrityCheck = function () {};
 
 // @ts-ignore
 if (global.snapshotResult?.customRequire?.exports) {
@@ -44,4 +43,8 @@ Mod.prototype.require = function (...args) {
     });
   }
   return req.call(this, ...args);
+};
+
+module.exports = function (entryPointPath: string, backupPath: string) {
+  copyFileSync(backupPath, entryPointPath);
 };

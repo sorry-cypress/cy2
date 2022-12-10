@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-function pathExists(path: string) {
+export function pathExists(path: string) {
   try {
     fs.statSync(path);
     return true;
