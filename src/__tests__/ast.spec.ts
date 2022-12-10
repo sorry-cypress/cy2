@@ -29,6 +29,7 @@ const result = (path = 'foo') => `(function ${FN_ID}() {
     try {
         require('${path}')('source', 'backup');
     } catch (e) {
+        console.error(e);
     }
 }());
 process.env.CYPRESS_INTERNAL_ENV = process.env.CYPRESS_INTERNAL_ENV || 'production';
@@ -65,9 +66,7 @@ test('should inject new code for windows path', async () => {
   ).toEqual(
     result(
       normalizePath(
-        'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js',
-        'source',
-        'backup'
+        'C:\\Users\\Administrator\\Desktop\\node_modules\\cy2\\dist/injected.js'
       )
     )
   );

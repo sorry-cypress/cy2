@@ -17,6 +17,7 @@ export async function patchServerInit(injectedAbsolutePath: string) {
   debug('Patching cypress entry point file: %s', serverInitPath);
 
   const serverInitBackup = serverInitPath + '.bak';
+
   if (!pathExists(serverInitBackup)) {
     fs.copyFileSync(serverInitPath, serverInitBackup);
   }
@@ -27,6 +28,7 @@ export async function patchServerInit(injectedAbsolutePath: string) {
     serverInitPath,
     serverInitBackup
   );
+
   fs.writeFileSync(serverInitPath, result);
 }
 
@@ -76,4 +78,10 @@ export async function run() {
   const cliBinPath = await getCypressCLIBinPath();
   debug('Running cypress from %s', cliBinPath, ...rest);
   return cp.spawn(cliBinPath, [...rest], { stdio: 'inherit' });
+}
+
+export async function verify() {
+  const cliBinPath = await getCypressCLIBinPath();
+  debug('Verifying cypress from %s', cliBinPath);
+  cp.execFileSync(cliBinPath, ['verify'], { stdio: 'pipe' });
 }
