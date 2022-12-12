@@ -1,3 +1,4 @@
+import { getCypressCLIBinPath } from './bin-path';
 import { runInContext } from './context';
 import * as lib from './patch';
 
@@ -33,6 +34,15 @@ export const inject = async (
 ) => {
   await runInContext(
     () => lib.patchServerInit(injectedAbsolutePath),
+    new Map().set('cypressPackagePath', cypressPackagePath)
+  );
+};
+
+export const getBinPath = async (
+  cypressPackagePath: string = require.resolve('cypress')
+) => {
+  return await runInContext(
+    getCypressCLIBinPath,
     new Map().set('cypressPackagePath', cypressPackagePath)
   );
 };
