@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/sorry-cypress/cy2/compare/v3.4.1...v3.4.2) (2022-12-12)
+
+
+### Bug Fixes
+
+* expose getBinPath ([ac576e7](https://github.com/sorry-cypress/cy2/commit/ac576e712b046b2c69fbebaba046505199ecf45e))
+
 ## [3.4.1](https://github.com/sorry-cypress/cy2/compare/v3.4.1-beta.1...v3.4.1) (2022-12-10)
 
 ## [3.4.1-beta.1](https://github.com/sorry-cypress/cy2/compare/v3.4.1-beta.0...v3.4.1-beta.1) (2022-12-10)
