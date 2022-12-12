@@ -1,3 +1,10 @@
+## [3.4.3](https://github.com/sorry-cypress/cy2/compare/v3.4.2...v3.4.3) (2022-12-12)
+
+
+### Bug Fixes
+
+* remove console message ([bb473d0](https://github.com/sorry-cypress/cy2/commit/bb473d0c363a6421d67531eb0c6a2aa651098dc0))
+
 ## [3.4.2](https://github.com/sorry-cypress/cy2/compare/v3.4.1...v3.4.2) (2022-12-12)
 
 
