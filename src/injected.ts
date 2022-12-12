@@ -3,7 +3,9 @@ import { copyFileSync } from 'fs';
 const Mod = require('module');
 const req = Mod.prototype.require;
 
-console.log('INJECTED');
+// @ts-ignore
+global.integrityCheck = function () {};
+
 // @ts-ignore
 if (global.snapshotResult?.customRequire?.exports) {
   // @ts-ignore
@@ -21,7 +23,6 @@ if (global.snapshotResult?.customRequire?.exports) {
 
 Mod.prototype.require = function (...args) {
   if (args[0].match(/app\.json/)) {
-    console.log('bingo! app.json');
     return {
       development: { api_url: 'http://localhost:1234/' },
       test: { api_url: 'http://localhost:1234/' },
