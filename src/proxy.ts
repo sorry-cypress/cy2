@@ -27,8 +27,6 @@ export function startProxy(
       })
       .listen(0);
 
-    const proxy = http.createServer(interceptor.web);
-
     function stopInterceptor(): Promise<void> {
       return new Promise((_resolve) => {
         debug('Stopping interceptor');
@@ -41,12 +39,16 @@ export function startProxy(
     function stopProxy(): Promise<void> {
       return new Promise((_resolve) => {
         debug('Stopping proxy');
-        proxy.close(() => {
+        proxy.close((err) => {
+          if (err) {
+            console.error(err);
+          }
           _resolve();
         });
       });
     }
 
+    const proxy = http.createServer(interceptor.web);
     proxy
       // @ts-ignore
       .on('connect', getOnConnect(interceptor._server.address().port))
@@ -59,8 +61,10 @@ export function startProxy(
 
         resolve({
           stop: async () => {
-            await stopProxy();
+            debug('Stopping interceptor');
             await stopInterceptor();
+            debug('Stopping proxy');
+            await stopProxy();
           },
           port: address.port,
         });
@@ -119,15 +123,29 @@ const getOnConnect = (interceptorPort: number) =>
     }
 
     // proxy to the target with no interception
-    const conn = net.connect(parseInt(port, 10), hostname, function () {
-      socket.write('HTTP/1.1 200 OK\r\n\r\n');
+    const conn = net.connect(parseInt(port, 10), hostname);
+
+    conn.on('ready', function tunnel() {
       socket.pipe(conn);
       conn.pipe(socket);
+      socket.write('HTTP/1.1 200 OK\r\n\r\n');
     });
+
+    // One important caveat is that if the Readable stream emits an error during processing, the Writable destination is not closed automatically. If an error occurs, it will be necessary to manually close each stream in order to prevent memory leaks.
     conn.on('error', function () {
-      socket.write('HTTP/1.1 500 SERVER ERROR\r\n\r\n');
+      // for some reason, socket keeps writing to conn after conn is ended, triggering an error AFTER_WRITE_FINISHED error
+      conn.end();
+      conn.destroy();
       socket.end();
       socket.destroy();
     });
+
+    socket.on('error', function () {
+      socket.end();
+      socket.destroy();
+      conn.end();
+      conn.destroy();
+    });
+
     return;
   };

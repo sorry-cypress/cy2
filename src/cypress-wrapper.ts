@@ -1,3 +1,6 @@
+/// <reference types="node" />
+/// <reference types="cypress" />
+
 import cp from 'child_process';
 import { run as runCypress } from 'cypress';
 import { getCypressCLIBinPath } from './bin-path';
@@ -8,7 +11,7 @@ import { getProxySettings } from './proxySettings';
 /**
  * Spawn Cypress as a child process, inherit all the flags and environment variables
  *
- * @param apiUrl  sorry-cypress director service URL
+ * @param apiUrl orchestration service URL
  */
 export async function spawn(apiUrl: string) {
   debug('Cypress API URL: %s', apiUrl);
@@ -29,12 +32,18 @@ export async function spawn(apiUrl: string) {
         NODE_EXTRA_CA_CERTS: settings.caPath,
       },
     })
-    .on('exit', async (code) => {
-      await stop();
+    .on('exit', (code) => {
       process.exit(code ?? 1);
     });
 }
 
+/**
+ * Run Cypress via {Module API} https://docs.cypress.io/guides/guides/module-api
+ *
+ * @param apiUrl orchestration service URL
+ * @param config Cypress run options
+ * @returns Cypress run results
+ */
 export async function run(
   apiUrl: string,
   config: CypressCommandLine.CypressRunOptions
