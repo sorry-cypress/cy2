@@ -2,31 +2,89 @@ import http from 'http';
 import httpProxy from 'http-proxy';
 import net from 'net';
 import { cert, key } from './cert';
+import { debug } from './debug';
 
-const interceptor = httpProxy
-  .createProxyServer({
-    secure: false,
-    target: process.env.CYPRESS_API_URL ?? 'https://cy.currents.dev',
-    changeOrigin: true,
-    followRedirects: true,
-    ssl: {
-      key,
-      cert,
-    },
-  })
-  .listen(0);
+export interface Proxy {
+  stop: () => Promise<void>;
+  port: number;
+}
+export function startProxy(
+  target: string = 'https://cy.currents.dev'
+): Promise<Proxy> {
+  debug('Proxying to %s', target);
 
-const proxy = http
-  .createServer(interceptor.web)
-  .on('connect', function (req, socket) {
-    const parts = req.url.split(':', 2);
+  return new Promise((resolve, reject) => {
+    const interceptor = httpProxy
+      .createProxyServer({
+        secure: false,
+        target,
+        changeOrigin: true,
+        followRedirects: true,
+        ssl: {
+          key,
+          cert,
+        },
+      })
+      .listen(0);
 
-    const interceptorPort = interceptor._server.address().port;
+    const proxy = http.createServer(interceptor.web);
+
+    function stopInterceptor(): Promise<void> {
+      return new Promise((_resolve) => {
+        debug('Stopping interceptor');
+        interceptor.close(() => {
+          _resolve();
+        });
+      });
+    }
+
+    function stopProxy(): Promise<void> {
+      return new Promise((_resolve) => {
+        debug('Stopping proxy');
+        proxy.close(() => {
+          _resolve();
+        });
+      });
+    }
+
+    proxy
+      // @ts-ignore
+      .on('connect', getOnConnect(interceptor._server.address().port))
+      .listen(0, () => {
+        const address = proxy.address();
+        if (!isAddress(address)) {
+          reject(new Error('Unable to detect proxy address'));
+          return;
+        }
+
+        resolve({
+          stop: async () => {
+            await stopProxy();
+            await stopInterceptor();
+          },
+          port: address.port,
+        });
+        return;
+      });
+  });
+}
+
+function isAddress(value: unknown): value is net.AddressInfo {
+  return typeof value === 'object' && value !== null;
+}
+
+const getOnConnect = (interceptorPort: number) =>
+  function onConnect(req: http.IncomingMessage, socket: net.Socket) {
     if (!interceptorPort) {
       throw new Error('Unable to detect interceptor port');
     }
+    if (!req.url) {
+      throw new Error('Missing req.url in connect handler');
+    }
 
-    if (parts[0] === 'api.cypress.io') {
+    const [hostname, port] = req.url.split(':', 2);
+
+    if (hostname === 'api.cypress.io') {
       const socketToProxy = net.connect(interceptorPort);
 
       socketToProxy.on('ready', () => {
@@ -41,7 +99,7 @@ const proxy = http
         socket.destroy();
       });
 
-      socketToProxy.on('end', (...args) => {
+      socketToProxy.on('end', () => {
         socket.end();
         socket.destroy();
       });
@@ -52,8 +110,7 @@ const proxy = http
         socketToProxy.destroy();
       });
 
-      socket.on('end', (...args) => {
-        console.log('socket end Cypress <> Proxy', ...args);
+      socket.on('end', () => {
         socketToProxy.end();
         socketToProxy.destroy();
       });
@@ -62,7 +119,7 @@ const proxy = http
     }
 
     // proxy to the target with no interception
-    const conn = net.connect(parts[1], parts[0], function () {
+    const conn = net.connect(parseInt(port, 10), hostname, function () {
       socket.write('HTTP/1.1 200 OK\r\n\r\n');
       socket.pipe(conn);
       conn.pipe(socket);
@@ -73,29 +130,4 @@ const proxy = http
       socket.destroy();
     });
     return;
-  });
-
-export function startProxy(): Promise<number> {
-  return new Promise((resolve) => {
-    proxy.listen(0, () => {
-      const address = proxy.address();
-      if (!isAddress(address)) {
-        throw new Error('Unable to detect proxy address');
-      }
-
-      resolve(address.port);
-    });
-  });
-}
-
-export function stopProxy(): Promise<void> {
-  return new Promise((resolve) => {
-    proxy.close(() => {
-      resolve();
-    });
-  });
-}
-
-function isAddress(value: unknown): value is net.AddressInfo {
-  return typeof value === 'object' && value !== null;
-}
+  };
