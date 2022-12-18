@@ -1,6 +1,7 @@
 import { getCypressCLIBinPath } from './bin-path';
 import { runInContext } from './context';
 import * as lib from './patch';
+import { startProxy, stopProxy } from './proxy';
 
 /**
  * Patch cypress for subsequent programmatic invocation.
@@ -22,10 +23,12 @@ export const run = async (label: string = 'cy2') => {
   console.log(
     `[${label}] Running cypress with API URL: ${process.env.CYPRESS_API_URL}`
   );
-  await lib.verify();
-  await lib.patchServerInit(`${__dirname}/injected.js`);
-  const childProcess = await lib.run();
-  childProcess.on('exit', (code) => process.exit(code ?? 1));
+  const port = await startProxy();
+  const childProcess = await lib.run({ port });
+  childProcess.on('exit', (code) => {
+    stopProxy();
+    process.exit(code ?? 1);
+  });
 };
 
 export const inject = async (

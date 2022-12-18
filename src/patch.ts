@@ -1,6 +1,7 @@
 import cp from 'child_process';
 import fs from 'fs';
 import yaml from 'js-yaml';
+import path from 'path';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { getConfigFilesPaths, getServerInitPath } from './discovery';
@@ -73,15 +74,33 @@ interface CypressConfigDoc {
 /**
  * Run Cypress programmatically as a child process
  */
-export async function run() {
+export async function run({ port }) {
   const [node, script, ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
   debug('Running cypress from %s', cliBinPath, ...rest);
-  return cp.spawn(cliBinPath, [...rest], { stdio: 'inherit' });
-}
 
-export async function verify() {
-  const cliBinPath = await getCypressCLIBinPath();
-  debug('Verifying cypress from %s', cliBinPath);
-  cp.execFileSync(cliBinPath, ['verify'], { stdio: 'pipe' });
+  if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
+    throw new Error(
+      'HTTP_PROXY and HTTPS_PROXY are not supported. Please report this issue.'
+    );
+  }
+
+  if (process.env.NODE_EXTRA_CA_CERTS) {
+    throw new Error(
+      'NODE_EXTRA_CA_CERTS is not supported. Please report this issue.'
+    );
+  }
+  const caPath = path.resolve(__dirname, './cert/ca.crt');
+  if (!fs.existsSync(caPath)) {
+    throw new Error('Certificate not found. Please report this issue.');
+  }
+
+  return cp.spawn(cliBinPath, [...rest], {
+    stdio: 'inherit',
+    env: {
+      ...process.env,
+      HTTP_PROXY: `http://127.0.0.1:${port}`,
+      NODE_EXTRA_CA_CERTS: path.resolve(__dirname, './cert/ca.crt'),
+    },
+  });
 }

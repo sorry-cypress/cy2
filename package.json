@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "3.4.3",
+  "version": "4.0.0-beta.2",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -10,13 +10,13 @@
     "url": "https://github.com/sorry-cypress/cy2.git"
   },
   "scripts": {
-    "build": "run-s tsc swc",
+    "build": "run-s tsc esbuild && cp -a ./cert ./dist",
     "dev": "run-p watch:*",
     "test": "jest",
     "tsc": "tsc",
-    "swc": "swc src -d dist",
+    "esbuild": "esbuild ./src/index.ts ./src/cli.ts --bundle --minify --platform=node --target=node14 --packages=external --outdir=dist --external:'../index'",
     "watch:tsc": "run-s \"tsc --watch --preserveWatchOutput\"",
-    "watch:swc": "run-s \"swc --watch\"",
+    "watch:swc": "run-s \"esbuild --watch\"",
     "release": "release-it",
     "clean": "rimraf dist"
   },
@@ -25,13 +25,17 @@
     "debug": "^4.3.2",
     "escodegen": "^2.0.0",
     "estraverse": "^5.3.0",
+    "http-proxy": "^1.18.1",
     "js-yaml": "^4.1.0",
     "npm-which": "^3.0.1",
     "slash": "3.0.0"
   },
   "files": [
     "bin/*",
-    "dist/*"
+    "dist/*",
+    "!dist/__tests__",
+    "!dist/*.d.ts",
+    "!dist/**/*.d.ts"
   ],
   "bin": {
     "cy2": "bin/cy2"
@@ -49,8 +53,8 @@
   ],
   "devDependencies": {
     "@release-it/conventional-changelog": "^3.3.0",
-    "@swc/cli": "^0.1.49",
-    "@swc/core": "^1.2.85",
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.3.23",
     "@swc/jest": "^0.2.3",
     "@types/debug": "^4.1.7",
     "@types/estree": "^1.0.0",
@@ -59,7 +63,7 @@
     "@types/node": "^16.9.1",
     "@types/npm-which": "^3.0.1",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.12.26",
+    "esbuild": "^0.16.9",
     "jest": "^26.6.3",
     "nanoid": "^3.1.25",
     "npm-run-all": "^4.1.5",
