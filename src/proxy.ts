@@ -1,35 +1,54 @@
 import http from 'http';
 import httpProxy from 'http-proxy';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 import net from 'net';
 import { cert, key } from './cert';
-import { debug } from './debug';
+import { debugNet } from './debug';
+import { warn } from './log';
+import { runProxyChain } from './proxy-chain';
 
 export interface Proxy {
   stop: () => Promise<void>;
   port: number;
 }
 export function startProxy(
-  target: string = 'https://cy.currents.dev'
+  target: string = 'https://cy.currents.dev',
+  upstreamProxy: URL | null = null
 ): Promise<Proxy> {
-  debug('Proxying to %s', target);
+  debugNet(
+    'Routing path: %s',
+    upstreamProxy ? `${upstreamProxy.toString()} -> ${target}` : target
+  );
+
+  const agent = upstreamProxy
+    ? new HttpsProxyAgent({
+        host: upstreamProxy.hostname,
+        port: upstreamProxy.port,
+        path: upstreamProxy.pathname,
+      })
+    : false;
 
   return new Promise((resolve, reject) => {
     const interceptor = httpProxy
       .createProxyServer({
-        secure: false,
         target,
         changeOrigin: true,
         followRedirects: true,
+        agent,
         ssl: {
           key,
           cert,
         },
       })
+      .on('error', (err) => {
+        debugNet('Interceptor error: %s', err);
+        warn('Error connecting to %s: %s', target, err.message);
+      })
       .listen(0);
 
     function stopInterceptor(): Promise<void> {
       return new Promise((_resolve) => {
-        debug('Stopping interceptor');
+        debugNet('Stopping interceptor');
         interceptor.close(() => {
           _resolve();
         });
@@ -38,7 +57,7 @@ export function startProxy(
 
     function stopProxy(): Promise<void> {
       return new Promise((_resolve) => {
-        debug('Stopping proxy');
+        debugNet('Stopping proxy');
         proxy.close((err) => {
           if (err) {
             console.error(err);
@@ -48,7 +67,7 @@ export function startProxy(
       });
     }
 
-    const proxy = http.createServer(interceptor.web);
+    const proxy = http.createServer();
     proxy
       // @ts-ignore
       .on('connect', getOnConnect(interceptor._server.address().port))
@@ -61,9 +80,9 @@ export function startProxy(
 
         resolve({
           stop: async () => {
-            debug('Stopping interceptor');
+            debugNet('Stopping interceptor');
             await stopInterceptor();
-            debug('Stopping proxy');
+            debugNet('Stopping proxy');
             await stopProxy();
           },
           port: address.port,
@@ -77,8 +96,10 @@ function isAddress(value: unknown): value is net.AddressInfo {
   return typeof value === 'object' && value !== null;
 }
 
-const getOnConnect = (interceptorPort: number) =>
+const getOnConnect = (interceptorPort: number, upstreamProxy: URL | null) =>
   function onConnect(req: http.IncomingMessage, socket: net.Socket) {
+    debugNet('Connection request: %s', req.url);
+
     if (!interceptorPort) {
       throw new Error('Unable to detect interceptor port');
     }
@@ -89,36 +110,39 @@ const getOnConnect = (interceptorPort: number) =>
     const [hostname, port] = req.url.split(':', 2);
 
     if (hostname === 'api.cypress.io') {
-      const socketToProxy = net.connect(interceptorPort);
+      const socketToInterceptor = net.connect(interceptorPort);
 
-      socketToProxy.on('ready', () => {
-        socketToProxy.pipe(socket);
-        socket.pipe(socketToProxy);
+      socketToInterceptor.on('ready', () => {
+        socketToInterceptor.pipe(socket);
+        socket.pipe(socketToInterceptor);
         socket.write('HTTP/1.1 200 OK\r\n\r\n');
       });
 
-      socketToProxy.on('error', (...args) => {
-        console.error(...args);
+      socketToInterceptor.on('error', () => {
         socket.end();
         socket.destroy();
       });
 
-      socketToProxy.on('end', () => {
+      socketToInterceptor.on('end', () => {
         socket.end();
         socket.destroy();
       });
 
-      socket.on('error', (...args) => {
-        console.error(...args);
-        socketToProxy.end();
-        socketToProxy.destroy();
+      socket.on('error', () => {
+        socketToInterceptor.end();
+        socketToInterceptor.destroy();
       });
 
       socket.on('end', () => {
-        socketToProxy.end();
-        socketToProxy.destroy();
+        socketToInterceptor.end();
+        socketToInterceptor.destroy();
       });
 
+      return;
+    }
+
+    if (upstreamProxy) {
+      runProxyChain(req, socket, upstreamProxy);
       return;
     }
 
@@ -149,3 +173,7 @@ const getOnConnect = (interceptorPort: number) =>
 
     return;
   };
+
+type NetworkError = Error & {
+  code: string;
+};

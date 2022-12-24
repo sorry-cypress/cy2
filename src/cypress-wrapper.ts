@@ -6,7 +6,7 @@ import { run as runCypress } from 'cypress';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
-import { getProxySettings } from './proxySettings';
+import { getProxySettings, getUpstreamProxy } from './proxy-settings';
 
 /**
  * Spawn Cypress as a child process, inherit all the flags and environment variables
@@ -20,21 +20,20 @@ export async function spawn(apiUrl: string) {
   const cliBinPath = await getCypressCLIBinPath();
   debug('Running cypress from %s', cliBinPath, ...rest);
 
-  const { stop, port } = await startProxy(apiUrl);
+  const upstreamProxy = getUpstreamProxy();
+  const { port } = await startProxy(apiUrl, upstreamProxy);
   const settings = getProxySettings({ port });
 
-  return cp
-    .spawn(cliBinPath, [...rest], {
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        HTTP_PROXY: settings.proxyURL,
-        NODE_EXTRA_CA_CERTS: settings.caPath,
-      },
-    })
-    .on('exit', (code) => {
-      process.exit(code ?? 1);
-    });
+  cp.spawn(cliBinPath, [...rest], {
+    stdio: 'inherit',
+    env: {
+      ...process.env,
+      HTTP_PROXY: settings.proxyURL,
+      NODE_EXTRA_CA_CERTS: settings.caPath,
+    },
+  }).on('exit', (code) => {
+    process.exit(code ?? 1);
+  });
 }
 
 /**
@@ -49,7 +48,8 @@ export async function run(
   config: CypressCommandLine.CypressRunOptions
 ) {
   debug('Cypress API URL: %s', apiUrl);
-  const { port, stop } = await startProxy(apiUrl);
+  const upstreamProxy = getUpstreamProxy();
+  const { port, stop } = await startProxy(apiUrl, upstreamProxy);
   try {
     const settings = getProxySettings({ port });
     process.env.HTTP_PROXY = settings.proxyURL;

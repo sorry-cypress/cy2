@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { spawn } = require('../dist/');
+const chalk = require('chalk');
 
 async function main() {
   if (!process.env.CYPRESS_API_URL) {
@@ -8,7 +9,8 @@ async function main() {
     );
   }
   console.log(
-    '[cy] Using cloud orchestration service:',
+    chalk.bgGreen.black(' [cy2] '),
+    'Using cloud orchestration service:',
     process.env.CYPRESS_API_URL
   );
   await spawn(process.env.CYPRESS_API_URL);

@@ -1,3 +1,11 @@
+# [4.0.0-beta.9](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.9) (2022-12-19)
+
+
+### Features
+
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
 # [4.0.0-beta.8](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.8) (2022-12-19)
 
 
