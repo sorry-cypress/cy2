@@ -1,6 +1,5 @@
 import https from 'http';
 import net from 'net';
-import { uid } from 'uid';
 import { debug } from './debug';
 
 export function runProxyChain(
@@ -8,7 +7,6 @@ export function runProxyChain(
   socket: net.Socket,
   upstreamProxy: URL
 ) {
-  // socket._id = uid();
   debug('Connecting to upstream proxy for', req.url);
 
   https
@@ -38,7 +36,6 @@ export function runProxyChain(
   }
 
   function onConnect(res, proxySocket) {
-    proxySocket._id = uid();
     proxySocket.setNoDelay(true);
     proxySocket.removeAllListeners();
 
