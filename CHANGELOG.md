@@ -1,3 +1,12 @@
+# [4.0.0-beta.10](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.10) (2023-01-03)
+
+
+### Features
+
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
 # [4.0.0-beta.9](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.9) (2022-12-19)
 
 
