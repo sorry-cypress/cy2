@@ -1,13 +1,14 @@
-import which from 'npm-which';
-import { platform } from 'os';
-import { promisify } from 'util';
+import { dirname, resolve } from 'path';
 import { debug } from './debug';
 
 export async function getCypressCLIBinPath(): Promise<string> {
-  if (process.env.CYPRESS_PACKAGE_BIN_ENTRY) {
-    return process.env.CYPRESS_PACKAGE_BIN_ENTRY;
+  if (process.env.CYPRESS_PACKAGE_SHELL_SCRIPT) {
+    return process.env.CYPRESS_PACKAGE_SHELL_SCRIPT;
   }
-  const result = await whichCypress();
+  const cypressPath = require.resolve('cypress');
+  const cypress = require('cypress/package.json');
+
+  const result = resolve(dirname(cypressPath), cypress.bin.cypress);
 
   debug('Cypress binary path: %s', result);
 
@@ -15,10 +16,4 @@ export async function getCypressCLIBinPath(): Promise<string> {
     throw new Error('Cannot detect cypress package executable');
   }
   return result;
-}
-
-async function whichCypress() {
-  const location = platform() === 'win32' ? process.cwd() : __dirname;
-  const pWhich = promisify<string, string | null>(which(location));
-  return pWhich('cypress');
 }

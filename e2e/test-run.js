@@ -1,4 +1,5 @@
-const { run } = require('cy2');
+const { run } = require('../');
+
 console.log(require.resolve.paths('cy2'));
 process.env.CYPRESS_API_URL = 'https://myURIhere.com';
 

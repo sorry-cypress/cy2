@@ -24,7 +24,7 @@ export async function spawn(apiUrl: string) {
   const { port } = await startProxy(apiUrl, upstreamProxy);
   const settings = getProxySettings({ port });
 
-  cp.spawn(cliBinPath, [...rest], {
+  cp.spawn('node', [cliBinPath, ...rest], {
     stdio: 'inherit',
     env: {
       ...process.env,
@@ -54,7 +54,6 @@ export async function run(
     const settings = getProxySettings({ port });
     process.env.HTTP_PROXY = settings.proxyURL;
     process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
-    console.log(require.resolve('cypress'));
     return await runCypress(config);
   } finally {
     await stop();
