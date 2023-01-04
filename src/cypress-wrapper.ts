@@ -2,6 +2,7 @@
 /// <reference types="cypress" />
 
 import cp from 'child_process';
+import { platform } from 'os';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
@@ -17,13 +18,18 @@ export async function spawn(apiUrl: string) {
 
   const [, , ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
-  debug('Running cypress from "%s": %o', cliBinPath, rest);
+
+  const isWindows = platform.name === 'win32';
+  const cmd = isWindows ? 'node' : cliBinPath;
+  const args = isWindows ? [cliBinPath, ...rest] : rest;
+
+  debug('Running cypress: %o', [cmd, ...args]);
 
   const upstreamProxy = getUpstreamProxy();
   const { port } = await startProxy(apiUrl, upstreamProxy);
   const settings = getProxySettings({ port });
 
-  cp.spawn('node', [cliBinPath, ...rest], {
+  cp.spawn(cmd, args, {
     stdio: 'inherit',
     env: {
       ...process.env,
