@@ -19,7 +19,7 @@ export async function spawn(apiUrl: string) {
   const [, , ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
 
-  const isWindows = platform.name === 'win32';
+  const isWindows = platform() === 'win32';
   const cmd = isWindows ? 'node' : cliBinPath;
   const args = isWindows ? [cliBinPath, ...rest] : rest;
 

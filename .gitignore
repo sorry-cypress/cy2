@@ -8,6 +8,7 @@ yarn-error.log*
 .vscode/settings.json
 **/videos
 
+.npmrc
 # Runtime data
 
 pids
