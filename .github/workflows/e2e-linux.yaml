@@ -1,0 +1,79 @@
+name: E2E - Linux
+
+on:
+  push:
+
+jobs:
+  e2e:
+    if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    runs-on: ubuntu-latest
+    env:
+      npm_config_prefix: ~/.npm
+      DEBUG: cy2
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      # remove cypress from peer dependecies
+      - name: Install dependencies
+        run: |
+          npm install
+          npm uninstall cypress
+
+      - name: Build
+        run: npm run build
+
+      - name: Local - Setup
+        working-directory: ./e2e
+        run: npm install cypress --no-progress
+
+      - name: Local - Test
+        working-directory: ./e2e
+        env:
+          NODE_PATH: './node_modules'
+        run: |
+          node ./test-run.js
+          node ./test-spawn.js run
+          npm uninstall cypress
+
+      - name: Local - Teardown
+        working-directory: ./e2e
+        run: npm uninstall cypress
+
+      - name: Global - Setup
+        run: npm install --global cypress --no-progress
+
+      - name: Global - Test
+        working-directory: ./e2e
+        run: |
+          NODE_PATH=$(npm prefix -g)/lib/node_modules node ./test-run.js
+          NODE_PATH=$(npm prefix -g)/lib/node_modules node ./test-spawn.js run
+
+      - name: Global - Teardown
+        run: npm uninstall --global cypress
+
+      - name: Custom - Setup
+        env:
+          npm_config_prefix: ~/.npm_custom
+        run: |
+          mkdir -p ~/.npm_custom
+          npm install cypress --global
+
+      - name: Custom - Test
+        env:
+          npm_config_prefix: ~/.npm_custom
+        working-directory: ./e2e
+        run: |
+          NODE_PATH=$(npm prefix -g)/lib/node_modules CYPRESS_PACKAGE_SHELL_SCRIPT=$(npm prefix -g)/lib/node_modules/cypress/bin/cypress node ./test-spawn.js run
+
+      - name: Custom - Teardown
+        env:
+          npm_config_prefix: ~/.npm_custom
+        run: npm uninstall --global cypress

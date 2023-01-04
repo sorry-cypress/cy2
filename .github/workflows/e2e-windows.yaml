@@ -1,0 +1,83 @@
+name: E2E - Windows
+
+on:
+  push:
+
+jobs:
+  build:
+    if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    runs-on: windows-latest
+    env:
+      DEBUG: cy2
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: pwsh
+        run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # remove cypress from peer dependecies
+      - name: Install dependencies
+        run: |
+          npm install
+          npm uninstall cypress
+
+      - name: Build
+        run: npm run build
+
+      - name: Local - Setup
+        working-directory: e2e
+        run: npm install cypress --no-progress
+      - name: Local - Test
+        working-directory: e2e
+        env:
+          NODE_PATH: './node_modules'
+        run: |
+          node ./test-run.js run
+          node ./test-spawn.js run
+          npm uninstall cypress
+      - name: Local - Teardown
+        working-directory: e2e
+        run: npm uninstall cypress
+
+      - name: Global - Setup
+        run: npm install --global cypress --no-progress
+      - name: Global - Test
+        working-directory: e2e
+        run: |
+          $prefix = npm prefix -g
+          $env:NODE_PATH="$prefix\node_modules"; node .\test-run.js run
+          $env:NODE_PATH="$prefix\node_modules"; node .\test-spawn.js run
+      - name: Global - Teardown
+        run: npm uninstall --global cypress
+
+      - name: Custom - Setup
+        env:
+          npm_config_prefix: ~/.npm_custom
+        run: npm install cypress --global
+      - name: Custom - Test
+        working-directory: e2e
+        env:
+          npm_config_prefix: ~/.npm_custom
+        run: |
+          $prefix = npm prefix -g
+          $env:NODE_PATH="$prefix\node_modules";  $env:CYPRESS_PACKAGE_SHELL_SCRIPT="$prefix\node_modules\cypress\bin\cypress"; node .\test-spawn.js run
+      - name: Custom - Teardown
+        env:
+          npm_config_prefix: ~/.npm_custom
+        run: npm uninstall --global cypress

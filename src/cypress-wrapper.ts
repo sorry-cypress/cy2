@@ -2,7 +2,6 @@
 /// <reference types="cypress" />
 
 import cp from 'child_process';
-import { run as runCypress } from 'cypress';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
@@ -48,13 +47,15 @@ export async function run(
   config: CypressCommandLine.CypressRunOptions
 ) {
   debug('Cypress API URL: %s', apiUrl);
+  // keep dynamic import otherwise it will throw when cannot be discovered
+  const cypress = require('cypress');
   const upstreamProxy = getUpstreamProxy();
   const { port, stop } = await startProxy(apiUrl, upstreamProxy);
   try {
     const settings = getProxySettings({ port });
     process.env.HTTP_PROXY = settings.proxyURL;
     process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
-    return await runCypress(config);
+    return await cypress.run(config);
   } finally {
     await stop();
   }

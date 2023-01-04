@@ -3,6 +3,10 @@ import { debug } from './debug';
 
 export async function getCypressCLIBinPath(): Promise<string> {
   if (process.env.CYPRESS_PACKAGE_SHELL_SCRIPT) {
+    debug(
+      'Cypress binary path from CYPRESS_PACKAGE_SHELL_SCRIPT: %s',
+      process.env.CYPRESS_PACKAGE_SHELL_SCRIPT
+    );
     return process.env.CYPRESS_PACKAGE_SHELL_SCRIPT;
   }
   const cypressPath = require.resolve('cypress');
