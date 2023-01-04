@@ -12,7 +12,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "lib": ["es2016"],
   "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules", "./src/__tests__/*.ts", "./src/__tests__/**/*"]
+  "exclude": ["node_modules", "**/__tests__/*.ts"]
 }
