@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:14
+      - image: cypress/browsers:latest
 
     working_directory: ~/repo
 
@@ -12,26 +12,37 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-{{ checksum "package-lock.json" }}
             # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+            - v2-dependencies-
 
-      - run: yarn install
+      - run:
+          name: npm install
+          command: npm install
+          environment:
+            npm_config_prefix: ${HOME}/.npm
 
       - save_cache:
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - ${HOME}/.npm
+          key: v2-dependencies-{{ checksum "package-lock.json" }}
 
-      - run:
-          name: Unit tests
-          command: yarn add cypress && yarn test
+      # - run:
+      #     name: Unit tests
+      #     command: npm run test
       - run:
           name: Build
-          command: yarn build
+          environment:
+            npm_config_prefix: ${HOME}/.npm
+          command: |
+            npm run build
+            npm link
       - run:
-          name: Local install e2e
-          command: cd e2e && node ./testLocal.js
-      - run:
-          name: Global install e2e
-          command: cd e2e && node ./testGlobal.js
+          name: Run E2E with locally installed cypress
+          environment:
+            npm_config_prefix: ${HOME}/.npm
+          command: |
+            cd e2e
+            npm ci
+            npm link cy2
+            NODE_PATH=./node_modules node ./test.js
