@@ -25,10 +25,12 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm uninstall cypress
 
       - name: Build
         run: npm run build
+
+      - name: Setup
+        run: npm uninstall cypress
 
       - name: Local - Setup
         working-directory: ./e2e

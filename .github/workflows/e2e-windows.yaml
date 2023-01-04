@@ -33,12 +33,14 @@ jobs:
 
       # remove cypress from peer dependecies
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
           npm uninstall cypress
 
       - name: Build
         run: npm run build
+
+      - name: Setup
+        run: npm uninstall cypress
 
       - name: Local - Setup
         working-directory: e2e
@@ -56,14 +58,20 @@ jobs:
         run: npm uninstall cypress
 
       - name: Global - Setup
+        env:
+          npm_config_prefix: ~/.npm with spaces
         run: npm install --global cypress --no-progress
       - name: Global - Test
         working-directory: e2e
+        env:
+          npm_config_prefix: ~/.npm with spaces
         run: |
           $prefix = npm prefix -g
           $env:NODE_PATH="$prefix\node_modules"; node .\test-run.js run
           $env:NODE_PATH="$prefix\node_modules"; node .\test-spawn.js run
       - name: Global - Teardown
+        env:
+          npm_config_prefix: ~/.npm with spaces
         run: npm uninstall --global cypress
 
       - name: Custom - Setup
