@@ -1,5 +1,6 @@
 import { dirname, resolve } from 'path';
 import { debug } from './debug';
+import { error } from './log';
 
 export async function getCypressCLIBinPath(): Promise<string> {
   if (process.env.CYPRESS_PACKAGE_SHELL_SCRIPT) {
@@ -9,15 +10,26 @@ export async function getCypressCLIBinPath(): Promise<string> {
     );
     return process.env.CYPRESS_PACKAGE_SHELL_SCRIPT;
   }
-  const cypressPath = require.resolve('cypress');
-  const cypress = require('cypress/package.json');
 
-  const result = resolve(dirname(cypressPath), cypress.bin.cypress);
+  try {
+    const cypressPath = require.resolve('cypress');
+    const cypress = require('cypress/package.json');
 
-  debug('Cypress binary path: %s', result);
+    if (!cypress.bin || !cypress.bin?.cypress) {
+      throw new Error('Cannot detect cypress package executable');
+    }
+    const result = resolve(dirname(cypressPath), cypress.bin.cypress);
+    debug('Cypress binary path: %s', result);
 
-  if (!result) {
-    throw new Error('Cannot detect cypress package executable');
+    if (!result) {
+      throw new Error('Cannot detect cypress package executable');
+    }
+    return result;
+  } catch (err) {
+    error(
+      'Cannot detect cypress package executable. Consider using CYPRESS_PACKAGE_SHELL_SCRIPT environment variable. Tried locations: %O',
+      require.resolve.paths('cypress')
+    );
+    throw err;
   }
-  return result;
 }

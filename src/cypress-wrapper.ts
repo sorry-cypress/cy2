@@ -17,7 +17,7 @@ export async function spawn(apiUrl: string) {
 
   const [, , ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
-  debug('Running cypress from %s', cliBinPath, ...rest);
+  debug('Running cypress from "%s": %o', cliBinPath, rest);
 
   const upstreamProxy = getUpstreamProxy();
   const { port } = await startProxy(apiUrl, upstreamProxy);
@@ -36,10 +36,10 @@ export async function spawn(apiUrl: string) {
 }
 
 /**
- * Run Cypress via {Module API} https://docs.cypress.io/guides/guides/module-api
+ * Run Cypress via [Module API]{@link https://docs.cypress.io/guides/guides/module-api}
  *
  * @param apiUrl orchestration service URL
- * @param config Cypress run options
+ * @param config Cypress.run options
  * @returns Cypress run results
  */
 export async function run(
@@ -47,7 +47,8 @@ export async function run(
   config: CypressCommandLine.CypressRunOptions
 ) {
   debug('Cypress API URL: %s', apiUrl);
-  // keep dynamic import otherwise it will throw when cannot be discovered
+
+  // use inline import, otherwise it can throw when importing for "spawn"
   const cypress = require('cypress');
   const upstreamProxy = getUpstreamProxy();
   const { port, stop } = await startProxy(apiUrl, upstreamProxy);
