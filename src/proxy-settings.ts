@@ -9,29 +9,8 @@ const falsyEnv = (v) => {
   return v === 'false' || v === '0' || !v;
 };
 
-const copyLowercaseEnvToUppercase = (name: string) => {
-  const lowerEnv = process.env[name.toLowerCase()];
-
-  if (lowerEnv) {
-    debug('overriding uppercase env var with lowercase %o', { name });
-    process.env[name.toUpperCase()] = lowerEnv;
-  }
-};
-
-const mergeNpmProxyVars = () => {
-  [
-    ['npm_config_proxy', 'HTTP_PROXY'],
-    ['npm_config_https_proxy', 'HTTPS_PROXY'],
-  ].forEach(([from, to]) => {
-    if (!falsyEnv(process.env[from]) && isUndefined(process.env[to])) {
-      debug("using npm's %s as %s", from, to);
-      process.env[to] = process.env[from];
-    }
-  });
-};
-
-function normalizeProxyEnvVariables() {
-  const proxyEnv = pick(process.env, [
+export function getSanitizedEnvironment() {
+  const result = pick(process.env, [
     'NO_PROXY',
     'HTTP_PROXY',
     'HTTPS_PROXY',
@@ -43,13 +22,43 @@ function normalizeProxyEnvVariables() {
     'npm_config_noproxy',
   ]);
 
-  debug('Proxy environment variables %o', proxyEnv);
+  debug('Original environment variables %o', result);
 
-  ['NO_PROXY', 'HTTP_PROXY', 'HTTPS_PROXY'].forEach(
-    copyLowercaseEnvToUppercase
-  );
+  // override uppercase with lowercase non falsy value regardless of existing uppercase value
+  [
+    ['http_proxy', 'HTTP_PROXY'],
+    ['https_proxy', 'HTTPS_PROXY'],
+    ['no_proxy', 'NO_PROXY'],
+  ].forEach(([from, to]) => {
+    if (!falsyEnv(result[from])) {
+      debug('Copying lowercase %s to %s', from, to);
+      result[to] = result[from];
+    }
+  });
 
-  mergeNpmProxyVars();
+  // override only if target is undefined and source is not falsy
+  [
+    ['npm_config_proxy', 'HTTP_PROXY'],
+    ['npm_config_https_proxy', 'HTTPS_PROXY'],
+  ].forEach(([from, to]) => {
+    if (!falsyEnv(result[from]) && isUndefined(result[to])) {
+      debug("Using npm's %s as %s", from, to);
+      result[to] = result[from];
+    }
+  });
+
+  // only return uppercase env vars, remove the others
+  const r = {
+    https_proxy: undefined,
+    http_proxy: undefined,
+    npm_config_proxy: undefined,
+    npm_config_https_proxy: undefined,
+    NO_PROXY: result.NO_PROXY,
+    HTTP_PROXY: result.HTTP_PROXY,
+    HTTPS_PROXY: result.HTTPS_PROXY,
+  };
+  debug('Sanitized environment variables %o', r);
+  return r;
 }
 
 export function getProxySettings({ port }: { port: number }) {
@@ -67,20 +76,20 @@ export function getProxySettings({ port }: { port: number }) {
   };
 }
 
-export function getUpstreamProxy() {
-  normalizeProxyEnvVariables();
-
-  if (process.env.HTTPS_PROXY) {
-    const r = new URL(process.env.HTTPS_PROXY);
+export function getUpstreamProxy(
+  envVariables: Record<string, string | undefined>
+) {
+  if (envVariables.HTTPS_PROXY) {
+    const r = new URL(envVariables.HTTPS_PROXY);
     r.protocol = 'https:';
-    debug('Using upstream proxy %o', r);
+    debug('Using upstream proxy %s', r);
     return r;
   }
 
-  if (process.env.HTTP_PROXY) {
-    const r = new URL(process.env.HTTP_PROXY);
+  if (envVariables.HTTP_PROXY) {
+    const r = new URL(envVariables.HTTP_PROXY);
     r.protocol = 'http:';
-    debug('Using upstream proxy %o', r);
+    debug('Using upstream proxy %s', r);
     return r;
   }
 
@@ -99,17 +108,15 @@ Later they use HTTPS_PROXY for cloud connections and 'proxy-from-env' npm packag
 - https://github.com/cypress-io/cypress/blob/develop/packages/network/lib/agent.ts#L347
 - https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/cloud/api.ts#L45
 */
-export function getEnvProxyOverrides(
-  currentsProxyURL: string
-): Partial<Record<'HTTP_PROXY' | 'HTTPS_PROXY', string>> {
-  normalizeProxyEnvVariables();
-
-  // set both
+export function getEnvOverrides(
+  currentsProxyURL: string,
+  envVariables: Record<string, string | undefined>
+): Partial<Record<string, string>> {
   return chain({
+    ...envVariables,
     HTTP_PROXY: currentsProxyURL,
-    HTTPS_PROXY: process.env.HTTPS_PROXY ? currentsProxyURL : undefined,
+    HTTPS_PROXY: envVariables.HTTPS_PROXY ? currentsProxyURL : undefined,
   })
-    .pickBy(Boolean)
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();
 }

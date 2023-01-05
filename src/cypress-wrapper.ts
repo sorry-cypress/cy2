@@ -7,8 +7,9 @@ import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
 import {
-  getEnvProxyOverrides,
+  getEnvOverrides,
   getProxySettings,
+  getSanitizedEnvironment,
   getUpstreamProxy,
 } from './proxy-settings';
 
@@ -29,7 +30,8 @@ export async function spawn(apiUrl: string) {
 
   debug('Running cypress: %o', [cmd, ...args]);
 
-  const upstreamProxy = getUpstreamProxy();
+  const envVariables = getSanitizedEnvironment();
+  const upstreamProxy = getUpstreamProxy(envVariables);
   const { port } = await startProxy(apiUrl, upstreamProxy);
   const settings = getProxySettings({ port });
 
@@ -37,7 +39,7 @@ export async function spawn(apiUrl: string) {
     stdio: 'inherit',
     env: {
       ...process.env,
-      ...getEnvProxyOverrides(settings.proxyURL),
+      ...getEnvOverrides(settings.proxyURL, envVariables),
       NODE_EXTRA_CA_CERTS: settings.caPath,
     },
   }).on('exit', (code) => {
@@ -61,13 +63,14 @@ export async function run(
   // use inline import, otherwise it can throw when importing for "spawn"
   const cypress = require('cypress');
 
-  const upstreamProxy = getUpstreamProxy();
+  const envVariables = getSanitizedEnvironment();
+  const upstreamProxy = getUpstreamProxy(envVariables);
   const { port, stop } = await startProxy(apiUrl, upstreamProxy);
   try {
     const settings = getProxySettings({ port });
 
     // override proxy env variables
-    Object.entries(getEnvProxyOverrides(settings.proxyURL)).forEach(
+    Object.entries(getEnvOverrides(settings.proxyURL, envVariables)).forEach(
       ([key, value]) => (process.env[key] = value)
     );
 
