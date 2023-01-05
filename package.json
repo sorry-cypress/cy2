@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "4.0.0-alpha.5",
+  "version": "4.0.0-beta.13",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -16,7 +16,7 @@
     "tsc": "tsc",
     "esbuild": "node ./build.js",
     "watch:tsc": "run-s \"tsc --watch --preserveWatchOutput\"",
-    "watch:esbuild": "esbuild ./src/index.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
+    "watch:esbuild": "esbuild ./src/*.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
     "release": "release-it",
     "clean": "rimraf dist"
   },

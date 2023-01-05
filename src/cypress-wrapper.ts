@@ -6,7 +6,11 @@ import { platform } from 'os';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
-import { getProxySettings, getUpstreamProxy } from './proxy-settings';
+import {
+  getEnvProxyOverrides,
+  getProxySettings,
+  getUpstreamProxy,
+} from './proxy-settings';
 
 /**
  * Spawn Cypress as a child process, inherit all the flags and environment variables
@@ -33,7 +37,7 @@ export async function spawn(apiUrl: string) {
     stdio: 'inherit',
     env: {
       ...process.env,
-      HTTP_PROXY: settings.proxyURL,
+      ...getEnvProxyOverrides(settings.proxyURL),
       NODE_EXTRA_CA_CERTS: settings.caPath,
     },
   }).on('exit', (code) => {
@@ -56,11 +60,17 @@ export async function run(
 
   // use inline import, otherwise it can throw when importing for "spawn"
   const cypress = require('cypress');
+
   const upstreamProxy = getUpstreamProxy();
   const { port, stop } = await startProxy(apiUrl, upstreamProxy);
   try {
     const settings = getProxySettings({ port });
-    process.env.HTTP_PROXY = settings.proxyURL;
+
+    // override proxy env variables
+    Object.entries(getEnvProxyOverrides(settings.proxyURL)).forEach(
+      ([key, value]) => (process.env[key] = value)
+    );
+
     process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
     return await cypress.run(config);
   } finally {
