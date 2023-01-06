@@ -1,6 +1,6 @@
 {
   "name": "@currents-dev/cy2",
-  "version": "4.0.5",
+  "version": "4.0.6",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -23,7 +23,7 @@
     "watch:esbuild": "esbuild ./src/*.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
     "build-tunnel": "esbuild ./src/tunnel-proxy.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist",
     "release": "release-it --no-npm.publish --no-github",
-    "release-ci": "release-it --ci --no-git",
+    "release-ci": "release-it --ci",
     "clean": "rimraf dist"
   },
   "files": [

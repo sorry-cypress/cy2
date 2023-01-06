@@ -7,8 +7,10 @@ name: Publish to GitHub
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - release/*
+    # tags:
+    #   - v*
 
 jobs:
   release:
