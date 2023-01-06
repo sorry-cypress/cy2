@@ -1,3 +1,182 @@
+
+
+# [4.0.0-alpha.5](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.5) (2023-01-06)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* sanitize env variables ([3a80d22](https://github.com/sorry-cypress/cy2/commit/3a80d228cc9ec6f4594fbf916abb5183deadee62))
+* use no_proxy ([89ee67a](https://github.com/sorry-cypress/cy2/commit/89ee67a1efcec9efe1e9f037ffbbaf790450d43a))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.4](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.4) (2023-01-06)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* sanitize env variables ([3a80d22](https://github.com/sorry-cypress/cy2/commit/3a80d228cc9ec6f4594fbf916abb5183deadee62))
+* use no_proxy ([c605506](https://github.com/sorry-cypress/cy2/commit/c605506e04f4465523a1cf870182e00aa1e48822))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.3](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.3) (2023-01-06)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* sanitize env variables ([3a80d22](https://github.com/sorry-cypress/cy2/commit/3a80d228cc9ec6f4594fbf916abb5183deadee62))
+* use no_proxy ([c605506](https://github.com/sorry-cypress/cy2/commit/c605506e04f4465523a1cf870182e00aa1e48822))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* sanitize env variables ([3a80d22](https://github.com/sorry-cypress/cy2/commit/3a80d228cc9ec6f4594fbf916abb5183deadee62))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.4](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.4) (2023-01-05)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.3](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.3) (2023-01-05)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-alpha.1](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.1) (2023-01-05)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* handle upstream HTTPS_PROXY ([a476c37](https://github.com/sorry-cypress/cy2/commit/a476c37c611c18e5e02810be601e163c9343877e))
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
+# [4.0.0-beta.13](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.13) (2023-01-04)
+
+
+### Bug Fixes
+
+* add e2e tests for local discovery ([da27579](https://github.com/sorry-cypress/cy2/commit/da275799e031793bacc40429e99aa4f81cbfb1bd))
+* change the license ([dc70ce2](https://github.com/sorry-cypress/cy2/commit/dc70ce253f12f022f0a9775c543e6f58bd2e82ba))
+* detect win32 ([135c83e](https://github.com/sorry-cypress/cy2/commit/135c83ed526062ed991f8a3a32d0f32d259d1f40))
+* remove uid ([82f962a](https://github.com/sorry-cypress/cy2/commit/82f962a10c1d9224c8181f06627739577c5e2ce3))
+* use npm-which ([eea62d3](https://github.com/sorry-cypress/cy2/commit/eea62d3abeb840b0438e7330e956221399747081))
+
+
+### Features
+
+* implement upstream proxy ([7c9e9af](https://github.com/sorry-cypress/cy2/commit/7c9e9af9eaf094cbfa6ab0841743828270531f80))
+* refactor module api ([a43d6f7](https://github.com/sorry-cypress/cy2/commit/a43d6f70f6e3a1e75b9e2babeb359468f10933aa))
+* use proxy ([7102ae6](https://github.com/sorry-cypress/cy2/commit/7102ae6da6f5f3649e8f20f22b2d17065d7a87c8))
+
 # [4.0.0-beta.12](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-beta.12) (2023-01-03)
 
 
