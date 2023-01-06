@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/currents-dev/cy2.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "postinstall": "patch-package",
     "build": "run-p tsc esbuild",
@@ -19,7 +22,8 @@
     "watch:tsc": "run-s \"tsc --watch --preserveWatchOutput\"",
     "watch:esbuild": "esbuild ./src/*.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
     "build-tunnel": "esbuild ./src/tunnel-proxy.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist",
-    "release": "release-it",
+    "release": "release-it --no-npm --no-github",
+    "release-ci": "release-it --ci --no-git",
     "clean": "rimraf dist"
   },
   "files": [
@@ -108,8 +112,5 @@
   },
   "prettier": {
     "singleQuote": true
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   }
 }

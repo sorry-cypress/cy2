@@ -29,10 +29,8 @@ jobs:
       - run: npm ci
       # - run: ./scripts/rewrite_package.js
       - name: Release
-        run: |
-          git config --global user.email "agoldis@gmail.com"
-          git config --global user.name "Andrew Goldis"
-          npm run release -- --ci --no-git.requireCleanWorkingDir
+        # only release npm package and create github release
+        run: npm run release-ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
