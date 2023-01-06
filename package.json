@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "4.0.0-beta.13",
+  "version": "4.0.0-alpha.5",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -10,6 +10,7 @@
     "url": "https://github.com/sorry-cypress/cy2.git"
   },
   "scripts": {
+    "postinstall": "patch-package",
     "build": "run-p tsc esbuild",
     "dev": "run-p watch:*",
     "test": "jest",
@@ -22,7 +23,7 @@
   },
   "files": [
     "bin/*",
-    "dist/*",
+    "dist/index.js*",
     "!dist/__tests__",
     "!dist/*.d.ts",
     "!dist/**/*.d.ts",
@@ -48,10 +49,14 @@
     "cypress": ">=6.7.0"
   },
   "dependencies": {
+    "@types/micromatch": "^4.0.2",
     "chalk": "^4.1.2",
+    "fp-ts": "^2.13.1",
     "http-proxy": "^1.18.1",
     "https-proxy-agent": "^5.0.1",
     "lodash": "^4.17.21",
+    "micromatch": "^4.0.5",
+    "patch-package": "^6.5.1",
     "source-map-support": "^0.5.21",
     "tmp": "^0.2.1"
   },

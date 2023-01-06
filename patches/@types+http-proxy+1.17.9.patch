@@ -1,0 +1,29 @@
+diff --git a/node_modules/@types/http-proxy/index.d.ts b/node_modules/@types/http-proxy/index.d.ts
+index ca805df..3ac69c3 100755
+--- a/node_modules/@types/http-proxy/index.d.ts
++++ b/node_modules/@types/http-proxy/index.d.ts
+@@ -10,12 +10,11 @@
+ 
+ /// <reference types="node" />
+ 
+-import * as net from "net";
+-import * as http from "http";
+-import * as https from "https";
+ import * as events from "events";
+-import * as url from "url";
++import * as http from "http";
++import * as net from "net";
+ import * as stream from "stream";
++import * as url from "url";
+ 
+ interface ProxyTargetDetailed {
+     host: string;
+@@ -71,7 +70,7 @@ declare class Server extends events.EventEmitter {
+      * A function that wraps the object in a webserver, for your convenience
+      * @param port - Port to listen on
+      */
+-    listen(port: number): Server;
++    listen(port: number, hostname?: string, callback?: () => void): Server;
+ 
+     /**
+      * A function that closes the inner webserver and stops listening on given port

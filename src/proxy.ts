@@ -1,60 +1,36 @@
+import * as a from 'fp-ts/Array';
+import { pipe } from 'fp-ts/function';
+import * as o from 'fp-ts/Option';
 import http from 'http';
-import httpProxy from 'http-proxy';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+import { isMatch } from 'micromatch';
 import net from 'net';
-import { cert, key } from './cert';
 import { debugNet } from './debug';
-import { warn } from './log';
+import { enc } from './enc';
+import {
+  getDirectInterceptor,
+  getUpstreamInterceptor,
+  stopInterceptors,
+} from './interceptor';
+import {
+  pipeSocketToLocalPort,
+  pipeSocketToRemoteDestination,
+} from './network';
 import { runProxyChain } from './proxy-chain';
-
+import { getSanitizedEnvironment } from './proxy-settings';
 export interface Proxy {
   stop: () => Promise<void>;
   port: number;
 }
-export function startProxy(
-  target: string = 'https://cy.currents.dev',
-  upstreamProxy: URL | null = null
-): Promise<Proxy> {
-  debugNet(
-    'Routing path: %s',
-    upstreamProxy ? `${upstreamProxy.toString()} -> ${target}` : target
-  );
-
-  const agent = upstreamProxy
-    ? new HttpsProxyAgent({
-        host: upstreamProxy.hostname,
-        port: upstreamProxy.port,
-        path: upstreamProxy.pathname,
-      })
-    : false;
-
+export async function startProxy({
+  target = 'https://cy.currents.dev',
+  upstreamProxy = null,
+  envVariables = {},
+}: {
+  target: string;
+  upstreamProxy: URL | null;
+  envVariables: Partial<ReturnType<typeof getSanitizedEnvironment>>;
+}): Promise<Proxy> {
   return new Promise((resolve, reject) => {
-    const interceptor = httpProxy
-      .createProxyServer({
-        target,
-        changeOrigin: true,
-        followRedirects: true,
-        agent,
-        ssl: {
-          key,
-          cert,
-        },
-      })
-      .on('error', (err) => {
-        debugNet('Interceptor error: %s', err);
-        warn('Error connecting to %s: %s', target, err.message);
-      })
-      .listen(0);
-
-    function stopInterceptor(): Promise<void> {
-      return new Promise((_resolve) => {
-        debugNet('Stopping interceptor');
-        interceptor.close(() => {
-          _resolve();
-        });
-      });
-    }
-
     function stopProxy(): Promise<void> {
       return new Promise((_resolve) => {
         debugNet('Stopping proxy');
@@ -67,10 +43,16 @@ export function startProxy(
       });
     }
 
+    const onConnect = getOnConnect(
+      upstreamProxy,
+      target,
+      envVariables.NO_PROXY?.split(',')
+    );
+
     const proxy = http.createServer();
     proxy
       // @ts-ignore
-      .on('connect', getOnConnect(interceptor._server.address().port))
+      .on('connect', onConnect)
       .listen(0, () => {
         const address = proxy.address();
         if (!isAddress(address)) {
@@ -81,7 +63,7 @@ export function startProxy(
         resolve({
           stop: async () => {
             debugNet('Stopping interceptor');
-            await stopInterceptor();
+            await stopInterceptors();
             debugNet('Stopping proxy');
             await stopProxy();
           },
@@ -92,88 +74,80 @@ export function startProxy(
   });
 }
 
-function isAddress(value: unknown): value is net.AddressInfo {
-  return typeof value === 'object' && value !== null;
-}
-
-const getOnConnect = (interceptorPort: number, upstreamProxy: URL | null) =>
+const getOnConnect = (
+  upstreamProxy: URL | null,
+  target: string,
+  noProxy: string[] = []
+) =>
   function onConnect(req: http.IncomingMessage, socket: net.Socket) {
     debugNet('Connection request: %s', req.url);
 
-    if (!interceptorPort) {
-      throw new Error('Unable to detect interceptor port');
-    }
     if (!req.url) {
       throw new Error('Missing req.url in connect handler');
     }
 
     const [hostname, port] = req.url.split(':', 2);
 
-    if (hostname === 'api.cypress.io') {
-      const socketToInterceptor = net.connect(interceptorPort);
-
-      socketToInterceptor.on('ready', () => {
-        socketToInterceptor.pipe(socket);
-        socket.pipe(socketToInterceptor);
-        socket.write('HTTP/1.1 200 OK\r\n\r\n');
-      });
-
-      socketToInterceptor.on('error', () => {
-        socket.end();
-        socket.destroy();
-      });
-
-      socketToInterceptor.on('end', () => {
-        socket.end();
-        socket.destroy();
-      });
-
-      socket.on('error', () => {
-        socketToInterceptor.end();
-        socketToInterceptor.destroy();
-      });
-
-      socket.on('end', () => {
-        socketToInterceptor.end();
-        socketToInterceptor.destroy();
-      });
-
+    if (shouldIntercept(hostname)) {
+      interceptRequest({ target, hostname, socket, upstreamProxy, noProxy });
       return;
     }
 
-    if (upstreamProxy) {
+    if (upstreamProxy && shouldUseUpstreamProxy(hostname, noProxy)) {
       runProxyChain(req, socket, upstreamProxy);
       return;
     }
 
-    // proxy to the target with no interception
-    const conn = net.connect(parseInt(port, 10), hostname);
-
-    conn.on('ready', function tunnel() {
-      socket.pipe(conn);
-      conn.pipe(socket);
-      socket.write('HTTP/1.1 200 OK\r\n\r\n');
+    pipeSocketToRemoteDestination({
+      socket,
+      port: parseInt(port, 10),
+      hostname,
     });
-
-    // One important caveat is that if the Readable stream emits an error during processing, the Writable destination is not closed automatically. If an error occurs, it will be necessary to manually close each stream in order to prevent memory leaks.
-    conn.on('error', function () {
-      // for some reason, socket keeps writing to conn after conn is ended, triggering an error AFTER_WRITE_FINISHED error
-      conn.end();
-      conn.destroy();
-      socket.end();
-      socket.destroy();
-    });
-
-    socket.on('error', function () {
-      socket.end();
-      socket.destroy();
-      conn.end();
-      conn.destroy();
-    });
-
     return;
   };
 
-type NetworkError = Error & {
-  code: string;
-};
+async function interceptRequest({
+  target,
+  hostname,
+  socket,
+  upstreamProxy = null,
+  noProxy = [],
+}: {
+  target: string;
+  hostname: string;
+  socket: net.Socket;
+  upstreamProxy: URL | null;
+  noProxy: string[];
+}) {
+  const interceptor = await pipe(
+    upstreamProxy,
+    o.fromNullable,
+    o.filter(() => shouldUseUpstreamProxy(new URL(target).hostname, noProxy)),
+    o.map((upstreamProxy) => getUpstreamInterceptor({ upstreamProxy, target })),
+    o.getOrElse(() => getDirectInterceptor({ target }))
+  );
+
+  // @ts-ignore
+  const port = interceptor._server.address().port;
+  debugNet('Intercepting request to "%s" via port: %d', hostname, port);
+  pipeSocketToLocalPort({ socket, port });
+}
+
+function shouldUseUpstreamProxy(hostname: string, noProxy: string[] = []) {
+  const result = a.isEmpty(noProxy) ? true : !isMatch(hostname, noProxy);
+  debugNet(
+    'Should "%s" use upstream proxy with NO_PROXY %s: %s',
+    hostname,
+    noProxy,
+    result
+  );
+  return result;
+}
+
+function shouldIntercept(hostname: string) {
+  return hostname === enc('YXBpLmN5cHJlc3MuaW8=');
+}
+
+function isAddress(value: unknown): value is net.AddressInfo {
+  return typeof value === 'object' && value !== null;
+}

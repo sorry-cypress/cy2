@@ -1,13 +1,13 @@
 import https from 'http';
 import net from 'net';
-import { debug } from './debug';
+import { debugNet } from './debug';
 
 export function runProxyChain(
   req: https.IncomingMessage,
   socket: net.Socket,
   upstreamProxy: URL
 ) {
-  debug('Connecting to upstream proxy for', req.url);
+  debugNet('Proxy chain to upstream for', req.url);
 
   https
     .request({

@@ -32,7 +32,11 @@ export async function spawn(apiUrl: string) {
 
   const envVariables = getSanitizedEnvironment();
   const upstreamProxy = getUpstreamProxy(envVariables);
-  const { port } = await startProxy(apiUrl, upstreamProxy);
+  const { port } = await startProxy({
+    target: apiUrl,
+    upstreamProxy,
+    envVariables,
+  });
   const settings = getProxySettings({ port });
 
   cp.spawn(cmd, args, {
@@ -65,7 +69,11 @@ export async function run(
 
   const envVariables = getSanitizedEnvironment();
   const upstreamProxy = getUpstreamProxy(envVariables);
-  const { port, stop } = await startProxy(apiUrl, upstreamProxy);
+  const { port, stop } = await startProxy({
+    target: apiUrl,
+    upstreamProxy,
+    envVariables,
+  });
   try {
     const settings = getProxySettings({ port });
 
