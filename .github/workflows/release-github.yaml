@@ -1,7 +1,7 @@
 name: Publish to GitHub
 on:
   workflow_run:
-    workflows: [E2E - Linux]
+    workflows: [E2E:Linux]
     types:
       - completed
 

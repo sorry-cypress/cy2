@@ -1,4 +1,4 @@
-name: E2E - Windows
+name: E2E:Windows
 
 on:
   push:
