@@ -1,6 +1,6 @@
 {
   "name": "@currents-dev/cy2",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
