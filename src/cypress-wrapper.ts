@@ -14,7 +14,7 @@ import {
 } from './proxy-settings';
 
 /**
- * Spawn Cypress as a child process, inherit all the flags and environment variables
+ * Spawn Cypress as a child process, inherit all the flags and environment variables.
  *
  * @param apiUrl orchestration service URL
  */
@@ -52,16 +52,19 @@ export async function spawn(apiUrl: string) {
 }
 
 /**
- * Run Cypress via [Module API]{@link https://docs.cypress.io/guides/guides/module-api}
+ * Run Cypress via {@link https://docs.cypress.io/guides/guides/module-api| Module API}
  *
  * @param apiUrl orchestration service URL
- * @param config Cypress.run options
- * @returns Cypress run results
+ * @param config Cypress.run {@link https://docs.cypress.io/guides/guides/module-api#Options| options}
+ * @returns Cypress {@link https://docs.cypress.io/guides/guides/module-api#Results| run results}
  */
 export async function run(
   apiUrl: string,
   config: CypressCommandLine.CypressRunOptions
-) {
+): Promise<
+  | CypressCommandLine.CypressRunResult
+  | CypressCommandLine.CypressFailedRunResult
+> {
   debug('Cypress API URL: %s', apiUrl);
 
   // use inline import, otherwise it can throw when importing for "spawn"

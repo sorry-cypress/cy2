@@ -1,0 +1,64 @@
+name: E2E:Network
+
+on:
+  push:
+
+jobs:
+  e2e-network:
+    if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    runs-on: ubuntu-latest
+    env:
+      DEBUG: cy2*,cypress:server:cloud:*,cypress:network:*
+      # prevent cypress ts-paths interfering with local imports
+      TS_NODE_PROJECT: dummy.ts.json
+      CYPRESS_API_URL: http://localhost:1234
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      director:
+        # Docker Hub image
+        image: agoldis/sorry-cypress-director
+        ports:
+          - 1234:1234
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      # remove cypress from peer dependecies
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Start Upstream Proxy
+        run: |
+          npm run build-tunnel
+          node ./dist/tunnel-proxy.js &
+
+      - name: Record without upstream proxy
+        working-directory: ./e2e
+        run: |
+          ../bin/cy2 run --parallel --record --key xxx
+
+      - name: Record with upstream proxy
+        working-directory: ./e2e
+        env:
+          HTTP_PROXY: https://localhost:9999
+        run: |
+          ../bin/cy2 run --parallel --record --key xxx
+
+      - name: Bypass upstream proxy for director
+        env:
+          HTTP_PROXY: https://localhost:9999
+          NO_PROXY: localhost
+        working-directory: ./e2e
+        run: |
+          ../bin/cy2 run --parallel --record --key xxx

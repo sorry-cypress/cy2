@@ -18,6 +18,7 @@
     "esbuild": "node ./build.js",
     "watch:tsc": "run-s \"tsc --watch --preserveWatchOutput\"",
     "watch:esbuild": "esbuild ./src/*.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
+    "build-tunnel": "esbuild ./src/tunnel-proxy.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist",
     "release": "release-it",
     "clean": "rimraf dist"
   },
