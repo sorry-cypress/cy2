@@ -1,13 +1,13 @@
 {
-  "name": "cy2",
-  "version": "4.0.0-alpha.5",
+  "name": "@currents-dev/cy2",
+  "version": "4.0.1",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sorry-cypress/cy2.git"
+    "url": "https://github.com/currents-dev/cy2.git"
   },
   "scripts": {
     "postinstall": "patch-package",
@@ -105,5 +105,8 @@
   },
   "prettier": {
     "singleQuote": true
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

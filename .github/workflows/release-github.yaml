@@ -1,20 +1,17 @@
 name: Publish to GitHub
-# on:
-#   workflow_run:
-#     workflows: [E2E - Linux]
-#     types:
-#       - completed
-
 on:
-  push:
+  workflow_run:
+    workflows: [E2E - Linux]
+    types:
+      - completed
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v3
@@ -25,9 +22,12 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           # scope: '@currents-dev'
       - run: npm ci
-      - run: npm run build
-      - run: ./scripts/rewrite_package.js
-      - run: npm config list
-      - run: npm run release
+      # - run: ./scripts/rewrite_package.js
+      - name: Release
+        run: |
+          git config --global user.email "agoldis@gmail.com"
+          git config --global user.name "Andrew Goldis"
+          npm run release -- --ci --no-git.requireCleanWorkingDir
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
