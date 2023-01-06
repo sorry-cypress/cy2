@@ -85,7 +85,7 @@
   },
   "release-it": {
     "git": {
-      "requireBranch": "release/*"
+      "requireBranch": "main"
     },
     "github": {
       "release": true
