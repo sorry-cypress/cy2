@@ -1,5 +1,7 @@
 
 
+## [4.0.3](https://github.com/currents-dev/cy2/compare/v4.0.2...v4.0.3) (2023-01-06)
+
 # [4.0.0-alpha.5](https://github.com/sorry-cypress/cy2/compare/v3.4.3...v4.0.0-alpha.5) (2023-01-06)
 
 
