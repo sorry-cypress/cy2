@@ -2,7 +2,8 @@ name: E2E:Network
 
 on:
   push:
-
+    branches:
+      - '!release/*'
 jobs:
   e2e-network:
     if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"

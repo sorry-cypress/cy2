@@ -2,7 +2,8 @@ name: E2E:Linux
 
 on:
   push:
-
+    branches:
+      - '!release/*'
 jobs:
   e2e:
     if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"

@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - '!release/*'
+
 jobs:
   build:
     if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
