@@ -1,6 +1,5 @@
- // Use explicit /index.js to help browserify negociation in require '/lib/http-proxy' (!)
-var ProxyServer = require('./http-proxy/index.js').Server;
-
+// Use explicit /index.js to help browserify negociation in require '/lib/http-proxy' (!)
+const ProxyServer = require('./http-proxy/index.js').Server;
 
 /**
  * Creates the proxy server.
@@ -16,7 +15,6 @@ var ProxyServer = require('./http-proxy/index.js').Server;
  *
  * @api public
  */
-
 
 function createProxyServer(options) {
   /*
@@ -51,16 +49,11 @@ function createProxyServer(options) {
   return new ProxyServer(options);
 }
 
-
 ProxyServer.createProxyServer = createProxyServer;
-ProxyServer.createServer      = createProxyServer;
-ProxyServer.createProxy       = createProxyServer;
-
-
-
+ProxyServer.createServer = createProxyServer;
+ProxyServer.createProxy = createProxyServer;
 
 /**
  * Export the proxy "Server" as the main export.
  */
 module.exports = ProxyServer;
-

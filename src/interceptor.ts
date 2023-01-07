@@ -1,7 +1,7 @@
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { cert, key } from './cert';
 import { debugNet } from './debug';
-import httpProxy from './http-proxy';
+import * as httpProxy from './http-proxy';
 import { warn } from './log';
 
 const inteceptors = new Map<'upstream' | 'direct', httpProxy>();
