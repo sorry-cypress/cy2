@@ -1,5 +1,7 @@
 # Changelog
 
+# 4.0.0-beta.14 (2023-01-07)
+
 ## [3.4.3](https://github.com/sorry-cypress/cy2/compare/v3.4.2...v3.4.3) (2022-12-12)
 
 ### Bug Fixes
