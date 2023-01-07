@@ -1,19 +1,5 @@
 # Changelog
 
-## 4.0.1 (2023-01-07)
-
-# 4.0.0 (2023-01-07)
-
-
-### chore
-
-* **release:** preparing for release ([8b56032](https://github.com/currents-dev/cy2/commit/8b56032806f33e62d12d16d15393014a855668d3))
-
-
-### BREAKING CHANGES
-
-* **release:** - remove `patch` api. See README for details
-
 ## [3.4.3](https://github.com/sorry-cypress/cy2/compare/v3.4.2...v3.4.3) (2022-12-12)
 
 ### Bug Fixes
@@ -32,19 +18,19 @@
 
 ## [3.4.1-beta.0](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v3.4.1-beta.0) (2022-12-10)
 
-# [3.4.0](https://github.com/sorry-cypress/cy2/compare/v3.3.0...v3.4.0) (2022-12-10)
+## [3.4.0](https://github.com/sorry-cypress/cy2/compare/v3.3.0...v3.4.0) (2022-12-10)
 
 ### Features
 
 - cypress 12.0.2 ([7ecf9a2](https://github.com/sorry-cypress/cy2/commit/7ecf9a25b30cb8bcfa11fcead483a16749a9efc4))
 
-# [3.3.0](https://github.com/sorry-cypress/cy2/compare/v3.2.0...v3.3.0) (2022-12-07)
+## [3.3.0](https://github.com/sorry-cypress/cy2/compare/v3.2.0...v3.3.0) (2022-12-07)
 
 ### Features
 
 - cypress 12+ ([a33868d](https://github.com/sorry-cypress/cy2/commit/a33868dfd2b811bdcd34f0194d42e2cadf6d3a31))
 
-# [3.2.0](https://github.com/sorry-cypress/cy2/compare/v3.1.7...v3.2.0) (2022-11-11)
+## [3.2.0](https://github.com/sorry-cypress/cy2/compare/v3.1.7...v3.2.0) (2022-11-11)
 
 ### Features
 
@@ -98,13 +84,13 @@
 
 - add label message ([d04d394](https://github.com/sorry-cypress/cy2/commit/d04d394d2f1b35d089a0e204b5e5261c9a00f5a7))
 
-# [3.1.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0...v3.1.0) (2022-10-21)
+## [3.1.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0...v3.1.0) (2022-10-21)
 
 ### Features
 
 - expose API "inject" ([e8b9456](https://github.com/sorry-cypress/cy2/commit/e8b9456623229b72d0cdfed44ae682861cca2219))
 
-# [3.0.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.2...v3.0.0) (2022-10-21)
+## [3.0.0](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.2...v3.0.0) (2022-10-21)
 
 Implement a new patching method that prevent permanent "patching" of cypress installation and causes confusion (and sometimes frustration)
 
@@ -115,15 +101,15 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 - Deprecated `run` API
 - Deprecated CYPRESS_PACKAGE_CONFIG_PATH - see API `patch` call
 
-# [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
+## [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
 
 ### Features
 
 - implement patch and update README ([ad95e9d](https://github.com/sorry-cypress/cy2/commit/ad95e9d379138c77abaa8596452c14d90be73f51))
 
-# [3.0.0-alpha.1](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2022-10-20)
+## [3.0.0-alpha.1](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.0...v3.0.0-alpha.1) (2022-10-20)
 
-# [3.0.0-alpha.0](https://github.com/sorry-cypress/cy2/compare/v2.1.0...v3.0.0-alpha.0) (2022-10-20)
+## [3.0.0-alpha.0](https://github.com/sorry-cypress/cy2/compare/v2.1.0...v3.0.0-alpha.0) (2022-10-20)
 
 ### Features
 
@@ -134,7 +120,7 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 - Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
 - CLI executable script `cy2` requires CYPRESS_API_URL environment variable, otherwise throws
 
-# [2.1.0](https://github.com/sorry-cypress/cy2/compare/v2.0.1...v2.1.0) (2022-10-19)
+## [2.1.0](https://github.com/sorry-cypress/cy2/compare/v2.0.1...v2.1.0) (2022-10-19)
 
 ### Features
 
@@ -154,9 +140,9 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 - Release 2.0.0
 
-# [2.0.0](https://github.com/sorry-cypress/cy2/compare/v2.0.0-beta.0...v2.0.0) (2022-03-29)
+## [2.0.0](https://github.com/sorry-cypress/cy2/compare/v2.0.0-beta.0...v2.0.0) (2022-03-29)
 
-# [2.0.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.0-beta.0) (2021-09-12)
+## [2.0.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.3.0...v2.0.0-beta.0) (2021-09-12)
 
 ### Features
 
@@ -167,7 +153,7 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 - bumping major for safe release, no API changes
 
-# [1.3.0](https://github.com/sorry-cypress/cy2/compare/v1.2.1...v1.3.0) (2021-09-08)
+## [1.3.0](https://github.com/sorry-cypress/cy2/compare/v1.2.1...v1.3.0) (2021-09-08)
 
 ### Features
 
@@ -176,7 +162,7 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 ## [1.2.1](https://github.com/sorry-cypress/cy2/compare/v1.2.0...v1.2.1) (2021-05-11)
 
-# [1.2.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-05-11)
+## [1.2.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-05-11)
 
 ### Bug Fixes
 
@@ -186,13 +172,13 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 - add e2e tests ([d3e45a1](https://github.com/sorry-cypress/cy2/commit/d3e45a16ea5b6afdf2252fb456157a2e1386a4fd))
 
-# [1.1.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-05-08)
+## [1.1.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-05-08)
 
 ### Features
 
 - export run and patch from index ([e540940](https://github.com/sorry-cypress/cy2/commit/e5409406073064b7e00e50e19aff5a0662bf8324)), closes [#4](https://github.com/sorry-cypress/cy2/issues/4)
 
-# [1.1.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-04-30)
+## [1.1.0-beta.0](https://github.com/sorry-cypress/cy2/compare/v1.1.0...v1.2.0) (2021-04-30)
 
 ### Features
 
