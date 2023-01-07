@@ -1,4 +1,4 @@
-name: Publish to GitHub
+name: Release
 
 on:
   push:
@@ -19,16 +19,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-          registry-url: 'https://npm.pkg.github.com'
-          # scope: '@currents-dev'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      # - run: ./scripts/rewrite_package.js
+      - run: npm config ls
       - name: Release
-        # only release npm package and create github release
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           npm run release-ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
