@@ -99,10 +99,10 @@ export function getUpstreamProxy(
 /**
 Override HTTP_PROXY and maybe HTTPS_PROXY env variables with our own proxy URL
 
-The documentation is misleading: {@link https://docs.cypress.io/guides/references/proxy-configuration#Proxy-environment-variables}, it describes browser (runner) proxy settings.
+Relevant documentation: {@link https://docs.cypress.io/guides/references/proxy-configuration#Proxy-environment-variables}
 
 
-The cloud API implementation is a bit different. They copy HTTP_PROXY to HTTPS_PROXY at https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/util/proxy.ts#L23.
+The cloud API implementation: they copy HTTP_PROXY to HTTPS_PROXY at https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/util/proxy.ts#L23.
 
 Later they use HTTPS_PROXY for cloud connections and 'proxy-from-env' npm package
 - https://github.com/cypress-io/cypress/blob/develop/packages/network/lib/agent.ts#L347
