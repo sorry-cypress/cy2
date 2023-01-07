@@ -2,8 +2,6 @@ name: E2E:Network
 
 on:
   push:
-    # tags:
-    #   - '!v*'
 
 jobs:
   e2e-network:

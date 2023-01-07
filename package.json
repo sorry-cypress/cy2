@@ -1,6 +1,6 @@
 {
   "name": "@currents-dev/cy2",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -85,7 +85,7 @@
   },
   "release-it": {
     "git": {
-      "requireBranch": "main"
+      "requireBranch": "release/*"
     },
     "github": {
       "release": true
