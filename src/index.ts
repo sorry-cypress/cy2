@@ -1,5 +1,5 @@
 /*! 
-cy2 - use cypress runner with an custom API URLs
+cy2 - Integrate Cypress with alternative cloud services like Sorry Cypress or Currents
 Copyright (C) 2023 Andrew Goldis (agoldis@gmail.com)
 
 This program is free software: you can redistribute it and/or modify
