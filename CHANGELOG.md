@@ -1,3 +1,17 @@
+# Changelog
+
+# 4.0.0 (2023-01-07)
+
+
+### chore
+
+* **release:** preparing for release ([8b56032](https://github.com/currents-dev/cy2/commit/8b56032806f33e62d12d16d15393014a855668d3))
+
+
+### BREAKING CHANGES
+
+* **release:** - remove `patch` api. See README for details
+
 ## [3.4.3](https://github.com/sorry-cypress/cy2/compare/v3.4.2...v3.4.3) (2022-12-12)
 
 ### Bug Fixes
