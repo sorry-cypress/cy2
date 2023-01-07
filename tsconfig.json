@@ -9,9 +9,9 @@
     "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "strictNullChecks": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
-  "lib": ["es2016"],
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules", "./src/__tests__/*.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*.ts"]
 }

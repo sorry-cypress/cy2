@@ -6,7 +6,10 @@ npm-debug.log_
 yarn-debug.log*
 yarn-error.log*
 .vscode/settings.json
+videos
+screenshots
 
+.npmrc*
 # Runtime data
 
 pids

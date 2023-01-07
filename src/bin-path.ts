@@ -1,36 +1,35 @@
-import fs from 'fs';
-import which from 'npm-which';
-import { platform } from 'os';
-import path, { dirname } from 'path';
-import { promisify } from 'util';
-
-import { getContext } from './context';
+import { dirname, resolve } from 'path';
 import { debug } from './debug';
+import { error } from './log';
 
 export async function getCypressCLIBinPath(): Promise<string> {
-  let cliBinPath: null | string | void = null;
-
-  const ctx = getContext();
-  if (ctx?.has('cypressPackagePath')) {
-    cliBinPath = path.join(
-      dirname(ctx.get('cypressPackagePath') as string),
-      'bin',
-      'cypress'
+  if (process.env.CYPRESS_PACKAGE_SHELL_SCRIPT) {
+    debug(
+      'Cypress binary path from CYPRESS_PACKAGE_SHELL_SCRIPT: %s',
+      process.env.CYPRESS_PACKAGE_SHELL_SCRIPT
     );
-  } else {
-    cliBinPath = await whichCypress();
+    return process.env.CYPRESS_PACKAGE_SHELL_SCRIPT;
   }
 
-  if (!cliBinPath) {
-    throw new Error('Cannot detect cypress package executable script');
-  }
-  const packagePath = path.normalize(fs.realpathSync(cliBinPath));
-  debug('Cypress normalized binary path: %s', packagePath);
-  return packagePath;
-}
+  try {
+    const cypressPath = require.resolve('cypress');
+    const cypress = require('cypress/package.json');
 
-async function whichCypress() {
-  const location = platform() === 'win32' ? process.cwd() : __dirname;
-  const pWhich = promisify<string | null>(which(location));
-  return pWhich('cypress');
+    if (!cypress.bin || !cypress.bin?.cypress) {
+      throw new Error('Cannot detect cypress package executable');
+    }
+    const result = resolve(dirname(cypressPath), cypress.bin.cypress);
+    debug('Cypress binary path: %s', result);
+
+    if (!result) {
+      throw new Error('Cannot detect cypress package executable');
+    }
+    return result;
+  } catch (err) {
+    error(
+      'Cannot detect cypress package executable. Consider using CYPRESS_PACKAGE_SHELL_SCRIPT environment variable. Tried locations: %O',
+      require.resolve.paths('cypress')
+    );
+    throw err;
+  }
 }
