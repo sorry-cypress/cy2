@@ -15,10 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Setup .npmrc file to publish to GitHub Packages
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+          # Setup .npmrc file to publish to GitHub Packages
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm config ls
