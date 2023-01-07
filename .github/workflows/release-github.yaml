@@ -14,6 +14,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
+
       # Setup .npmrc file to publish to GitHub Packages
       - uses: actions/setup-node@v3
         with:
@@ -25,8 +26,8 @@ jobs:
       - name: Release
         # only release npm package and create github release
         run: |
-          git config --global user.email "agoldis@gmail.com"
-          git config --global user.name "Andrew Goldis"        
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           npm run release-ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

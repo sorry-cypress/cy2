@@ -1,6 +1,6 @@
 {
   "name": "@currents-dev/cy2",
-  "version": "4.0.11",
+  "version": "3.4.3",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -93,6 +93,7 @@
     "plugins": {
       "@release-it/conventional-changelog": {
         "preset": "angular",
+        "header": "# Changelog",
         "infile": "CHANGELOG.md"
       }
     },
