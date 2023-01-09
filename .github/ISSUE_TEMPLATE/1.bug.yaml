@@ -57,9 +57,23 @@ body:
 
   - type: textarea
     attributes:
-      label: Log and debug output
+      label: Command and Setup
       description: |
-        Run in debug mode to provide more info. Inlcude error messages and stack traces.
+        - The exact command or code snipper used to run cy2
+        - Your cloud provider and sorry-cypress setup details
+
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Full log and debug output
+      description: |
+        Run in debug mode to provide more info - error messages and stack traces.
+
+        **Include the full log - starting from running the command till receiving an error.**
+
+        Attach a link / file for long outputs.
 
         Linux: `DEBUG=cy2*,cypress:* cy2 run ...`
         Windows: `cmd /V /C "set DEBUG=cy2*,cypress:*&& set CYPRESS_API_URL=some && cy2 run ..."`
@@ -75,16 +89,5 @@ body:
         ```
 
         </details>
-    validations:
-      required: true
-
-  - type: textarea
-    attributes:
-      label: Additional information and screenshots
-      description: |
-        - Your cloud provider and sorry-cypress setup details
-        - Screenshots and video recordings
-        - Any other information that can be helpful
-
     validations:
       required: true
