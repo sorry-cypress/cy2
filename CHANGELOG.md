@@ -1,11 +1,16 @@
 # Changelog
 
-## [4.0.2](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.2) (2023-01-09)
-
+## [4.0.3](https://github.com/sorry-cypress/cy2/compare/v4.0.2...v4.0.3) (2023-01-09)
 
 ### Bug Fixes
 
-* prevent populating env with "undefined" values ([#51](https://github.com/sorry-cypress/cy2/issues/51)) ([41df64f](https://github.com/sorry-cypress/cy2/commit/41df64f6c2118614485ae22e1a761d8bd42a3813))
+- terminate proxy ([#53](https://github.com/sorry-cypress/cy2/issues/53)) ([12140cd](https://github.com/sorry-cypress/cy2/commit/12140cde58df9bea079950ce03ae69ca83dc34c8))
+
+## [4.0.2](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.2) (2023-01-09)
+
+### Bug Fixes
+
+- prevent populating env with "undefined" values ([#51](https://github.com/sorry-cypress/cy2/issues/51)) ([41df64f](https://github.com/sorry-cypress/cy2/commit/41df64f6c2118614485ae22e1a761d8bd42a3813))
 
 ## [4.0.1](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.1) (2023-01-09)
 
