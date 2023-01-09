@@ -1,3 +1,4 @@
+import { expect, jest } from '@jest/globals';
 import { run } from '../cypress-wrapper';
 import { startProxy } from '../proxy';
 
@@ -9,6 +10,7 @@ jest.mock('cypress', () => ({
 }));
 
 let originalEnv = process.env;
+type MockedStartProxy = jest.MockedFunction<typeof startProxy>;
 
 // generate function to return a  random port
 const randomPort = () => Math.floor(Math.random() * 10000) + 10000;
@@ -21,7 +23,10 @@ describe('Run env', () => {
 
   it('populates NODE_EXTRA_CA_CERTS', async () => {
     const port = randomPort();
-    (startProxy as jest.Mock).mockResolvedValue({ port, stop: () => {} });
+    (startProxy as MockedStartProxy).mockResolvedValue({
+      port,
+      stop: async () => {},
+    });
 
     await run(target, {});
 
@@ -33,7 +38,10 @@ describe('Run env', () => {
 
   it('populates HTTP_PROXY when no pre-existing env variables', async () => {
     const port = randomPort();
-    (startProxy as jest.Mock).mockResolvedValue({ port, stop: () => {} });
+    (startProxy as MockedStartProxy).mockResolvedValue({
+      port,
+      stop: async () => {},
+    });
     await run(target, {});
 
     expect(process.env).toMatchObject({
@@ -43,7 +51,10 @@ describe('Run env', () => {
 
   it('removes "undefined" variables', async () => {
     const port = randomPort();
-    (startProxy as jest.Mock).mockResolvedValue({ port, stop: () => {} });
+    (startProxy as MockedStartProxy).mockResolvedValue({
+      port,
+      stop: async () => {},
+    });
 
     await run(target, {});
     expect(process.env).not.toHaveProperty('HTTPS_PROXY');
@@ -51,7 +62,10 @@ describe('Run env', () => {
 
   it('use HTTPS_PROXY as upstream proxy', async () => {
     const port = randomPort();
-    (startProxy as jest.Mock).mockResolvedValue({ port, stop: () => {} });
+    (startProxy as MockedStartProxy).mockResolvedValue({
+      port,
+      stop: async () => {},
+    });
 
     // prepopulate HTTPS_PROXY from userland
     const upstreamProxy = 'https://upstream.proxy/';
