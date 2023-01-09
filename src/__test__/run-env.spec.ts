@@ -27,7 +27,6 @@ describe('Run env', () => {
       port,
       stop: async () => {},
     });
-    console.log(proxy);
 
     await run(target, {});
 

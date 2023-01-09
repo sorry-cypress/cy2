@@ -67,6 +67,7 @@ export function getProxySettings({ port }: { port: number }) {
       'NODE_EXTRA_CA_CERTS is not supported. Please report this issue.'
     );
   }
+
   const tmpobj = tmp.fileSync();
   fs.writeFileSync(tmpobj.name, ca);
 
@@ -126,7 +127,7 @@ export function overrideRuntimeEnvVariabes(
 ) {
   Object.entries(newEnv).forEach(([key, value]) => {
     if (isUndefined(value)) {
-      debug('Setting env %s', key);
+      debug('Deleting env %s', key);
       process.env[key] = value;
       delete process.env[key];
       return;

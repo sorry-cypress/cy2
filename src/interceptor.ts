@@ -1,16 +1,23 @@
+import type httpProxyType from 'http-proxy';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { cert, key } from './cert';
 import { debugNet } from './debug';
 import * as httpProxy from './http-proxy';
 import { warn } from './log';
 
-const inteceptors = new Map<'upstream' | 'direct', httpProxy>();
+const inteceptors = new Map<'upstream' | 'direct', httpProxyType>();
 
 export async function stopInterceptors() {
   debugNet('Stopping interceptors');
   await Promise.all(
     Array.from(inteceptors.values()).map(
-      (i): Promise<void> => new Promise((resolve) => i.close(() => resolve()))
+      (interceptor, i, all): Promise<void> =>
+        new Promise((resolve) =>
+          interceptor.close(() => {
+            debugNet('Stopped interceptor %d/%d', i + 1, all.length);
+            resolve();
+          })
+        )
     )
   );
   inteceptors.clear();
@@ -57,10 +64,10 @@ export async function getDirectInterceptor({
   target,
 }: {
   target: string;
-}): Promise<httpProxy> {
+}): Promise<httpProxyType> {
   if (inteceptors.has('direct')) {
     debugNet('Using interceptor with direct routing');
-    return inteceptors.get('direct') as httpProxy;
+    return inteceptors.get('direct') as httpProxyType;
   }
   debugNet('Creating interceptor with direct routing path: %s', target);
   inteceptors.set(
@@ -69,7 +76,7 @@ export async function getDirectInterceptor({
       target,
     })
   );
-  return inteceptors.get('direct') as httpProxy;
+  return inteceptors.get('direct') as httpProxyType;
 }
 
 function createInterceptor({
@@ -78,10 +85,11 @@ function createInterceptor({
 }: {
   target: string;
   agent?: HttpsProxyAgent;
-}): Promise<httpProxy> {
+}): Promise<httpProxyType> {
   return new Promise((resolve) => {
     debugNet('Creating interceptor for %s', target);
     const i = httpProxy
+      // @ts-ignore
       .createProxyServer({
         target,
         changeOrigin: true,
