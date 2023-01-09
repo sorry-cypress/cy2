@@ -60,6 +60,7 @@ export async function startProxy({
           return;
         }
 
+        debugNet('Proxy is listening on port %d', address.port);
         resolve({
           stop: async () => {
             debugNet('Stopping interceptor');
