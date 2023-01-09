@@ -1,9 +1,6 @@
 name: Release
 
-on:
-  push:
-    branches:
-      - release/*
+on: workflow_dispatch
 
 jobs:
   release:
@@ -12,6 +9,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+
     steps:
       - uses: actions/checkout@v3
 
@@ -24,7 +22,7 @@ jobs:
       - run: npm config ls
       - name: Release
         run: |
-          git config user.name "${GITHUB_ACTOR}"
+          git config user.name "Release Workflow"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           npm run release-ci
         env:
