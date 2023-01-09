@@ -1,6 +1,6 @@
 import { expect, jest } from '@jest/globals';
 import { run } from '../cypress-wrapper';
-import { startProxy } from '../proxy';
+import * as proxy from '../proxy';
 
 jest.mock('../proxy');
 jest.mock('cypress', () => ({
@@ -10,11 +10,11 @@ jest.mock('cypress', () => ({
 }));
 
 let originalEnv = process.env;
-type MockedStartProxy = jest.MockedFunction<typeof startProxy>;
 
 // generate function to return a  random port
 const randomPort = () => Math.floor(Math.random() * 10000) + 10000;
 const target = 'http://cy.currents.dev';
+
 describe('Run env', () => {
   beforeEach(() => {
     // restore the original env
@@ -23,10 +23,11 @@ describe('Run env', () => {
 
   it('populates NODE_EXTRA_CA_CERTS', async () => {
     const port = randomPort();
-    (startProxy as MockedStartProxy).mockResolvedValue({
+    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
       stop: async () => {},
     });
+    console.log(proxy);
 
     await run(target, {});
 
@@ -38,7 +39,7 @@ describe('Run env', () => {
 
   it('populates HTTP_PROXY when no pre-existing env variables', async () => {
     const port = randomPort();
-    (startProxy as MockedStartProxy).mockResolvedValue({
+    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
       stop: async () => {},
     });
@@ -51,7 +52,7 @@ describe('Run env', () => {
 
   it('removes "undefined" variables', async () => {
     const port = randomPort();
-    (startProxy as MockedStartProxy).mockResolvedValue({
+    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
       stop: async () => {},
     });
@@ -62,7 +63,7 @@ describe('Run env', () => {
 
   it('use HTTPS_PROXY as upstream proxy', async () => {
     const port = randomPort();
-    (startProxy as MockedStartProxy).mockResolvedValue({
+    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
       stop: async () => {},
     });
@@ -73,7 +74,7 @@ describe('Run env', () => {
 
     await run(target, {});
 
-    expect(startProxy).toHaveBeenCalledWith(
+    expect(proxy.startProxy).toHaveBeenCalledWith(
       expect.objectContaining({
         upstreamProxy: new URL(upstreamProxy),
       })
