@@ -1,0 +1,24 @@
+name: Unit Test
+
+on:
+  push:
+
+jobs:
+  unit-test:
+    if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - run: npm install --frozen-lockfile
+
+      - name: Test
+        run: npm run test
