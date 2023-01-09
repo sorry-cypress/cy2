@@ -7,7 +7,7 @@ build({
   bundle: true,
   outdir: 'dist',
   minify: true,
-  sourcemap: false,
+  sourcemap: true,
   target: ['node14'],
   format: 'cjs',
   platform: 'node',
