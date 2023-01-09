@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.1](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.1) (2023-01-09)
+
+Bumping version to skip the existing corrupted 4.0.0 on npm.
+
 ## [4.0.0](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.0) (2023-01-09)
 
 This release restores compatibility with Cypress 12 (as well as with the previous versions of Cypress).
