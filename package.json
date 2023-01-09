@@ -20,7 +20,7 @@
     "watch:esbuild": "esbuild ./src/*.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist --watch",
     "build-tunnel": "esbuild ./src/tunnel-proxy.ts --bundle --platform=node --target=node14 --packages=external --sourcemap=inline --outdir=dist",
     "release": "release-it",
-    "release-ci": "release-it --ci --npm.skipChecks --npm.ignoreVersion --github.release",
+    "release-ci": "release-it --ci --npm.skipChecks --npm.ignoreVersion --no-git --no-github",
     "clean": "rimraf dist"
   },
   "files": [
