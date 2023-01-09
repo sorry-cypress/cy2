@@ -1,6 +1,19 @@
 # Changelog
 
-## 4.0.0-beta.14 (2023-01-07)
+## [4.0.0](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.0) (2023-01-09)
+
+This release restores compatibility with Cypress 12 (as well as with the previous versions of Cypress).
+
+### Features
+
+- add sourcemaps to npm release ([ec90d0e](https://github.com/sorry-cypress/cy2/commit/ec90d0e954dd486d99710e9f6e80c342f2d9ba9b))
+- add `run` API
+- add `spawn` API
+
+### BREAKING CHANGE
+
+- Remove `patch` API - see [README](./README.md) for details
+- Change the parameter types for `run` method - see [README](./README.md) for details
 
 ## [3.4.3](https://github.com/sorry-cypress/cy2/compare/v3.4.2...v3.4.3) (2022-12-12)
 
@@ -13,12 +26,6 @@
 ### Bug Fixes
 
 - expose getBinPath ([ac576e7](https://github.com/sorry-cypress/cy2/commit/ac576e712b046b2c69fbebaba046505199ecf45e))
-
-## [3.4.1](https://github.com/sorry-cypress/cy2/compare/v3.4.1-beta.1...v3.4.1) (2022-12-10)
-
-## [3.4.1-beta.1](https://github.com/sorry-cypress/cy2/compare/v3.4.1-beta.0...v3.4.1-beta.1) (2022-12-10)
-
-## [3.4.1-beta.0](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v3.4.1-beta.0) (2022-12-10)
 
 ## [3.4.0](https://github.com/sorry-cypress/cy2/compare/v3.3.0...v3.4.0) (2022-12-10)
 
@@ -98,10 +105,10 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 ### BREAKING CHANGES
 
-- Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+- Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` \* they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
 - CLI executable script `cy2` requires CYPRESS_API_URL environment variable, otherwise throws
 - Deprecated `run` API
-- Deprecated CYPRESS_PACKAGE_CONFIG_PATH - see API `patch` call
+- Deprecated CYPRESS_PACKAGE_CONFIG_PATH \* see API `patch` call
 
 ## [3.0.0-alpha.2](https://github.com/sorry-cypress/cy2/compare/v3.0.0-alpha.1...v3.0.0-alpha.2) (2022-10-21)
 
@@ -119,7 +126,7 @@ Implement a new patching method that prevent permanent "patching" of cypress ins
 
 ### BREAKING CHANGES
 
-- Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` - they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
+- Starting version 3+, the API methods `run` and `patch` rely on `process.env.CYPRESS_API_URL` \* they do not accept any argument. That's because of a new patching method that doesn't permanently change cypress installation after invoking `cy2`.
 - CLI executable script `cy2` requires CYPRESS_API_URL environment variable, otherwise throws
 
 ## [2.1.0](https://github.com/sorry-cypress/cy2/compare/v2.0.1...v2.1.0) (2022-10-19)
