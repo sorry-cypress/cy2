@@ -120,3 +120,18 @@ export function getEnvOverrides(
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();
 }
+
+export function overrideRuntimeEnvVariabes(
+  newEnv: Partial<Record<string, string>>
+) {
+  Object.entries(newEnv).forEach(([key, value]) => {
+    if (isUndefined(value)) {
+      debug('Setting env %s', key);
+      process.env[key] = value;
+      delete process.env[key];
+      return;
+    }
+    debug('Setting env %s=%s', key, value);
+    process.env[key] = value;
+  });
+}

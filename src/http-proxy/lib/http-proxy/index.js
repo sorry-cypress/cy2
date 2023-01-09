@@ -77,7 +77,7 @@ function createRightProxy(type) {
           'Unexpected error processing the request. Please report the issue and the details below. Set environment variable DEBUG=cy2* and rerun to get more information'
         );
         console.error(
-          'Request: %O',
+          'Request: %o',
           pick(
             req,
             'httpVersion',
@@ -102,7 +102,7 @@ function createRightProxy(type) {
         omit(requestOptions, 'ssl')
       );
       debugHttpProxy(
-        'Request: %O',
+        'Request: %o',
         pick(
           req,
           'httpVersion',
