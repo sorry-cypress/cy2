@@ -31,18 +31,6 @@ export async function startProxy({
   envVariables: Partial<ReturnType<typeof getSanitizedEnvironment>>;
 }): Promise<Proxy> {
   return new Promise((resolve, reject) => {
-    function stopProxy(): Promise<void> {
-      return new Promise((_resolve) => {
-        debugNet('Stopping proxy');
-        proxy.close((err) => {
-          if (err) {
-            console.error(err);
-          }
-          _resolve();
-        });
-      });
-    }
-
     const onConnect = getOnConnect(
       upstreamProxy,
       target,
@@ -71,6 +59,18 @@ export async function startProxy({
         });
         return;
       });
+
+    function stopProxy(): Promise<void> {
+      return new Promise((_resolve) => {
+        debugNet('Stopping proxy');
+        proxy.close((err) => {
+          if (err) {
+            console.error(err);
+          }
+          _resolve();
+        });
+      });
+    }
   });
 }
 

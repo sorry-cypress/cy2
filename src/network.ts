@@ -42,7 +42,6 @@ export function pipeSocketToLocalPort({
   socket: net.Socket;
   port: number;
 }) {
-  // @ts-ignore
   const socketToInterceptor = net.connect(port);
 
   socketToInterceptor.on('ready', () => {

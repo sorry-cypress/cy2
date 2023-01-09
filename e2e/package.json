@@ -2,5 +2,8 @@
   "name": "e2e",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "devcert": "^1.2.2"
+  }
 }
