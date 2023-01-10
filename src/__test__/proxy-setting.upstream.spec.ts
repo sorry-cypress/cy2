@@ -34,24 +34,26 @@ describe('Upstream proxy settings', () => {
     expect(getUpstreamProxy({})).toBe(null);
   });
 
-  it('warn if protocol mismtach HTTPS_PROXY <> http://', async () => {
+  it('warn if protocol mismatch HTTPS_PROXY <> http://', async () => {
     jest.spyOn(console, 'warn').mockImplementation(() => {});
     getUpstreamProxy({
       HTTPS_PROXY: 'http://localhost:1234',
     });
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('WARNING'),
-      expect.stringMatching('Mismatch between protocol')
+      expect.stringMatching('WARNING'),
+      expect.stringMatching('Mismatch between protocol'),
+      expect.anything()
     );
   });
-  it('warn if protocol mismtach HTTP_PROXY <> https://', async () => {
+  it('warn if protocol mismatch HTTP_PROXY <> https://', async () => {
     jest.spyOn(console, 'warn').mockImplementation(() => {});
     getUpstreamProxy({
       HTTP_PROXY: 'httpS://localhost:1234',
     });
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('WARNING'),
-      expect.stringMatching('Mismatch between protocol')
+      expect.stringMatching('WARNING'),
+      expect.stringMatching('Mismatch between protocol'),
+      expect.anything()
     );
   });
 });
