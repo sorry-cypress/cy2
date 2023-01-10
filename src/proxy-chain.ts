@@ -1,14 +1,22 @@
-import http from 'http';
+import http, { IncomingMessage } from 'http';
 import https from 'https';
 import net from 'net';
-import { debugNet } from './debug';
+import { getDebugNet } from './debug';
+import { getSocketWithId } from './network';
+
+const debug = getDebugNet('proxy-chain');
+
+/*
+ * cypress > proxy > upstream proxy > destination
+ */
 
 export function runProxyChain(
   req: http.IncomingMessage,
   socket: net.Socket,
   upstreamProxy: URL
 ) {
-  debugNet('Proxy chain to upstream for', req.url);
+  const cypressSocket = getSocketWithId(socket);
+  debug('Proxy chain to upstream proxy for', req.url);
 
   upstreamProxy.protocol === 'https:'
     ? https
@@ -28,48 +36,66 @@ export function runProxyChain(
         .once('response', onResponse)
         .end();
 
-  function onResponse(res) {
+  function onResponse(res: IncomingMessage) {
+    // @ts-ignore
     res.upgrade = true;
   }
 
-  function onUpgrade(res, proxySocket) {
+  function onUpgrade(res: IncomingMessage, proxySocket: net.Socket) {
     process.nextTick(function () {
       onConnect(res, proxySocket);
     });
   }
 
-  function onConnect(res, proxySocket) {
+  function onConnect(res: IncomingMessage, _proxySocket: net.Socket) {
+    const proxySocket = getSocketWithId(_proxySocket);
+
     proxySocket.setNoDelay(true);
     proxySocket.removeAllListeners();
 
     if (res.statusCode === 200) {
-      socket.pipe(proxySocket);
-      proxySocket.pipe(socket);
-      socket.write('HTTP/1.1 200 OK\r\n\r\n');
+      debug(
+        'Proxy chain: connected to upstream proxy for "%s", socket: %s',
+        req.url,
+        proxySocket._cy2_id
+      );
+
+      cypressSocket.pipe(proxySocket);
+      proxySocket.pipe(cypressSocket);
+      cypressSocket.write('HTTP/1.1 200 OK\r\n\r\n');
     } else {
-      socket.write('HTTP/1.1 500 SERVER ERROR\r\n\r\n');
-      socket.end();
-      socket.destroy();
+      debug(
+        'Error connecting to upstream proxy for "%s", proxy socket: %s',
+        req.url,
+        proxySocket._cy2_id
+      );
+
+      cypressSocket.write('HTTP/1.1 500 SERVER ERROR\r\n\r\n');
+      cypressSocket.end();
+      cypressSocket.destroy();
     }
 
-    proxySocket.on('error', () => {
+    proxySocket.on('error', (error) => {
+      debug('proxySocket %s - error : %o', proxySocket._cy2_id, error);
       proxySocket.end();
       proxySocket.destroy();
-      socket.end();
-      socket.destroy();
+      cypressSocket.end();
+      cypressSocket.destroy();
     });
 
-    socket.on('error', () => {
+    cypressSocket.on('error', (error) => {
+      debug('cypress socket %s - error: %o', cypressSocket._cy2_id, error);
       proxySocket.end();
       proxySocket.destroy();
-      socket.end();
-      socket.destroy();
+      cypressSocket.end();
+      cypressSocket.destroy();
     });
   }
 
   function onError(err) {
+    debug('CONNECT request error', err);
     console.error('Upstream proxy connection error', err);
-    socket.end();
-    socket.destroy();
+    cypressSocket.end();
+    cypressSocket.destroy();
   }
 }
