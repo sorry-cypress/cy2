@@ -1,29 +1,32 @@
-import https from 'http';
+import http from 'http';
+import https from 'https';
 import net from 'net';
 import { debugNet } from './debug';
 
 export function runProxyChain(
-  req: https.IncomingMessage,
+  req: http.IncomingMessage,
   socket: net.Socket,
   upstreamProxy: URL
 ) {
   debugNet('Proxy chain to upstream for', req.url);
 
-  https
-    .request({
-      method: 'CONNECT',
-      path: req.url,
-      headers: req.headers,
-      agent: false,
-      hostname: upstreamProxy.hostname,
-      port: upstreamProxy.port,
-      protocol: upstreamProxy.protocol,
-    })
-    .once('upgrade', onUpgrade)
-    .once('connect', onConnect)
-    .once('error', onError)
-    .once('response', onResponse)
-    .end();
+  upstreamProxy.protocol === 'https:'
+    ? https
+    : http
+        .request({
+          method: 'CONNECT',
+          path: req.url,
+          headers: req.headers,
+          agent: false,
+          hostname: upstreamProxy.hostname,
+          port: upstreamProxy.port,
+          protocol: upstreamProxy.protocol,
+        })
+        .once('upgrade', onUpgrade)
+        .once('connect', onConnect)
+        .once('error', onError)
+        .once('response', onResponse)
+        .end();
 
   function onResponse(res) {
     res.upgrade = true;
