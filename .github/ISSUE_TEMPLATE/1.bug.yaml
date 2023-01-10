@@ -71,7 +71,7 @@ body:
       description: |
         Run in debug mode to provide more info - error messages and stack traces.
 
-        **Include the full log - starting from running the command till receiving an error.**
+        **👉🏻 Include the full log 👈🏻 - starting from running the command till receiving an error.**
 
         Attach a link / file for long outputs.
 
