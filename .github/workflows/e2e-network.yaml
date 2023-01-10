@@ -51,13 +51,13 @@ jobs:
       - name: Record with upstream proxy
         working-directory: ./e2e
         env:
-          HTTP_PROXY: https://localhost:9999
+          HTTP_PROXY: http://localhost:9999
         run: |
           ../bin/cy2 run --parallel --record --key xxx
 
       - name: Bypass upstream proxy for director
         env:
-          HTTP_PROXY: https://localhost:9999
+          HTTP_PROXY: http://localhost:9999
           NO_PROXY: localhost
         working-directory: ./e2e
         run: |

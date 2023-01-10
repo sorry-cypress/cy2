@@ -1,9 +1,12 @@
+import { pipe } from 'fp-ts/function';
+import * as o from 'fp-ts/Option';
 import fs from 'fs';
 import { chain, isUndefined, pick } from 'lodash';
 import tmp from 'tmp';
 import { URL } from 'url';
 import { ca } from './cert';
 import { debug } from './debug';
+import { warn } from './log';
 
 const falsyEnv = (v) => {
   return v === 'false' || v === '0' || !v;
@@ -80,21 +83,49 @@ export function getProxySettings({ port }: { port: number }) {
 export function getUpstreamProxy(
   envVariables: Record<string, string | undefined>
 ) {
-  if (envVariables.HTTPS_PROXY) {
-    const r = new URL(envVariables.HTTPS_PROXY);
-    r.protocol = 'https:';
-    debug('Using upstream proxy %s', r);
-    return r;
-  }
+  return pipe(
+    o.fromNullable(envVariables.HTTPS_PROXY),
+    o.map((r) => ({
+      source: 'HTTPS_PROXY',
+      value: r,
+    })),
+    o.alt(() =>
+      pipe(
+        o.fromNullable(envVariables.HTTP_PROXY),
+        o.map((r) => ({
+          source: 'HTTP_PROXY',
+          value: r,
+        }))
+      )
+    ),
+    o.map((i) => {
+      warnProtocolMismatch(i.source, new URL(i.value));
+      return new URL(i.value);
+    }),
+    o.fold(
+      () => null,
+      (r) => {
+        debug('Using upstream proxy %o', r);
+        return r;
+      }
+    )
+  );
+}
 
-  if (envVariables.HTTP_PROXY) {
-    const r = new URL(envVariables.HTTP_PROXY);
-    r.protocol = 'http:';
-    debug('Using upstream proxy %s', r);
-    return r;
+export function warnProtocolMismatch(source: string, url: URL) {
+  if (url.protocol === 'http:' && source === 'HTTPS_PROXY') {
+    warn(
+      "Mismatch between protocol 'http' and env variable HTTPS_PROXY: %s. Use HTTP_PROXY instead.",
+      url
+    );
   }
-
-  return null;
+  if (url.protocol === 'https:' && source === 'HTTP_PROXY') {
+    warn(
+      "Mismatch between protocol 'https' and env variable HTTP_PROXY: %s. USE HTTPS_PROXY instead.",
+      url
+    );
+  }
+  return;
 }
 
 /**
