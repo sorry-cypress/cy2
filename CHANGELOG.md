@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.4](https://github.com/sorry-cypress/cy2/compare/v4.0.3...v4.0.4) (2023-01-10)
+
+
+### Bug Fixes
+
+* Use the right upstream chain protocol ([#55](https://github.com/sorry-cypress/cy2/issues/55)) ([9a7bf20](https://github.com/sorry-cypress/cy2/commit/9a7bf20286b44d92867a67ed610208b6729f796b)), closes [#54](https://github.com/sorry-cypress/cy2/issues/54)
+
 ## [4.0.3](https://github.com/sorry-cypress/cy2/compare/v4.0.2...v4.0.3) (2023-01-09)
 
 ### Bug Fixes
