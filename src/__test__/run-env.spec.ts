@@ -36,7 +36,7 @@ describe('Run env', () => {
     );
   });
 
-  it('populates HTTP_PROXY when no pre-existing env variables', async () => {
+  it('populates HTTPS_PROXY when no pre-existing env variables', async () => {
     const port = randomPort();
     jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
@@ -45,19 +45,20 @@ describe('Run env', () => {
     await run(target, {});
 
     expect(process.env).toMatchObject({
-      HTTP_PROXY: `http://127.0.0.1:${port}`,
+      HTTPS_PROXY: `http://127.0.0.1:${port}`,
     });
   });
 
   it('removes "undefined" variables', async () => {
     const port = randomPort();
+    process.env.HTTP_PROXY = 'http://undefined.proxy/';
     jest.spyOn(proxy, 'startProxy').mockResolvedValue({
       port,
       stop: async () => {},
     });
 
     await run(target, {});
-    expect(process.env).not.toHaveProperty('HTTPS_PROXY');
+    expect(process.env).not.toHaveProperty('HTTP_PROXY');
   });
 
   it('use HTTPS_PROXY as upstream proxy', async () => {
