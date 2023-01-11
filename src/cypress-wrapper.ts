@@ -11,7 +11,7 @@ import {
   getProxySettings,
   getSanitizedEnvironment,
   getUpstreamProxy,
-  overrideRuntimeEnvVariabes,
+  overrideProcessEnv,
 } from './proxy-settings';
 
 /**
@@ -83,9 +83,7 @@ export async function run(
   });
   try {
     const settings = getProxySettings({ port });
-    overrideRuntimeEnvVariabes(
-      getEnvOverrides(settings.proxyURL, envVariables)
-    );
+    overrideProcessEnv(getEnvOverrides(settings.proxyURL, envVariables));
     process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
     return await cypress.run(config);
   } finally {

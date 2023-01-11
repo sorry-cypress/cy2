@@ -125,14 +125,6 @@ function createRightProxy(type) {
          * refer to the connection socket
          * pass(req, socket, options, head)
          */
-        debugHttpProxy(
-          'applying pass type "%s", #%d %s: %s %s',
-          type,
-          i,
-          passes[i].name,
-          req.method,
-          req.url
-        );
         if (passes[i](req, res, requestOptions, head, this, cbl)) {
           // passes can return a truthy value to halt the loop
           debugHttpProxy(

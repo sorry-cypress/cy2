@@ -146,16 +146,18 @@ export function getEnvOverrides(
 ): Partial<Record<string, string>> {
   return chain({
     ...envVariables,
-    HTTP_PROXY: currentsProxyURL,
-    HTTPS_PROXY: envVariables.HTTPS_PROXY ? currentsProxyURL : undefined,
+    // They use outdated `@cyrpress/request` for uploading artifacts
+    // it doesn't like HTTP_PROXY for some reason.
+    // That affects sorry-cypress users with `http:` storage urls
+    // see https://github.com/sorry-cypress/cy2/issues/47
+    HTTP_PROXY: undefined,
+    HTTPS_PROXY: currentsProxyURL,
   })
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();
 }
 
-export function overrideRuntimeEnvVariabes(
-  newEnv: Partial<Record<string, string>>
-) {
+export function overrideProcessEnv(newEnv: Partial<Record<string, string>>) {
   Object.entries(newEnv).forEach(([key, value]) => {
     if (isUndefined(value)) {
       debug('Deleting env %s', key);
