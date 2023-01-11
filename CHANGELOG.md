@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.5](https://github.com/sorry-cypress/cy2/compare/v4.0.4...v4.0.5) (2023-01-11)
+
+
+### Bug Fixes
+
+* use HTTPS_PROXY by default ([#56](https://github.com/sorry-cypress/cy2/issues/56)) ([c4115ca](https://github.com/sorry-cypress/cy2/commit/c4115ca1476cf8c06992437455e58bf903d591af))
+
 ## [4.0.4](https://github.com/sorry-cypress/cy2/compare/v4.0.3...v4.0.4) (2023-01-10)
 
 
