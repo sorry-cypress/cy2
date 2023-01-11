@@ -3,9 +3,11 @@
 
 import cp from 'child_process';
 import { platform } from 'os';
+import packageJson from '../package.json';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
+
 import {
   getEnvOverrides,
   getProxySettings,
@@ -21,6 +23,7 @@ import {
  */
 export async function spawn(apiUrl: string) {
   debug('Cypress API URL: %s', apiUrl);
+  debug('Package version: %s', packageJson.version);
 
   const [, , ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
@@ -67,6 +70,7 @@ export async function run(
   | CypressCommandLine.CypressFailedRunResult
 > {
   debug('Cypress API URL: %s', apiUrl);
+  debug('Package version: %s', packageJson.version);
 
   if (!apiUrl) {
     throw new Error('Missing API URL');
