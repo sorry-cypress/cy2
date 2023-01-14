@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'https://localhost:3000',
+    baseUrl: 'https://wikipedia.org',
     specPattern: 'cypress/integration/*.spec.js',
     supportFile: 'cypress/support/e2e.js',
   },

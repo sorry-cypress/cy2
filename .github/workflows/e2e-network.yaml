@@ -31,7 +31,6 @@ jobs:
           node-version: '16'
           cache: 'npm'
 
-      # remove cypress from peer dependecies
       - name: Install dependencies
         run: npm install
 

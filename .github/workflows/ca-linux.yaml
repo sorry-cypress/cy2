@@ -1,0 +1,45 @@
+name: E2E:CA
+
+on:
+  push:
+
+jobs:
+  e2e-ca:
+    if: "!contains(toJSON(github.event.commits.*.message), '[skip ci]')"
+
+    runs-on: ubuntu-latest
+    env:
+      DEBUG: cy2*,cypress:server:cloud:*,cypress:network:*
+      # prevent cypress ts-paths interfering with local imports
+      TS_NODE_PROJECT: dummy.ts.json
+
+    services:
+      director:
+        image: agoldis/sorry-cypress-director
+        ports:
+          - 1234:1234
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "127.0.0.1 fakefake.currents.dev" | sudo tee -a /etc/hosts
+      - name: Test CA
+        working-directory: ./e2e
+        env:
+          CYPRESS_API_URL: http://fakefake.currents.dev:1234
+          NODE_EXTRA_CA_CERTS: ./ca
+          CY2_EMPTY_CA: true
+        run: ../bin/cy2 run --parallel --record --key xxx --ci-build-id xxx

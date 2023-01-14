@@ -4,11 +4,11 @@ import fs from 'fs';
 import { chain, isUndefined, pick } from 'lodash';
 import tmp from 'tmp';
 import { URL } from 'url';
-import { ca } from './cert';
+import { getCA } from './ca';
 import { debug } from './debug';
 import { warn } from './log';
 
-const falsyEnv = (v) => {
+const falsyEnv = (v: string) => {
   return v === 'false' || v === '0' || !v;
 };
 
@@ -65,12 +65,7 @@ export function getSanitizedEnvironment() {
 }
 
 export function getProxySettings({ port }: { port: number }) {
-  if (process.env.NODE_EXTRA_CA_CERTS) {
-    throw new Error(
-      'NODE_EXTRA_CA_CERTS is not supported. Please report this issue.'
-    );
-  }
-
+  const ca = getCA();
   const tmpobj = tmp.fileSync();
   fs.writeFileSync(tmpobj.name, ca);
 
