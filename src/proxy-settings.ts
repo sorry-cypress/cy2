@@ -1,9 +1,12 @@
+import { pipe } from 'fp-ts/function';
+import * as o from 'fp-ts/Option';
 import fs from 'fs';
 import { chain, isUndefined, pick } from 'lodash';
 import tmp from 'tmp';
 import { URL } from 'url';
 import { ca } from './cert';
 import { debug } from './debug';
+import { warn } from './log';
 
 const falsyEnv = (v) => {
   return v === 'false' || v === '0' || !v;
@@ -67,6 +70,7 @@ export function getProxySettings({ port }: { port: number }) {
       'NODE_EXTRA_CA_CERTS is not supported. Please report this issue.'
     );
   }
+
   const tmpobj = tmp.fileSync();
   fs.writeFileSync(tmpobj.name, ca);
 
@@ -79,21 +83,49 @@ export function getProxySettings({ port }: { port: number }) {
 export function getUpstreamProxy(
   envVariables: Record<string, string | undefined>
 ) {
-  if (envVariables.HTTPS_PROXY) {
-    const r = new URL(envVariables.HTTPS_PROXY);
-    r.protocol = 'https:';
-    debug('Using upstream proxy %s', r);
-    return r;
-  }
+  return pipe(
+    o.fromNullable(envVariables.HTTPS_PROXY),
+    o.map((r) => ({
+      source: 'HTTPS_PROXY',
+      value: r,
+    })),
+    o.alt(() =>
+      pipe(
+        o.fromNullable(envVariables.HTTP_PROXY),
+        o.map((r) => ({
+          source: 'HTTP_PROXY',
+          value: r,
+        }))
+      )
+    ),
+    o.map((i) => {
+      warnProtocolMismatch(i.source, new URL(i.value));
+      return new URL(i.value);
+    }),
+    o.fold(
+      () => null,
+      (r) => {
+        debug('Using upstream proxy %o', r);
+        return r;
+      }
+    )
+  );
+}
 
-  if (envVariables.HTTP_PROXY) {
-    const r = new URL(envVariables.HTTP_PROXY);
-    r.protocol = 'http:';
-    debug('Using upstream proxy %s', r);
-    return r;
+export function warnProtocolMismatch(source: string, url: URL) {
+  if (url.protocol === 'http:' && source === 'HTTPS_PROXY') {
+    warn(
+      "Mismatch between protocol 'http' and env variable HTTPS_PROXY: %s. Use HTTP_PROXY instead.",
+      url
+    );
   }
-
-  return null;
+  if (url.protocol === 'https:' && source === 'HTTP_PROXY') {
+    warn(
+      "Mismatch between protocol 'https' and env variable HTTP_PROXY: %s. USE HTTPS_PROXY instead.",
+      url
+    );
+  }
+  return;
 }
 
 /**
@@ -114,9 +146,26 @@ export function getEnvOverrides(
 ): Partial<Record<string, string>> {
   return chain({
     ...envVariables,
-    HTTP_PROXY: currentsProxyURL,
-    HTTPS_PROXY: envVariables.HTTPS_PROXY ? currentsProxyURL : undefined,
+    // They use outdated `@cyrpress/request` for uploading artifacts
+    // it doesn't like HTTP_PROXY for some reason.
+    // That affects sorry-cypress users with `http:` storage urls
+    // see https://github.com/sorry-cypress/cy2/issues/47
+    HTTP_PROXY: undefined,
+    HTTPS_PROXY: currentsProxyURL,
   })
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();
+}
+
+export function overrideProcessEnv(newEnv: Partial<Record<string, string>>) {
+  Object.entries(newEnv).forEach(([key, value]) => {
+    if (isUndefined(value)) {
+      debug('Deleting env %s', key);
+      process.env[key] = value;
+      delete process.env[key];
+      return;
+    }
+    debug('Setting env %s=%s', key, value);
+    process.env[key] = value;
+  });
 }

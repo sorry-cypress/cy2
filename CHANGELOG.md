@@ -1,5 +1,31 @@
 # Changelog
 
+## [4.0.5](https://github.com/sorry-cypress/cy2/compare/v4.0.4...v4.0.5) (2023-01-11)
+
+
+### Bug Fixes
+
+* use HTTPS_PROXY by default ([#56](https://github.com/sorry-cypress/cy2/issues/56)) ([c4115ca](https://github.com/sorry-cypress/cy2/commit/c4115ca1476cf8c06992437455e58bf903d591af))
+
+## [4.0.4](https://github.com/sorry-cypress/cy2/compare/v4.0.3...v4.0.4) (2023-01-10)
+
+
+### Bug Fixes
+
+* Use the right upstream chain protocol ([#55](https://github.com/sorry-cypress/cy2/issues/55)) ([9a7bf20](https://github.com/sorry-cypress/cy2/commit/9a7bf20286b44d92867a67ed610208b6729f796b)), closes [#54](https://github.com/sorry-cypress/cy2/issues/54)
+
+## [4.0.3](https://github.com/sorry-cypress/cy2/compare/v4.0.2...v4.0.3) (2023-01-09)
+
+### Bug Fixes
+
+- terminate proxy ([#53](https://github.com/sorry-cypress/cy2/issues/53)) ([12140cd](https://github.com/sorry-cypress/cy2/commit/12140cde58df9bea079950ce03ae69ca83dc34c8))
+
+## [4.0.2](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.2) (2023-01-09)
+
+### Bug Fixes
+
+- prevent populating env with "undefined" values ([#51](https://github.com/sorry-cypress/cy2/issues/51)) ([41df64f](https://github.com/sorry-cypress/cy2/commit/41df64f6c2118614485ae22e1a761d8bd42a3813))
+
 ## [4.0.1](https://github.com/sorry-cypress/cy2/compare/v3.4.0...v4.0.1) (2023-01-09)
 
 Bumping version to skip the existing corrupted 4.0.0 on npm.

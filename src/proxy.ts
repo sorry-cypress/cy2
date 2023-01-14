@@ -2,6 +2,7 @@ import * as a from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as o from 'fp-ts/Option';
 import http from 'http';
+import { createHttpTerminator } from 'http-terminator';
 import { isMatch } from 'micromatch';
 import net from 'net';
 import { debugNet } from './debug';
@@ -17,6 +18,7 @@ import {
 } from './network';
 import { runProxyChain } from './proxy-chain';
 import { getSanitizedEnvironment } from './proxy-settings';
+
 export interface Proxy {
   stop: () => Promise<void>;
   port: number;
@@ -38,39 +40,33 @@ export async function startProxy({
     );
 
     const proxy = http.createServer();
-    proxy
-      // @ts-ignore
-      .on('connect', onConnect)
-      .listen(0, () => {
-        const address = proxy.address();
-        if (!isAddress(address)) {
-          reject(new Error('Unable to detect proxy address'));
-          return;
-        }
+    const httpTerminator = createHttpTerminator({
+      server: proxy,
+    });
 
-        resolve({
-          stop: async () => {
-            debugNet('Stopping interceptor');
-            await stopInterceptors();
-            debugNet('Stopping proxy');
-            await stopProxy();
-          },
-          port: address.port,
-        });
-        return;
-      });
-
-    function stopProxy(): Promise<void> {
-      return new Promise((_resolve) => {
-        debugNet('Stopping proxy');
-        proxy.close((err) => {
-          if (err) {
-            console.error(err);
-          }
-          _resolve();
-        });
-      });
+    async function stopProxy(): Promise<void> {
+      debugNet('Stopping proxy');
+      await httpTerminator.terminate();
     }
+
+    proxy.on('connect', onConnect).listen(0, () => {
+      const address = proxy.address();
+      if (!isAddress(address)) {
+        reject(new Error('Unable to detect proxy address'));
+        return;
+      }
+
+      debugNet('Proxy is listening on port %d', address.port);
+      resolve({
+        stop: async () => {
+          await stopInterceptors();
+          await stopProxy();
+          debugNet('Stopped proxy + interceptors');
+        },
+        port: address.port,
+      });
+      return;
+    });
   });
 }
 

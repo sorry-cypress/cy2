@@ -3,14 +3,17 @@
 
 import cp from 'child_process';
 import { platform } from 'os';
+import packageJson from '../package.json';
 import { getCypressCLIBinPath } from './bin-path';
 import { debug } from './debug';
 import { startProxy } from './proxy';
+
 import {
   getEnvOverrides,
   getProxySettings,
   getSanitizedEnvironment,
   getUpstreamProxy,
+  overrideProcessEnv,
 } from './proxy-settings';
 
 /**
@@ -20,6 +23,7 @@ import {
  */
 export async function spawn(apiUrl: string) {
   debug('Cypress API URL: %s', apiUrl);
+  debug('Package version: %s', packageJson.version);
 
   const [, , ...rest] = process.argv;
   const cliBinPath = await getCypressCLIBinPath();
@@ -60,13 +64,17 @@ export async function spawn(apiUrl: string) {
  */
 export async function run(
   apiUrl: string,
-  config: CypressCommandLine.CypressRunOptions
+  config: Partial<CypressCommandLine.CypressRunOptions>
 ): Promise<
   | CypressCommandLine.CypressRunResult
   | CypressCommandLine.CypressFailedRunResult
 > {
   debug('Cypress API URL: %s', apiUrl);
+  debug('Package version: %s', packageJson.version);
 
+  if (!apiUrl) {
+    throw new Error('Missing API URL');
+  }
   // use inline import, otherwise it can throw when importing for "spawn"
   const cypress = require('cypress');
 
@@ -79,12 +87,7 @@ export async function run(
   });
   try {
     const settings = getProxySettings({ port });
-
-    // override proxy env variables
-    Object.entries(getEnvOverrides(settings.proxyURL, envVariables)).forEach(
-      ([key, value]) => (process.env[key] = value)
-    );
-
+    overrideProcessEnv(getEnvOverrides(settings.proxyURL, envVariables));
     process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
     return await cypress.run(config);
   } finally {

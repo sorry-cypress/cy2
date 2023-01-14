@@ -77,7 +77,7 @@ function createRightProxy(type) {
           'Unexpected error processing the request. Please report the issue and the details below. Set environment variable DEBUG=cy2* and rerun to get more information'
         );
         console.error(
-          'Request: %O',
+          'Request: %o',
           pick(
             req,
             'httpVersion',
@@ -102,7 +102,7 @@ function createRightProxy(type) {
         omit(requestOptions, 'ssl')
       );
       debugHttpProxy(
-        'Request: %O',
+        'Request: %o',
         pick(
           req,
           'httpVersion',
@@ -125,14 +125,6 @@ function createRightProxy(type) {
          * refer to the connection socket
          * pass(req, socket, options, head)
          */
-        debugHttpProxy(
-          'applying pass type "%s", #%d %s: %s %s',
-          type,
-          i,
-          passes[i].name,
-          req.method,
-          req.url
-        );
         if (passes[i](req, res, requestOptions, head, this, cbl)) {
           // passes can return a truthy value to halt the loop
           debugHttpProxy(
