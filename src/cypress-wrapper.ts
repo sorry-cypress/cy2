@@ -10,11 +10,11 @@ import { startProxy } from './proxy';
 
 import {
   getEnvOverrides,
-  getProxySettings,
   getSanitizedEnvironment,
+  getSettings,
   getUpstreamProxy,
   overrideProcessEnv,
-} from './proxy-settings';
+} from './settings';
 
 /**
  * Spawn Cypress as a child process, inherit all the flags and environment variables.
@@ -33,7 +33,6 @@ export async function spawn(apiUrl: string) {
   const args = isWindows ? [cliBinPath, ...rest] : rest;
 
   debug('Running cypress: %o', [cmd, ...args]);
-
   const envVariables = getSanitizedEnvironment();
   const upstreamProxy = getUpstreamProxy(envVariables);
   const { port } = await startProxy({
@@ -41,14 +40,12 @@ export async function spawn(apiUrl: string) {
     upstreamProxy,
     envVariables,
   });
-  const settings = getProxySettings({ port });
 
   cp.spawn(cmd, args, {
     stdio: 'inherit',
     env: {
       ...process.env,
-      ...getEnvOverrides(settings.proxyURL, envVariables),
-      NODE_EXTRA_CA_CERTS: settings.caPath,
+      ...getEnvOverrides(getSettings({ port }), envVariables),
     },
   }).on('exit', (code) => {
     process.exit(code ?? 1);
@@ -64,7 +61,7 @@ export async function spawn(apiUrl: string) {
  */
 export async function run(
   apiUrl: string,
-  config: Partial<CypressCommandLine.CypressRunOptions>
+  config?: Partial<CypressCommandLine.CypressRunOptions>
 ): Promise<
   | CypressCommandLine.CypressRunResult
   | CypressCommandLine.CypressFailedRunResult
@@ -78,6 +75,7 @@ export async function run(
   // use inline import, otherwise it can throw when importing for "spawn"
   const cypress = require('cypress');
 
+  const originalEnv = { ...process.env };
   const envVariables = getSanitizedEnvironment();
   const upstreamProxy = getUpstreamProxy(envVariables);
   const { port, stop } = await startProxy({
@@ -86,11 +84,10 @@ export async function run(
     envVariables,
   });
   try {
-    const settings = getProxySettings({ port });
-    overrideProcessEnv(getEnvOverrides(settings.proxyURL, envVariables));
-    process.env.NODE_EXTRA_CA_CERTS = settings.caPath;
+    overrideProcessEnv(getEnvOverrides(getSettings({ port }), envVariables));
     return await cypress.run(config);
   } finally {
+    process.env = originalEnv;
     await stop();
   }
 }

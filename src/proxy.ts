@@ -17,7 +17,7 @@ import {
   pipeSocketToRemoteDestination,
 } from './network';
 import { runProxyChain } from './proxy-chain';
-import { getSanitizedEnvironment } from './proxy-settings';
+import { getSanitizedEnvironment } from './settings';
 
 export interface Proxy {
   stop: () => Promise<void>;
