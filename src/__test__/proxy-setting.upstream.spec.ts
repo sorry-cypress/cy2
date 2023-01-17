@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { URL } from 'url';
-import { getUpstreamProxy } from '../proxy-settings';
+import { getUpstreamProxy } from '../settings';
 
 let originalEnv = process.env;
 

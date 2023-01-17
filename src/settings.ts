@@ -4,11 +4,11 @@ import fs from 'fs';
 import { chain, isUndefined, pick } from 'lodash';
 import tmp from 'tmp';
 import { URL } from 'url';
-import { ca } from './cert';
+import { getCA } from './ca';
 import { debug } from './debug';
 import { warn } from './log';
 
-const falsyEnv = (v) => {
+const falsyEnv = (v: string) => {
   return v === 'false' || v === '0' || !v;
 };
 
@@ -64,13 +64,8 @@ export function getSanitizedEnvironment() {
   return r;
 }
 
-export function getProxySettings({ port }: { port: number }) {
-  if (process.env.NODE_EXTRA_CA_CERTS) {
-    throw new Error(
-      'NODE_EXTRA_CA_CERTS is not supported. Please report this issue.'
-    );
-  }
-
+export function getSettings({ port }: { port: number }) {
+  const ca = getCA();
   const tmpobj = tmp.fileSync();
   fs.writeFileSync(tmpobj.name, ca);
 
@@ -141,7 +136,7 @@ Later they use HTTPS_PROXY for cloud connections and 'proxy-from-env' npm packag
 - https://github.com/cypress-io/cypress/blob/develop/packages/server/lib/cloud/api.ts#L45
 */
 export function getEnvOverrides(
-  currentsProxyURL: string,
+  settings: ReturnType<typeof getSettings>,
   envVariables: Record<string, string | undefined>
 ): Partial<Record<string, string>> {
   return chain({
@@ -151,7 +146,8 @@ export function getEnvOverrides(
     // That affects sorry-cypress users with `http:` storage urls
     // see https://github.com/sorry-cypress/cy2/issues/47
     HTTP_PROXY: undefined,
-    HTTPS_PROXY: currentsProxyURL,
+    HTTPS_PROXY: settings.proxyURL,
+    NODE_EXTRA_CA_CERTS: settings.caPath,
   })
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();

@@ -1,6 +1,7 @@
 import { expect, jest } from '@jest/globals';
 import { run } from '../cypress-wrapper';
 import * as proxy from '../proxy';
+import * as settings from '../settings';
 
 jest.mock('../proxy');
 jest.mock('cypress', () => ({
@@ -9,11 +10,17 @@ jest.mock('cypress', () => ({
   }),
 }));
 
-let originalEnv = process.env;
+let originalEnv = { ...process.env };
 
 // generate function to return a  random port
 const randomPort = () => Math.floor(Math.random() * 10000) + 10000;
 const target = 'http://cy.currents.dev';
+const port = randomPort();
+jest.spyOn(proxy, 'startProxy').mockResolvedValue({
+  port,
+  stop: async () => {},
+});
+jest.spyOn(settings, 'overrideProcessEnv');
 
 describe('Run env', () => {
   beforeEach(() => {
@@ -22,67 +29,43 @@ describe('Run env', () => {
   });
 
   it('populates NODE_EXTRA_CA_CERTS', async () => {
-    const port = randomPort();
-    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
-      port,
-      stop: async () => {},
-    });
+    const expected = {
+      NODE_EXTRA_CA_CERTS: expect.any(String),
+    };
+    await run(target);
 
-    await run(target, {});
-
-    expect(process.env).toHaveProperty(
-      'NODE_EXTRA_CA_CERTS',
-      expect.any(String)
+    expect(settings.overrideProcessEnv).toHaveBeenCalledWith(
+      expect.objectContaining(expected)
     );
   });
 
   it('populates HTTPS_PROXY when no pre-existing env variables', async () => {
-    const port = randomPort();
-    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
-      port,
-      stop: async () => {},
-    });
-    await run(target, {});
-
-    expect(process.env).toMatchObject({
+    const expected = {
       HTTPS_PROXY: `http://127.0.0.1:${port}`,
-    });
-  });
+    };
+    await run(target);
 
-  it('removes "undefined" variables', async () => {
-    const port = randomPort();
-    process.env.HTTP_PROXY = 'http://undefined.proxy/';
-    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
-      port,
-      stop: async () => {},
-    });
-
-    await run(target, {});
-    expect(process.env).not.toHaveProperty('HTTP_PROXY');
+    expect(settings.overrideProcessEnv).toHaveBeenCalledWith(
+      expect.objectContaining(expected)
+    );
   });
 
   it('use HTTPS_PROXY as upstream proxy', async () => {
-    const port = randomPort();
-    jest.spyOn(proxy, 'startProxy').mockResolvedValue({
-      port,
-      stop: async () => {},
-    });
-
     // prepopulate HTTPS_PROXY from userland
-    const upstreamProxy = 'https://upstream.proxy/';
-    process.env.HTTPS_PROXY = upstreamProxy;
+    process.env.HTTPS_PROXY = 'https://upstream.proxy/';
 
-    await run(target, {});
+    await run(target);
 
     expect(proxy.startProxy).toHaveBeenCalledWith(
       expect.objectContaining({
-        upstreamProxy: new URL(upstreamProxy),
+        upstreamProxy: new URL(process.env.HTTPS_PROXY),
       })
     );
 
-    expect(process.env).toHaveProperty(
-      'HTTPS_PROXY',
-      `http://127.0.0.1:${port}`
+    expect(settings.overrideProcessEnv).toHaveBeenCalledWith(
+      expect.objectContaining({
+        HTTPS_PROXY: `http://127.0.0.1:${port}`,
+      })
     );
   });
 });

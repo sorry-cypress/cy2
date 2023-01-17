@@ -4,6 +4,8 @@ describe('Test', function () {
     {
       retries: 3,
     },
-    function () {}
+    function () {
+      cy.visit('/');
+    }
   );
 });

@@ -23,7 +23,10 @@ body:
     attributes:
       label: Environment information
       description: |
-        Please run the following command inside your project and copy/paste the output below:
+        Please run the following command inside your project and copy/paste the output below.
+
+         **👉🏻 Run the command in the right environment 👈🏻, e.g. if the problem is in CI environment, run it in the CI environment.
+
         ```
         npx envinfo --system --binaries --browsers --npmPackages --duplicates --npmGlobalPackages
         ```
