@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.0.6](https://github.com/sorry-cypress/cy2/compare/v4.0.5...v4.0.6) (2023-01-18)
+
+
+### Bug Fixes
+
+* Resolves Limit node engine to 14.17+  [#59](https://github.com/sorry-cypress/cy2/issues/59) ([#62](https://github.com/sorry-cypress/cy2/issues/62)) ([b7fb898](https://github.com/sorry-cypress/cy2/commit/b7fb898692e0b423756f91ab2673b2e461432a00))
+* show package version in debug ([89c9fbd](https://github.com/sorry-cypress/cy2/commit/89c9fbdc70f1dfba50c843ef554aaceb5cc7ed7d))
+* support NODE_EXTRA_CA_CERTS ([#61](https://github.com/sorry-cypress/cy2/issues/61)) ([66d0d66](https://github.com/sorry-cypress/cy2/commit/66d0d6666f632e05d6338dcc467f20cef3cacdeb))
+
 ## [4.0.5](https://github.com/sorry-cypress/cy2/compare/v4.0.4...v4.0.5) (2023-01-11)
 
 
