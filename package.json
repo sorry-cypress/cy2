@@ -92,13 +92,6 @@
         "ignoreVersion": true,
         "infile": "CHANGELOG.md"
       }
-    },
-    "git": {
-      "requireBranch": "main",
-      "commitMessage": "chore: release v${version}"
-    },
-    "hooks": {
-      "before:init": "run-s clean build"
     }
   },
   "prettier": {
