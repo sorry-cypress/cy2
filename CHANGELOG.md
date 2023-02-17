@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.7-beta.0](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7-beta.0) (2023-02-17)
+
+* fix: set cypress as dev dependency
+* fix: deal with preflight
+
 ## [4.0.6](https://github.com/sorry-cypress/cy2/compare/v4.0.5...v4.0.6) (2023-01-18)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "4.0.6",
+  "version": "4.0.7-beta.0",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
