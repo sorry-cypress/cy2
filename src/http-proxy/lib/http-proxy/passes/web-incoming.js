@@ -1,10 +1,10 @@
-var httpNative   = require('http'),
-    httpsNative  = require('https'),
-    web_o  = require('./web-outgoing'),
-    common = require('../common'),
-    followRedirects = require('follow-redirects');
+var httpNative = require('http'),
+  httpsNative = require('https'),
+  web_o = require('./web-outgoing'),
+  common = require('../common'),
+  followRedirects = require('follow-redirects');
 
-web_o = Object.keys(web_o).map(function(pass) {
+web_o = Object.keys(web_o).map(function (pass) {
   return web_o[pass];
 });
 
@@ -18,9 +18,7 @@ var nativeAgents = { http: httpNative, https: httpsNative };
  * flexible.
  */
 
-
 module.exports = {
-
   /**
    * Sets `content-length` to '0' if request is of DELETE type.
    *
@@ -32,8 +30,10 @@ module.exports = {
    */
 
   deleteLength: function deleteLength(req, res, options) {
-    if((req.method === 'DELETE' || req.method === 'OPTIONS')
-       && !req.headers['content-length']) {
+    if (
+      (req.method === 'DELETE' || req.method === 'OPTIONS') &&
+      !req.headers['content-length']
+    ) {
       req.headers['content-length'] = '0';
       delete req.headers['transfer-encoding'];
     }
@@ -50,7 +50,7 @@ module.exports = {
    */
 
   timeout: function timeout(req, res, options) {
-    if(options.timeout) {
+    if (options.timeout) {
       req.socket.setTimeout(options.timeout);
     }
   },
@@ -66,23 +66,24 @@ module.exports = {
    */
 
   XHeaders: function XHeaders(req, res, options) {
-    if(!options.xfwd) return;
+    if (!options.xfwd) return;
 
     var encrypted = req.isSpdy || common.hasEncryptedConnection(req);
     var values = {
-      for  : req.connection.remoteAddress || req.socket.remoteAddress,
-      port : common.getPort(req),
-      proto: encrypted ? 'https' : 'http'
+      for: req.connection.remoteAddress || req.socket.remoteAddress,
+      port: common.getPort(req),
+      proto: encrypted ? 'https' : 'http',
     };
 
-    ['for', 'port', 'proto'].forEach(function(header) {
+    ['for', 'port', 'proto'].forEach(function (header) {
       req.headers['x-forwarded-' + header] =
         (req.headers['x-forwarded-' + header] || '') +
         (req.headers['x-forwarded-' + header] ? ',' : '') +
         values[header];
     });
 
-    req.headers['x-forwarded-host'] = req.headers['x-forwarded-host'] || req.headers['host'] || '';
+    req.headers['x-forwarded-host'] =
+      req.headers['x-forwarded-host'] || req.headers['host'] || '';
   },
 
   /**
@@ -97,8 +98,11 @@ module.exports = {
    * @api private
    */
 
-  stream: function stream(req, res, options, _, server, clb) {
-
+  stream: function stream(req, res, _options, _, server, clb) {
+    const options = { ..._options };
+    if (req.url === '/preflight') {
+      options.target = new URL('https://api.cypress.io');
+    }
     // And we begin!
     server.emit('start', req, res, options.target || options.forward);
 
@@ -106,9 +110,11 @@ module.exports = {
     var http = agents.http;
     var https = agents.https;
 
-    if(options.forward) {
+    if (options.forward) {
       // If forward enable, so just pipe the request
-      var forwardReq = (options.forward.protocol === 'https:' ? https : http).request(
+      var forwardReq = (
+        options.forward.protocol === 'https:' ? https : http
+      ).request(
         common.setupOutgoing(options.ssl || {}, options, req, 'forward')
       );
 
@@ -119,26 +125,28 @@ module.exports = {
       forwardReq.on('error', forwardError);
 
       (options.buffer || req).pipe(forwardReq);
-      if(!options.target) { return res.end(); }
+      if (!options.target) {
+        return res.end();
+      }
     }
 
     // Request initalization
-    var proxyReq = (options.target.protocol === 'https:' ? https : http).request(
-      common.setupOutgoing(options.ssl || {}, options, req)
-    );
+    var proxyReq = (
+      options.target.protocol === 'https:' ? https : http
+    ).request(common.setupOutgoing(options.ssl || {}, options, req));
 
     // Enable developers to modify the proxyReq before headers are sent
-    proxyReq.on('socket', function(socket) {
-      if(server && !proxyReq.getHeader('expect')) {
+    proxyReq.on('socket', function (socket) {
+      if (server && !proxyReq.getHeader('expect')) {
         server.emit('proxyReq', proxyReq, req, res, options);
       }
     });
 
     // allow outgoing socket to timeout so that we could
     // show an error page at the initial request
-    if(options.proxyTimeout) {
-      proxyReq.setTimeout(options.proxyTimeout, function() {
-         proxyReq.abort();
+    if (options.proxyTimeout) {
+      proxyReq.setTimeout(options.proxyTimeout, function () {
+        proxyReq.abort();
       });
     }
 
@@ -164,17 +172,21 @@ module.exports = {
         } else {
           server.emit('error', err, req, res, url);
         }
-      }
+      };
     }
 
     (options.buffer || req).pipe(proxyReq);
 
-    proxyReq.on('response', function(proxyRes) {
-      if(server) { server.emit('proxyRes', proxyRes, req, res); }
+    proxyReq.on('response', function (proxyRes) {
+      if (server) {
+        server.emit('proxyRes', proxyRes, req, res);
+      }
 
-      if(!res.headersSent && !options.selfHandleResponse) {
-        for(var i=0; i < web_o.length; i++) {
-          if(web_o[i](req, res, proxyRes, options)) { break; }
+      if (!res.headersSent && !options.selfHandleResponse) {
+        for (var i = 0; i < web_o.length; i++) {
+          if (web_o[i](req, res, proxyRes, options)) {
+            break;
+          }
         }
       }
 
@@ -189,6 +201,5 @@ module.exports = {
         if (server) server.emit('end', req, res, proxyRes);
       }
     });
-  }
-
+  },
 };
