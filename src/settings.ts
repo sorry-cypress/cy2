@@ -148,6 +148,7 @@ export function getEnvOverrides(
     HTTP_PROXY: undefined,
     HTTPS_PROXY: settings.proxyURL,
     NODE_EXTRA_CA_CERTS: settings.caPath,
+    CYPRESS_API_URL: undefined, // remove for preflight
   })
     .tap((o) => debug('Resolved proxy environment variables %o', o))
     .value();
