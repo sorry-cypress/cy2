@@ -95,6 +95,7 @@ function createInterceptor({
         changeOrigin: true,
         followRedirects: true,
         agent,
+        secure: false,
         ssl: {
           key,
           cert,
