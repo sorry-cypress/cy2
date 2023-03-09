@@ -18,6 +18,14 @@ Integrate Cypress with alternative cloud services like Sorry Cypress or Currents
 
 `cy2` integrates [cypress](https://www.npmjs.com/package/cypress) with alternative orchestration services like Sorry Cypress or Currents.
 
+--- 
+
+*March 2023 Update*
+
+⭐️ Cypress 12.6.0+ users, please use https://github.com/currents-dev/cypress-cloud if you are seeing `Cypress does not support recording test results to this third party service` error ⭐️ 
+
+---
+
 [Changelog](./CHANGELOG.md) | [License GPL-3.0+](./LICENSE)
 
 ## Install
