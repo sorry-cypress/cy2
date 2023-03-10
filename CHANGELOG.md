@@ -1,5 +1,7 @@
 # Changelog
 
+## [4.0.7-beta.2](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.1...v4.0.7-beta.2) (2023-03-10)
+
 ## [4.0.7-beta.1](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.0...v4.0.7-beta.1) (2023-02-17)
 
 ## [4.0.7-beta.0](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7-beta.0) (2023-02-17)
