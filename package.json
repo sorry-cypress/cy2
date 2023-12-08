@@ -96,7 +96,6 @@
       }
     },
     "git": {
-      "requireBranch": "main",
       "commitMessage": "chore: release v${version}"
     },
     "hooks": {
