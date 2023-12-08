@@ -1,9 +1,13 @@
 ```sh
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 3650
-openssl rsa -in key.pem -out key_nopass.pem
-mv key_nopass.pem key.pem
+openssl genrsa -out rootCA.key 4096
 
-# verify date
+# enter somewhat real details
+openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1825 -out rootCA.pem
 
-openssl x509 -enddate -noout -in cert.pem
+
+# enter somewhat real details with api.cy.io as FQDN
+openssl genrsa -out domain.key 2048
+openssl req -new -key domain.key -out domain.csr
+openssl x509 -req -in domain.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out domain.crt -days 1825 -sha256
+
 ```
