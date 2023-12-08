@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.0.8](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-12-08)
+
+
+### Bug Fixes
+
+* use root signed certificate ([0d51f80](https://github.com/sorry-cypress/cy2/commit/0d51f8064dabab535483fd80c2654e2a7a7a0d5b))
+
+
+
+## [4.0.7-beta.2](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-03-10)
+
+
+
+## [4.0.7-beta.1](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-02-17)
+
+
+
+## [4.0.7-beta.0](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-02-17)
+
+
+
+## [4.0.7](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-12-08)
+
+
+### Bug Fixes
+
+* update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
 
 ## [4.0.7](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7) (2023-12-08)
 
