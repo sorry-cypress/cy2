@@ -2,62 +2,47 @@
 
 ## [4.0.8](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-12-08)
 
-
 ### Bug Fixes
 
-* use root signed certificate ([0d51f80](https://github.com/sorry-cypress/cy2/commit/0d51f8064dabab535483fd80c2654e2a7a7a0d5b))
-
-
+- use root signed certificate ([0d51f80](https://github.com/sorry-cypress/cy2/commit/0d51f8064dabab535483fd80c2654e2a7a7a0d5b))
 
 ## [4.0.7-beta.2](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-03-10)
 
-
-
 ## [4.0.7-beta.1](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-02-17)
-
-
 
 ## [4.0.7-beta.0](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-02-17)
 
-
-
 ## [4.0.7](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-12-08)
-
 
 ### Bug Fixes
 
-* update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
+- update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
 
 ## [4.0.7](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7) (2023-12-08)
 
-
 ### Bug Fixes
 
-* update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
-
+- update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
 
 ## [4.0.6](https://github.com/sorry-cypress/cy2/compare/v4.0.5...v4.0.6) (2023-01-18)
 
-
 ### Bug Fixes
 
-* Resolves Limit node engine to 14.17+  [#59](https://github.com/sorry-cypress/cy2/issues/59) ([#62](https://github.com/sorry-cypress/cy2/issues/62)) ([b7fb898](https://github.com/sorry-cypress/cy2/commit/b7fb898692e0b423756f91ab2673b2e461432a00))
-* show package version in debug ([89c9fbd](https://github.com/sorry-cypress/cy2/commit/89c9fbdc70f1dfba50c843ef554aaceb5cc7ed7d))
-* support NODE_EXTRA_CA_CERTS ([#61](https://github.com/sorry-cypress/cy2/issues/61)) ([66d0d66](https://github.com/sorry-cypress/cy2/commit/66d0d6666f632e05d6338dcc467f20cef3cacdeb))
+- Resolves Limit node engine to 14.17+ [#59](https://github.com/sorry-cypress/cy2/issues/59) ([#62](https://github.com/sorry-cypress/cy2/issues/62)) ([b7fb898](https://github.com/sorry-cypress/cy2/commit/b7fb898692e0b423756f91ab2673b2e461432a00))
+- show package version in debug ([89c9fbd](https://github.com/sorry-cypress/cy2/commit/89c9fbdc70f1dfba50c843ef554aaceb5cc7ed7d))
+- support NODE_EXTRA_CA_CERTS ([#61](https://github.com/sorry-cypress/cy2/issues/61)) ([66d0d66](https://github.com/sorry-cypress/cy2/commit/66d0d6666f632e05d6338dcc467f20cef3cacdeb))
 
 ## [4.0.5](https://github.com/sorry-cypress/cy2/compare/v4.0.4...v4.0.5) (2023-01-11)
 
-
 ### Bug Fixes
 
-* use HTTPS_PROXY by default ([#56](https://github.com/sorry-cypress/cy2/issues/56)) ([c4115ca](https://github.com/sorry-cypress/cy2/commit/c4115ca1476cf8c06992437455e58bf903d591af))
+- use HTTPS_PROXY by default ([#56](https://github.com/sorry-cypress/cy2/issues/56)) ([c4115ca](https://github.com/sorry-cypress/cy2/commit/c4115ca1476cf8c06992437455e58bf903d591af))
 
 ## [4.0.4](https://github.com/sorry-cypress/cy2/compare/v4.0.3...v4.0.4) (2023-01-10)
 
-
 ### Bug Fixes
 
-* Use the right upstream chain protocol ([#55](https://github.com/sorry-cypress/cy2/issues/55)) ([9a7bf20](https://github.com/sorry-cypress/cy2/commit/9a7bf20286b44d92867a67ed610208b6729f796b)), closes [#54](https://github.com/sorry-cypress/cy2/issues/54)
+- Use the right upstream chain protocol ([#55](https://github.com/sorry-cypress/cy2/issues/55)) ([9a7bf20](https://github.com/sorry-cypress/cy2/commit/9a7bf20286b44d92867a67ed610208b6729f796b)), closes [#54](https://github.com/sorry-cypress/cy2/issues/54)
 
 ## [4.0.3](https://github.com/sorry-cypress/cy2/compare/v4.0.2...v4.0.3) (2023-01-09)
 
