@@ -22,7 +22,7 @@ Integrate Cypress with alternative cloud services like Sorry Cypress or Currents
 
 **Dec 2023 Update**
 
-If you are seeing `Error: certificate has expired`, please upgrade to version 4.0.4+.
+If you are seeing `Error: certificate has expired`, please upgrade to version 4.0.8+.
 
 **March 2023 Update**
 
