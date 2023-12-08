@@ -1,13 +1,13 @@
 # Changelog
 
-## [4.0.7-beta.2](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.1...v4.0.7-beta.2) (2023-03-10)
 
-## [4.0.7-beta.1](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.0...v4.0.7-beta.1) (2023-02-17)
+## [4.0.7](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7) (2023-12-08)
 
-## [4.0.7-beta.0](https://github.com/sorry-cypress/cy2/compare/v4.0.6...v4.0.7-beta.0) (2023-02-17)
 
-* fix: set cypress as dev dependency
-* fix: deal with preflight
+### Bug Fixes
+
+* update expiring certificates ([9b817ec](https://github.com/sorry-cypress/cy2/commit/9b817ec5dccb7c877a8c8e5de608b11fe016591f))
+
 
 ## [4.0.6](https://github.com/sorry-cypress/cy2/compare/v4.0.5...v4.0.6) (2023-01-18)
 

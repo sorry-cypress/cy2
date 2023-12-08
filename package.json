@@ -1,6 +1,6 @@
 {
   "name": "cy2",
-  "version": "4.0.7-beta.2",
+  "version": "4.0.7",
   "author": "Andrew Goldis",
   "main": "./dist",
   "typings": "./dist",
@@ -94,7 +94,6 @@
       }
     },
     "git": {
-      "requireBranch": "main",
       "commitMessage": "chore: release v${version}"
     },
     "hooks": {
