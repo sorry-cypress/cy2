@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.9](https://github.com/sorry-cypress/cy2/compare/v4.0.8...v4.0.9) (2023-12-08)
+
+### Misc
+
+- Update readme with update recommendation
+
 ## [4.0.8](https://github.com/sorry-cypress/cy2/compare/v4.0.7-beta.2...v4.0.8) (2023-12-08)
 
 ### Bug Fixes
