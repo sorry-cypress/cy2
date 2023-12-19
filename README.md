@@ -94,6 +94,16 @@ import { spawn } from 'cy2';
 await spawn(process.env.CYPRESS_API_URL);
 ```
 
+## Azure blob storage support
+
+Azure requires a `x-ms-blob-type` header to be present when uploading build artifacts to a storage account, in order to have these headers added to the upload requests configure the `AZURE_BLOB_URL` environment variable with the hostname associated with your Azure storage account.
+
+Example:
+
+```sh
+AZURE_BLOB_URL=https://your-storage-account.blob.core.windows.net
+```
+
 ## Breaking Changes
 
 ### Version 4
