@@ -61,7 +61,7 @@
     "patch-package": "^6.5.1",
     "requires-port": "^1.0.0",
     "source-map-support": "^0.5.21",
-    "tmp": "^0.2.1"
+    "tmp": "^0.2.2"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",
