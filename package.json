@@ -57,7 +57,7 @@
     "fp-ts": "^2.13.1",
     "https-proxy-agent": "^5.0.1",
     "lodash": "^4.17.21",
-    "micromatch": "^4.0.5",
+    "micromatch": "^4.0.6",
     "patch-package": "^6.5.1",
     "requires-port": "^1.0.0",
     "source-map-support": "^0.5.21",
