@@ -4,7 +4,7 @@ Integrate Cypress with alternative cloud services like Sorry Cypress or Currents
 
 ---
 
-**[Currents.dev](https://currents.dev/?utm_source=cy2)** - is a hosted cloud service used to run millions of Cypress tests without breaking the bank. This is an enhanced version of Sorry Cypress with better security, performance, analytics, integrations and support.
+**[Currents.dev](https://currents.dev/cypress-to-playwright?utm_source=cy2)** - is a hosted cloud service used to run millions of Cypress tests without breaking the bank. This is an enhanced version of Sorry Cypress with better security, performance, analytics, integrations and support.
 
 **[Sorry Cypress](https://sorry-cypress.dev/?utm_source=cy2)** - is an open-source, free alternative to Cypress Cloud that unlocks unlimited parallelization, test recordings, and integration with GitHub, Slack and more.
 
