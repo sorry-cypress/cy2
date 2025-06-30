@@ -13,6 +13,11 @@ import {
   stopInterceptors,
 } from './interceptor';
 import {
+  getDirectAzureBlobInterceptor,
+  getUpstreamAzureBlobInterceptor,
+  stopAzureBlobInterceptors,
+} from './azure-blob-interceptor';
+import {
   pipeSocketToLocalPort,
   pipeSocketToRemoteDestination,
 } from './network';
@@ -60,6 +65,7 @@ export async function startProxy({
       resolve({
         stop: async () => {
           await stopInterceptors();
+          await stopAzureBlobInterceptors();
           await stopProxy();
           debugNet('Stopped proxy + interceptors');
         },
@@ -86,6 +92,11 @@ const getOnConnect = (
 
     if (shouldIntercept(hostname)) {
       interceptRequest({ target, hostname, socket, upstreamProxy, noProxy });
+      return;
+    }
+
+    if (shouldInterceptBlob(req.url)) {
+      interceptAzureBlobRequest({ target: process.env.AZURE_BLOB_URL as string, hostname, socket, upstreamProxy, noProxy });
       return;
     }
 
@@ -129,6 +140,33 @@ async function interceptRequest({
   pipeSocketToLocalPort({ socket, port });
 }
 
+async function interceptAzureBlobRequest({
+  target,
+  hostname,
+  socket,
+  upstreamProxy = null,
+  noProxy = [],
+}: {
+  target: string;
+  hostname: string;
+  socket: net.Socket;
+  upstreamProxy: URL | null;
+  noProxy: string[];
+}) {
+  const interceptor = await pipe(
+    upstreamProxy,
+    o.fromNullable,
+    o.filter(() => shouldUseUpstreamProxy(new URL(target).hostname, noProxy)),
+    o.map((upstreamProxy) => getUpstreamAzureBlobInterceptor({ upstreamProxy, target })),
+    o.getOrElse(() => getDirectAzureBlobInterceptor({ target }))
+  );
+
+  // @ts-ignore
+  const port = interceptor._server.address().port;
+  debugNet('Intercepting Azure blob request to "%s" via port: %d', hostname, port);
+  pipeSocketToLocalPort({ socket, port });
+}
+
 function shouldUseUpstreamProxy(hostname: string, noProxy: string[] = []) {
   const result = a.isEmpty(noProxy) ? true : !isMatch(hostname, noProxy);
   debugNet(
@@ -142,6 +180,10 @@ function shouldUseUpstreamProxy(hostname: string, noProxy: string[] = []) {
 
 function shouldIntercept(hostname: string) {
   return hostname === enc('YXBpLmN5cHJlc3MuaW8=');
+}
+
+function shouldInterceptBlob(hostname: string) {
+  return process.env.AZURE_BLOB_URL && hostname.startsWith(new URL(process.env.AZURE_BLOB_URL).hostname);
 }
 
 function isAddress(value: unknown): value is net.AddressInfo {
